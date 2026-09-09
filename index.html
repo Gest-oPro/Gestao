@@ -86,7 +86,7 @@
     <div class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-3xl shadow-2xl p-6 sm:p-8 max-w-md w-full border border-white/20 dark:border-slate-800 text-slate-800 dark:text-white">
       
       <div class="flex items-center justify-between mb-4">
-        <span class="text-[11px] font-bold tracking-wider uppercase px-2.5 py-1 bg-indigo-50 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 rounded-lg app-version-badge">v2.8.0</span>
+        <span class="text-[11px] font-bold tracking-wider uppercase px-2.5 py-1 bg-indigo-50 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 rounded-lg app-version-badge">v2.9.0</span>
         <button onclick="toggleTheme()" type="button" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:scale-105 transition" title="Alternar Tema">
           <i class="theme-icon fa-solid fa-moon"></i>
         </button>
@@ -173,7 +173,7 @@
       <div class="p-4 border-t border-slate-800 space-y-3">
         <div class="flex items-center justify-between">
           <span class="text-[10px] font-bold text-slate-500 tracking-wider">VERSÃO ATUAL</span>
-          <span class="text-[10px] font-bold bg-slate-800 px-2 py-0.5 rounded text-indigo-400 border border-slate-700 app-version-badge">v2.8.0</span>
+          <span class="text-[10px] font-bold bg-slate-800 px-2 py-0.5 rounded text-indigo-400 border border-slate-700 app-version-badge">v2.9.0</span>
         </div>
         <div class="flex items-center justify-between pt-1">
           <div class="flex items-center gap-2.5 truncate">
@@ -200,11 +200,14 @@
         </div>
         <div>
           <span class="font-bold text-sm leading-tight block">GestãoPro</span>
-          <span class="text-[9px] text-indigo-400 font-medium app-version-badge">v2.8.0</span>
+          <span class="text-[9px] text-indigo-400 font-medium app-version-badge">v2.9.0</span>
         </div>
       </div>
       <div class="flex items-center gap-2">
         <span id="mobile-user-badge" class="hidden sm:inline-block text-[10px] font-bold px-2 py-1 rounded-lg bg-slate-800 text-indigo-300"></span>
+        <button onclick="navigate('settings')" type="button" class="admin-only p-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white" title="Configurações">
+          <i class="fa-solid fa-gear text-xs"></i>
+        </button>
         <button onclick="toggleTheme()" type="button" class="p-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white" title="Alternar Tema">
           <i class="theme-icon fa-solid fa-moon text-xs"></i>
         </button>
@@ -215,21 +218,24 @@
     </div>
 
     <!-- MOBILE BOTTOM NAVIGATION -->
-    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 z-40 flex justify-around p-1.5 text-slate-600 dark:text-slate-400 shadow-xl">
-      <button onclick="navigate('dashboard')" type="button" class="mobile-nav-btn flex flex-col items-center gap-0.5 py-1 px-2 text-[11px] font-medium text-indigo-600 dark:text-indigo-400" data-view="dashboard">
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 z-40 flex justify-around p-1 text-slate-600 dark:text-slate-400 shadow-xl">
+      <button onclick="navigate('dashboard')" type="button" class="mobile-nav-btn flex flex-col items-center gap-0.5 py-1 px-1.5 text-[10px] sm:text-[11px] font-medium text-indigo-600 dark:text-indigo-400" data-view="dashboard">
         <i class="fa-solid fa-chart-pie text-sm"></i><span>Início</span>
       </button>
-      <button onclick="navigate('pos')" type="button" class="mobile-nav-btn flex flex-col items-center gap-0.5 py-1 px-2 text-[11px] font-medium text-slate-500 dark:text-slate-400" data-view="pos">
+      <button onclick="navigate('pos')" type="button" class="mobile-nav-btn flex flex-col items-center gap-0.5 py-1 px-1.5 text-[10px] sm:text-[11px] font-medium text-slate-500 dark:text-slate-400" data-view="pos">
         <i class="fa-solid fa-cash-register text-sm text-emerald-600 dark:text-emerald-400"></i><span>PDV</span>
       </button>
-      <button onclick="navigate('inventory')" type="button" class="mobile-nav-btn flex flex-col items-center gap-0.5 py-1 px-2 text-[11px] font-medium text-slate-500 dark:text-slate-400" data-view="inventory">
+      <button onclick="navigate('inventory')" type="button" class="mobile-nav-btn flex flex-col items-center gap-0.5 py-1 px-1.5 text-[10px] sm:text-[11px] font-medium text-slate-500 dark:text-slate-400" data-view="inventory">
         <i class="fa-solid fa-box-archive text-sm"></i><span>Estoque</span>
       </button>
-      <button onclick="navigate('customers')" type="button" class="mobile-nav-btn flex flex-col items-center gap-0.5 py-1 px-2 text-[11px] font-medium text-slate-500 dark:text-slate-400" data-view="customers">
+      <button onclick="navigate('customers')" type="button" class="mobile-nav-btn flex flex-col items-center gap-0.5 py-1 px-1.5 text-[10px] sm:text-[11px] font-medium text-slate-500 dark:text-slate-400" data-view="customers">
         <i class="fa-solid fa-users text-sm"></i><span>Clientes</span>
       </button>
-      <button onclick="navigate('reports')" type="button" class="mobile-nav-btn admin-only flex flex-col items-center gap-0.5 py-1 px-2 text-[11px] font-medium text-slate-500 dark:text-slate-400" data-view="reports">
+      <button onclick="navigate('reports')" type="button" class="mobile-nav-btn admin-only flex flex-col items-center gap-0.5 py-1 px-1.5 text-[10px] sm:text-[11px] font-medium text-slate-500 dark:text-slate-400" data-view="reports">
         <i class="fa-solid fa-chart-line text-sm"></i><span>Vendas</span>
+      </button>
+      <button onclick="navigate('settings')" type="button" class="mobile-nav-btn admin-only flex flex-col items-center gap-0.5 py-1 px-1.5 text-[10px] sm:text-[11px] font-medium text-slate-500 dark:text-slate-400" data-view="settings">
+        <i class="fa-solid fa-gear text-sm"></i><span>Config</span>
       </button>
     </nav>
 
@@ -894,7 +900,7 @@
   </div>
 
   <script>
-    const APP_VERSION = 'v2.8.0';
+    const APP_VERSION = 'v2.9.0';
     
     const CATEGORIES = [
       'Alimentos & Bebidas', 'Mercearia & Limpeza', 'Higiene & Cosméticos',
@@ -930,7 +936,7 @@
     let customers = [];
     let sales = [];
     let companySettings = {
-      name: 'Mercadinho Express', doc: '12.345.678/0001-90', phone: '(11) 98765-4321', pixKey: 'loja@exemplo.com.br'
+      name: 'GestãoPro', doc: '12.345.678/0001-90', phone: '(11) 98765-4321', pixKey: '48999344103 -- JORGE L SILVEIRA --BANCO DO BRASIL'
     };
     let usersSettings = JSON.parse(JSON.stringify(DEFAULT_USERS));
 
@@ -1063,6 +1069,8 @@
       if (loginScreen) loginScreen.classList.add('hidden');
       if (appWrapper) appWrapper.classList.remove('hidden');
       
+      document.querySelectorAll('.app-version-badge').forEach(el => el.textContent = APP_VERSION);
+
       const isAdmin = currentUser && currentUser.role === 'admin';
       
       const nameEl = document.getElementById('current-user-name');
@@ -1599,20 +1607,31 @@
     function shareReceiptWhatsApp() {
       if (!currentLastSale) return;
       const s = currentLastSale;
-      let text = `*COMPROVANTE DE COMPRA - ${escapeHtml(companySettings.name)}*\n`;
-      text += `Cód: ${s.id}\nData: ${new Date(s.date).toLocaleString('pt-BR')}\nCliente: ${escapeHtml(s.customerName)}\n\n`;
+      const storeName = companySettings.name && companySettings.name !== 'Mercadinho Express'
+        ? companySettings.name
+        : 'GestãoPro';
+      const pixInfo = companySettings.pixKey && companySettings.pixKey.trim() !== '' && companySettings.pixKey !== 'loja@exemplo.com.br'
+        ? companySettings.pixKey
+        : '48999344103 -- JORGE L SILVEIRA --BANCO DO BRASIL';
+
+      let text = `*COMPROVANTE DE COMPRA -  ${storeName}*\n`;
+      text += `Cód: ${s.id}\n`;
+      text += `Data: ${new Date(s.date).toLocaleString('pt-BR')}\n`;
+      text += `Cliente: ${s.customerName || 'Consumidor'}\n\n`;
       text += `*Itens:*\n`;
       s.items.forEach(i => {
-        text += `- ${i.qty}x ${escapeHtml(i.name)} (${formatCurrency(i.salePrice)})\n`;
+        text += `- ${i.qty}x ${i.name} (${formatCurrency(i.salePrice)})\n`;
       });
       text += `\n*Total:* ${formatCurrency(s.total)}\n`;
       text += `Pagamento: ${s.paymentMethod.toUpperCase()}\n`;
       if (s.debtAmount > 0) {
         text += `Valor Pendente (Fiado): ${formatCurrency(s.debtAmount)}\nVencimento: ${new Date(s.dueDate).toLocaleDateString('pt-BR')}\n`;
       }
-      text += `\nCHAVE PIX : 48999344103 -- JORGE L SILVEIRA --BANCO DO BRASIL`;
-      text += `\n*AVISO DE TROCA:*\nToda troca de produtos deve ser feita no prazo máximo de 20 dias a partir da entrega.\n`;
-      text += `\nObrigado pela preferência!`;
+      text += `\nCHAVE PIX : ${pixInfo}\n`;
+      text += `*AVISO DE TROCA:*\n`;
+      text += `Toda troca de produtos deve ser feita no prazo máximo de 20 dias a partir da entrega.\n\n`;
+      text += `Obrigado pela preferência!`;
+
       const encoded = encodeURIComponent(text);
       const phone = s.customerPhone ? s.customerPhone.replace(/\D/g, '') : '';
       const url = phone ? `https://wa.me/55${phone}?text=${encoded}` : `https://wa.me/?text=${encoded}`;
