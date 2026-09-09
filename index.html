@@ -13,14 +13,7 @@
       theme: {
         extend: {
           colors: {
-            brand: {
-              50: '#eef2ff',
-              100: '#e0e7ff',
-              500: '#6366f1',
-              600: '#4f46e5',
-              700: '#4338ca',
-              800: '#3730a3',
-            }
+            brand: { 50: '#eef2ff', 100: '#e0e7ff', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca', 800: '#3730a3' }
           }
         }
       }
@@ -29,45 +22,32 @@
 
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  
   <!-- Chart.js para Relatórios -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  
   <!-- Canvas Confetti para celebração de venda -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-
   <!-- Supabase JS Client -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-    body {
-      font-family: 'Inter', sans-serif;
-    }
+    body { font-family: 'Inter', sans-serif; }
     
-    /* Estilização para impressão de cupom */
+    /* Estilização para impressão de cupom térmica */
     @media print {
-      @page { margin: 0; size: 80mm auto; }
-      body { background: white !important; color: black !important; }
-      #app-wrapper, #login-screen, #toast-container, .no-print { display: none !important; }
-      
+      body > *:not(#modal-receipt) { display: none !important; }
       #modal-receipt {
-        position: relative !important;
-        background: white !important;
-        display: block !important;
-        padding: 0 !important;
+        display: block !important; position: absolute; left: 0; top: 0; 
+        width: 100%; height: auto; background: white !important; 
       }
       #modal-receipt > div {
-        box-shadow: none !important; border: none !important; padding: 2mm !important; margin: 0 !important; width: 80mm !important; max-width: 80mm !important;
-        background: white !important; color: black !important;
+        box-shadow: none; border: none; max-width: 80mm; margin: 0 auto; padding: 5px;
       }
       #receipt-modal-content {
-        max-height: none !important; 
-        overflow: visible !important; 
-        padding: 0 !important; 
-        background: white !important; 
-        color: black !important;
+        max-height: none !important; overflow: visible !important;
+        background: white !important; color: black !important; padding: 0;
       }
+      .no-print { display: none !important; }
     }
 
     /* Scrollbar personalizada */
@@ -82,6 +62,7 @@
   <!-- ================= NOTIFICAÇÃO TOAST ================= -->
   <div id="toast-container" class="fixed top-4 right-4 z-[60] flex flex-col gap-2 pointer-events-none max-w-sm w-full"></div>
 
+  <!-- ================= TELA DE LOGIN ================= -->
   <div id="login-screen" class="fixed inset-0 z-50 bg-gradient-to-br from-indigo-950 via-slate-900 to-brand-900 flex items-center justify-center p-4">
     <div class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-3xl shadow-2xl p-6 sm:p-8 max-w-md w-full border border-white/20 dark:border-slate-800 text-slate-800 dark:text-white">
       
@@ -102,10 +83,10 @@
 
       <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
         <div>
-          <label class="block text-xs font-semibold uppercase mb-1 text-slate-600 dark:text-slate-300">Usuário / Perfil</label>
+          <label class="block text-xs font-semibold uppercase mb-1 text-slate-600 dark:text-slate-300">Login / Utilizador</label>
           <div class="relative">
             <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-user"></i></span>
-            <input type="text" id="login-username" required placeholder="Digite o utilizador"
+            <input type="text" id="login-username" required placeholder="Digite o login..."
               class="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm font-medium dark:text-white" />
           </div>
         </div>
@@ -114,7 +95,7 @@
           <label class="block text-xs font-semibold uppercase mb-1 text-slate-600 dark:text-slate-300">Senha</label>
           <div class="relative">
             <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-lock"></i></span>
-            <input type="password" id="login-password" required placeholder="Digite sua senha"
+            <input type="password" id="login-password" required placeholder="Digite a senha..."
               class="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm font-medium dark:text-white" />
           </div>
         </div>
@@ -127,6 +108,7 @@
     </div>
   </div>
 
+  <!-- ================= APLICAÇÃO PRINCIPAL ================= -->
   <div id="app-wrapper" class="hidden flex-1 flex flex-col md:flex-row min-h-screen">
     
     <!-- SIDEBAR (Desktop) -->
@@ -165,7 +147,7 @@
             <i class="fa-solid fa-file-invoice-dollar w-5 text-center"></i><span>Relatórios & Vendas</span>
           </button>
           <button onclick="navigate('settings')" type="button" id="nav-settings" class="nav-btn admin-only w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800/80">
-            <i class="fa-solid fa-gear w-5 text-center"></i><span>Config & Backup</span>
+            <i class="fa-solid fa-gear w-5 text-center"></i><span>Configurações</span>
           </button>
         </nav>
       </div>
@@ -204,7 +186,6 @@
         </div>
       </div>
       <div class="flex items-center gap-2">
-        <span id="mobile-user-badge" class="hidden sm:inline-block text-[10px] font-bold px-2 py-1 rounded-lg bg-slate-800 text-indigo-300"></span>
         <button onclick="navigate('settings')" type="button" class="admin-only p-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white" title="Configurações">
           <i class="fa-solid fa-gear text-xs"></i>
         </button>
@@ -218,31 +199,32 @@
     </div>
 
     <!-- MOBILE BOTTOM NAVIGATION -->
-    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 z-40 flex justify-around p-1 text-slate-600 dark:text-slate-400 shadow-xl">
-      <button onclick="navigate('dashboard')" type="button" class="mobile-nav-btn flex flex-col items-center gap-0.5 py-1 px-1.5 text-[10px] sm:text-[11px] font-medium text-indigo-600 dark:text-indigo-400" data-view="dashboard">
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 z-40 flex justify-around p-1.5 text-slate-600 dark:text-slate-400 shadow-xl">
+      <button onclick="navigate('dashboard')" type="button" class="mobile-nav-btn flex flex-col items-center gap-0.5 py-1 px-2 text-[11px] font-medium text-indigo-600 dark:text-indigo-400" data-view="dashboard">
         <i class="fa-solid fa-chart-pie text-sm"></i><span>Início</span>
       </button>
-      <button onclick="navigate('pos')" type="button" class="mobile-nav-btn flex flex-col items-center gap-0.5 py-1 px-1.5 text-[10px] sm:text-[11px] font-medium text-slate-500 dark:text-slate-400" data-view="pos">
+      <button onclick="navigate('pos')" type="button" class="mobile-nav-btn flex flex-col items-center gap-0.5 py-1 px-2 text-[11px] font-medium text-slate-500 dark:text-slate-400" data-view="pos">
         <i class="fa-solid fa-cash-register text-sm text-emerald-600 dark:text-emerald-400"></i><span>PDV</span>
       </button>
-      <button onclick="navigate('inventory')" type="button" class="mobile-nav-btn flex flex-col items-center gap-0.5 py-1 px-1.5 text-[10px] sm:text-[11px] font-medium text-slate-500 dark:text-slate-400" data-view="inventory">
+      <button onclick="navigate('inventory')" type="button" class="mobile-nav-btn flex flex-col items-center gap-0.5 py-1 px-2 text-[11px] font-medium text-slate-500 dark:text-slate-400" data-view="inventory">
         <i class="fa-solid fa-box-archive text-sm"></i><span>Estoque</span>
       </button>
-      <button onclick="navigate('customers')" type="button" class="mobile-nav-btn flex flex-col items-center gap-0.5 py-1 px-1.5 text-[10px] sm:text-[11px] font-medium text-slate-500 dark:text-slate-400" data-view="customers">
+      <button onclick="navigate('customers')" type="button" class="mobile-nav-btn flex flex-col items-center gap-0.5 py-1 px-2 text-[11px] font-medium text-slate-500 dark:text-slate-400" data-view="customers">
         <i class="fa-solid fa-users text-sm"></i><span>Clientes</span>
       </button>
-      <button onclick="navigate('reports')" type="button" class="mobile-nav-btn admin-only flex flex-col items-center gap-0.5 py-1 px-1.5 text-[10px] sm:text-[11px] font-medium text-slate-500 dark:text-slate-400" data-view="reports">
+      <button onclick="navigate('reports')" type="button" class="mobile-nav-btn admin-only flex flex-col items-center gap-0.5 py-1 px-2 text-[11px] font-medium text-slate-500 dark:text-slate-400" data-view="reports">
         <i class="fa-solid fa-chart-line text-sm"></i><span>Vendas</span>
       </button>
-      <button onclick="navigate('settings')" type="button" class="mobile-nav-btn admin-only flex flex-col items-center gap-0.5 py-1 px-1.5 text-[10px] sm:text-[11px] font-medium text-slate-500 dark:text-slate-400" data-view="settings">
+      <button onclick="navigate('settings')" type="button" class="mobile-nav-btn admin-only flex flex-col items-center gap-0.5 py-1 px-2 text-[11px] font-medium text-slate-500 dark:text-slate-400" data-view="settings">
         <i class="fa-solid fa-gear text-sm"></i><span>Config</span>
       </button>
     </nav>
 
+    <!-- CONTEÚDO PRINCIPAL -->
     <main class="flex-1 overflow-y-auto pb-24 md:pb-8 p-3.5 sm:p-6 md:p-8 relative">
       
       <!-- VIEW: DASHBOARD -->
-      <section id="view-dashboard" class="hidden space-y-6 max-w-7xl mx-auto">
+      <section id="view-dashboard" class="hidden space-y-6 max-w-[1400px] mx-auto">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
             <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">Visão Geral</h1>
@@ -254,55 +236,49 @@
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
-          <div class="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between h-full">
+          <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between relative">
             <div>
-              <p class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Vendas Hoje</p>
+              <p class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Vendas Hoje</p>
               <h3 class="text-xl font-bold text-slate-900 dark:text-white mt-1" id="dash-sales-today">R$ 0,00</h3>
-              <p class="text-xs text-emerald-600 dark:text-emerald-400 font-medium mt-1" id="dash-orders-count">0 pedidos</p>
+              <p class="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium mt-1" id="dash-orders-count">0 pedidos hoje</p>
             </div>
-            <div class="mt-3 flex justify-end">
-              <div class="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-sm font-bold"><i class="fa-solid fa-coins"></i></div>
-            </div>
+            <div class="absolute bottom-4 right-4 w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-lg font-bold"><i class="fa-solid fa-coins"></i></div>
           </div>
-          <div class="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between h-full">
+          
+          <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between relative">
             <div>
-              <p class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Fatur. Mês</p>
+              <p class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Faturamento do Mês</p>
               <h3 class="text-xl font-bold text-slate-900 dark:text-white mt-1" id="dash-sales-month">R$ 0,00</h3>
-              <p class="text-xs text-slate-400 mt-1 truncate">Acumulado</p>
+              <p class="text-[10px] text-slate-400 mt-1">Total acumulado</p>
             </div>
-            <div class="mt-3 flex justify-end">
-              <div class="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-sm font-bold"><i class="fa-solid fa-calendar-check"></i></div>
-            </div>
+            <div class="absolute bottom-4 right-4 w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-lg font-bold"><i class="fa-solid fa-calendar-check"></i></div>
           </div>
-          <div class="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between h-full admin-only">
+          
+          <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between relative admin-only">
             <div>
-              <p class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Lucro Bruto (Mês)</p>
+              <p class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Lucro Bruto (Mês)</p>
               <h3 class="text-xl font-bold text-indigo-600 dark:text-indigo-400 mt-1" id="dash-profit-month">R$ 0,00</h3>
-              <p class="text-xs text-slate-400 mt-1 truncate">Receita - Custo</p>
+              <p class="text-[10px] text-slate-400 mt-1">Receita - Custos</p>
             </div>
-            <div class="mt-3 flex justify-end">
-              <div class="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center text-sm font-bold"><i class="fa-solid fa-sack-dollar"></i></div>
-            </div>
+            <div class="absolute bottom-4 right-4 w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center text-lg font-bold"><i class="fa-solid fa-sack-dollar"></i></div>
           </div>
-          <div class="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between h-full admin-only">
+          
+          <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between relative admin-only">
             <div>
-              <p class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider" title="Custo total dos produtos em estoque">Valor Investido</p>
-              <h3 class="text-xl font-bold text-amber-600 dark:text-amber-500 mt-1" id="dash-total-invested">R$ 0,00</h3>
-              <p class="text-xs text-slate-400 mt-1 truncate" id="dash-total-products-count">0 produtos</p>
+              <p class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Valor Investido</p>
+              <h3 class="text-xl font-bold text-amber-600 dark:text-amber-400 mt-1" id="dash-total-invested">R$ 0,00</h3>
+              <p class="text-[10px] text-amber-500 dark:text-amber-400 font-medium mt-1" id="dash-total-items">0 itens físicos</p>
             </div>
-            <div class="mt-3 flex justify-end">
-              <div class="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center text-sm font-bold"><i class="fa-solid fa-boxes-packing"></i></div>
-            </div>
+            <div class="absolute bottom-4 right-4 w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center text-lg font-bold"><i class="fa-solid fa-boxes-packing"></i></div>
           </div>
-          <div class="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between h-full">
+          
+          <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between relative">
             <div>
-              <p class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Contas a Receber</p>
+              <p class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Contas a Receber</p>
               <h3 class="text-xl font-bold text-rose-600 dark:text-rose-400 mt-1" id="dash-debts-total">R$ 0,00</h3>
-              <p class="text-xs text-rose-500 dark:text-rose-400 font-medium mt-1 truncate" id="dash-debts-count">0 pendentes</p>
+              <p class="text-[10px] text-rose-500 dark:text-rose-400 font-medium mt-1" id="dash-debts-count">0 vendas em aberto</p>
             </div>
-            <div class="mt-3 flex justify-end">
-              <div class="w-8 h-8 rounded-lg bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center text-sm font-bold"><i class="fa-solid fa-hand-holding-dollar"></i></div>
-            </div>
+            <div class="absolute bottom-4 right-4 w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center text-lg font-bold"><i class="fa-solid fa-hand-holding-dollar"></i></div>
           </div>
         </div>
 
@@ -327,7 +303,6 @@
 
         <!-- Tabelas de Base: Estoque e Fiados -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <!-- Estoque Baixo -->
           <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col">
             <div class="p-4 sm:p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
               <div class="flex items-center gap-2">
@@ -346,7 +321,6 @@
             </div>
           </div>
 
-          <!-- Contas a Receber -->
           <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col">
             <div class="p-4 sm:p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
               <div class="flex items-center gap-2">
@@ -364,9 +338,9 @@
             </div>
           </div>
         </div>
-
       </section>
 
+      <!-- VIEW: PDV -->
       <section id="view-pos" class="hidden max-w-7xl mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
           <div class="lg:col-span-7 space-y-4">
@@ -401,9 +375,8 @@
               <button onclick="openCustomerModal()" type="button" class="p-1.5 bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 dark:hover:bg-indigo-900 text-indigo-600 dark:text-indigo-400 rounded-lg" title="Novo cliente"><i class="fa-solid fa-user-plus"></i></button>
             </div>
 
-            <!-- Area de Crédito do Cliente Disponível -->
             <div id="pos-customer-credit-info" class="hidden px-3 py-2 bg-emerald-50 dark:bg-emerald-900/30 border-b border-emerald-100 dark:border-emerald-800/50 flex items-center justify-between text-xs">
-              <div class="text-emerald-700 dark:text-emerald-400 font-semibold"><i class="fa-solid fa-piggy-bank mr-1"></i> Crédito do Cliente: <span id="pos-customer-credit-balance">R$ 0,00</span></div>
+              <div class="text-emerald-700 dark:text-emerald-400 font-semibold"><i class="fa-solid fa-piggy-bank mr-1"></i> Crédito: <span id="pos-customer-credit-balance">R$ 0,00</span></div>
               <button onclick="applyCustomerCredit()" type="button" class="px-2 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-[10px] font-bold shadow-sm">USAR CRÉDITO</button>
             </div>
 
@@ -426,7 +399,7 @@
               </div>
               
               <div>
-                <label class="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Meio de Pagamento Base</label>
+                <label class="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Meio de Pagamento</label>
                 <div class="grid grid-cols-4 gap-1.5" id="pos-payment-methods">
                   <button type="button" onclick="selectPaymentMethod('pix')" data-method="pix" class="pay-method-btn active py-2 rounded-xl border border-indigo-600 bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 text-xs font-semibold flex flex-col items-center gap-1 transition"><i class="fa-brands fa-pix text-sm"></i><span>Pix</span></button>
                   <button type="button" onclick="selectPaymentMethod('dinheiro')" data-method="dinheiro" class="pay-method-btn py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 text-xs font-semibold flex flex-col items-center gap-1 transition"><i class="fa-solid fa-money-bill-wave text-sm"></i><span>Dinheiro</span></button>
@@ -438,12 +411,10 @@
               <!-- Calculadora Dinâmica de Pagamento -->
               <div class="p-2.5 bg-slate-100 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2 text-xs mt-3">
                 <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-1.5">
-                    <span class="font-bold text-slate-700 dark:text-slate-300">Valor Recebido Agora (R$):</span>
-                    <button type="button" onclick="syncReceivedWithTotal()" title="Puxar valor total da venda" class="text-[10px] text-indigo-600 dark:text-indigo-400 hover:underline font-bold cursor-pointer">
-                      (Puxar Total)
-                    </button>
-                  </div>
+                  <span class="font-bold text-slate-700 dark:text-slate-300">
+                    Valor Recebido Agora (R$):
+                    <button type="button" onclick="fillTotalReceived()" class="ml-1 text-[10px] text-indigo-600 dark:text-indigo-400 underline font-normal">(Puxar Total)</button>
+                  </span>
                   <input type="number" id="pos-amount-received" min="0" step="0.01" oninput="calculateChange()" class="w-24 px-2 py-1 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded text-right font-bold text-indigo-700 dark:text-indigo-400 outline-none" />
                 </div>
 
@@ -465,7 +436,7 @@
                   </div>
                   <label id="pos-save-credit-container" class="hidden flex items-center gap-2 cursor-pointer text-slate-600 dark:text-slate-300 font-semibold">
                     <input type="checkbox" id="pos-save-credit" class="rounded text-indigo-600 w-4 h-4" />
-                    <span>Converter troco em Crédito na Loja</span>
+                    <span>Converter troco em Crédito</span>
                   </label>
                 </div>
               </div>
@@ -573,11 +544,11 @@
             </select>
             <div id="reports-month-picker-container" class="flex items-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-1 shadow-sm">
               <button onclick="changeSelectedMonth(-1)" type="button" class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-lg text-xs transition"><i class="fa-solid fa-chevron-left"></i></button>
-              <input type="month" id="reports-month-picker" onchange="renderReports()" class="border-0 bg-transparent text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200 px-2 py-0.5 focus:outline-none cursor-pointer" />
+              <input type="month" id="reports-month-picker" onchange="renderReports()" class="border-0 bg-transparent text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200 px-2 py-0.5 focus:none cursor-pointer" />
               <button onclick="changeSelectedMonth(1)" type="button" class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-lg text-xs transition"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
-            <button onclick="exportReportsCSV()" type="button" class="px-3 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition">
-              <i class="fa-solid fa-file-excel text-emerald-600 text-sm"></i><span class="hidden sm:inline">CSV</span>
+            <button onclick="exportReportsCSV()" type="button" class="px-3 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition border border-slate-200 dark:border-slate-700">
+              <i class="fa-solid fa-file-excel text-emerald-600 text-sm"></i><span class="hidden sm:inline">Exportar CSV</span>
             </button>
           </div>
         </div>
@@ -636,65 +607,77 @@
       </section>
 
       <!-- VIEW: CONFIGURAÇÕES & BACKUP -->
-      <section id="view-settings" class="hidden max-w-4xl mx-auto space-y-5">
+      <section id="view-settings" class="hidden max-w-5xl mx-auto space-y-5">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <div>
-            <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">Configurações & Backup</h1>
-            <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Gerencie dados, credenciais, backup e importe dados</p>
+            <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">Configurações do Sistema</h1>
+            <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Gerencie contas, base de dados e backups locais.</p>
           </div>
         </div>
 
-        <!-- Dados da Empresa -->
-        <div class="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
-          <h2 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-800 pb-2.5 flex items-center gap-2"><i class="fa-solid fa-building text-indigo-600"></i><span>Dados da Empresa</span></h2>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-            <div><label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Nome Fantasia da Loja</label><input type="text" id="cfg-company-name" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm font-medium dark:text-white" /></div>
-            <div><label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">CNPJ / CPF</label><input type="text" id="cfg-company-doc" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm font-medium dark:text-white" /></div>
-            <div><label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Telefone / WhatsApp</label><input type="text" id="cfg-company-phone" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm font-medium dark:text-white" /></div>
-            <div><label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Chave Pix</label><input type="text" id="cfg-pix-key" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm font-medium dark:text-white" /></div>
-          </div>
-          <button onclick="saveCompanySettings()" type="button" class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-sm">Salvar Dados da Empresa</button>
-        </div>
-
-        <!-- Gestão de Utilizadores -->
-        <div class="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
-          <h2 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-800 pb-2.5 flex items-center gap-2"><i class="fa-solid fa-users-gear text-indigo-600"></i><span>Gestão de Utilizadores</span></h2>
-          
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <!-- Admin -->
-            <div class="p-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl space-y-3">
-              <h3 class="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-2"><i class="fa-solid fa-user-shield text-indigo-500"></i> Conta Administrador</h3>
-              <div><label class="block text-[10px] uppercase font-semibold text-slate-500 mb-1">Login Admin</label><input type="text" id="cfg-admin-user" class="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-medium dark:text-white" /></div>
-              <div><label class="block text-[10px] uppercase font-semibold text-slate-500 mb-1">Nova Senha Admin</label><input type="password" id="cfg-admin-pass" placeholder="Deixe em branco para não alterar" class="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-medium dark:text-white" /></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <!-- Dados da Empresa -->
+          <div class="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+            <h2 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-800 pb-2.5 flex items-center gap-2"><i class="fa-solid fa-building text-indigo-600"></i><span>Dados da Empresa</span></h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <div><label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Nome Fantasia da Loja</label><input type="text" id="cfg-company-name" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm font-medium dark:text-white" /></div>
+              <div><label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">CNPJ / CPF</label><input type="text" id="cfg-company-doc" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm font-medium dark:text-white" /></div>
+              <div><label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Telefone / WhatsApp</label><input type="text" id="cfg-company-phone" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm font-medium dark:text-white" /></div>
+              <div><label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Chave Pix</label><input type="text" id="cfg-pix-key" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm font-medium dark:text-white" /></div>
             </div>
+            <button onclick="saveCompanySettings()" type="button" class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-sm w-full sm:w-auto">Salvar Dados</button>
+          </div>
+
+          <!-- Gestão de Utilizadores -->
+          <div class="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+            <h2 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-800 pb-2.5 flex items-center gap-2"><i class="fa-solid fa-users text-emerald-600"></i><span>Contas de Acesso</span></h2>
+            <div class="grid grid-cols-2 gap-3.5">
+              <div class="col-span-2 text-[11px] text-slate-500">Credenciais para entrar no sistema.</div>
+              <div><label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Login Admin</label><input type="text" id="cfg-admin-user" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm font-medium dark:text-white" /></div>
+              <div><label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Senha Admin</label><input type="password" id="cfg-admin-pass" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm font-medium dark:text-white" /></div>
+              <div class="col-span-2 border-t border-slate-100 dark:border-slate-800 pt-2 mt-1"></div>
+              <div><label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Login Vendedor</label><input type="text" id="cfg-vend-user" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm font-medium dark:text-white" /></div>
+              <div><label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Senha Vendedor</label><input type="password" id="cfg-vend-pass" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm font-medium dark:text-white" /></div>
+            </div>
+            <button onclick="saveUsers()" type="button" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-sm w-full sm:w-auto">Salvar Utilizadores</button>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2.5">
+            <h2 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white flex items-center gap-2"><i class="fa-solid fa-cloud text-blue-500"></i><span>Conexão Supabase (Nuvem em Tempo Real)</span></h2>
+            <span id="supabase-status-badge" class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300">Modo Local Ativo</span>
+          </div>
+          <div class="space-y-3">
+            <div><label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Supabase Project URL</label><input type="text" id="cfg-supabase-url" placeholder="https://xyzcompany.supabase.co" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm font-mono dark:text-white" /></div>
+            <div><label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Supabase Anon Key</label><input type="password" id="cfg-supabase-key" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..." class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm font-mono dark:text-white" /></div>
+          </div>
+          <div class="flex flex-wrap gap-2.5 pt-2">
+            <button onclick="connectSupabase()" type="button" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-sm flex items-center gap-1.5"><i class="fa-solid fa-link"></i><span>Salvar e Conectar</span></button>
+            <button onclick="disconnectSupabase()" type="button" class="px-4 py-2.5 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-xs sm:text-sm font-semibold shadow-sm flex items-center gap-1.5"><i class="fa-solid fa-link-slash"></i><span>Desconectar</span></button>
+            <button onclick="showSqlSchemaModal()" type="button" class="px-4 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-1.5 border border-slate-200 dark:border-slate-700"><i class="fa-solid fa-code"></i><span>Ver Script SQL</span></button>
             
-            <!-- Vendedor -->
-            <div class="p-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl space-y-3">
-              <h3 class="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-2"><i class="fa-solid fa-user-tag text-emerald-500"></i> Conta Vendedor</h3>
-              <div><label class="block text-[10px] uppercase font-semibold text-slate-500 mb-1">Login Vendedor</label><input type="text" id="cfg-vend-user" class="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-medium dark:text-white" /></div>
-              <div><label class="block text-[10px] uppercase font-semibold text-slate-500 mb-1">Nova Senha Vendedor</label><input type="password" id="cfg-vend-pass" placeholder="Deixe em branco para não alterar" class="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-medium dark:text-white" /></div>
-            </div>
+            <button onclick="forcePullSupabase()" type="button" class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-sm flex items-center gap-1.5 ml-auto"><i class="fa-solid fa-cloud-arrow-down"></i><span class="hidden sm:inline">Baixar da Nuvem</span></button>
+            <button onclick="forcePushSupabase()" type="button" class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-sm flex items-center gap-1.5"><i class="fa-solid fa-cloud-arrow-up"></i><span class="hidden sm:inline">Enviar p/ Nuvem</span></button>
           </div>
-          <button onclick="saveUsersSettings()" type="button" class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-sm mt-2">Atualizar Credenciais</button>
         </div>
 
-        <!-- Backup -->
         <div class="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
-          <h2 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-800 pb-2.5 flex items-center gap-2"><i class="fa-solid fa-hard-drive text-indigo-600"></i><span>Backup e Restauração</span></h2>
+          <h2 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-800 pb-2.5 flex items-center gap-2"><i class="fa-solid fa-hard-drive text-slate-600"></i><span>Backup e Restauração Local</span></h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-            <div class="p-4 bg-indigo-50/50 dark:bg-indigo-950/40 rounded-2xl border border-indigo-100 dark:border-indigo-900/50 flex flex-col justify-between space-y-3">
+            <div class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700 flex flex-col justify-between space-y-3">
               <div>
-                <div class="flex items-center gap-2 text-indigo-700 dark:text-indigo-300 font-bold text-xs sm:text-sm"><i class="fa-solid fa-file-arrow-down text-base"></i><span>Exportar Backup</span></div>
-                <p class="text-[11px] text-slate-600 dark:text-slate-400 mt-1">Gera um arquivo <code>.json</code> seguro com todos os seus dados.</p>
+                <div class="flex items-center gap-2 text-slate-700 dark:text-slate-300 font-bold text-xs sm:text-sm"><i class="fa-solid fa-file-arrow-down text-base"></i><span>Exportar Backup</span></div>
+                <p class="text-[11px] text-slate-500 mt-1">Gera um arquivo <code>.json</code> seguro com todos os seus dados locais.</p>
               </div>
               <button onclick="exportSystemBackup()" type="button" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-xs flex items-center justify-center gap-2 transition">
-                <i class="fa-solid fa-download"></i><span>Baixar Backup</span>
+                <i class="fa-solid fa-download"></i><span>Baixar Backup Local</span>
               </button>
             </div>
-            <div class="p-4 bg-emerald-50/50 dark:bg-emerald-950/40 rounded-2xl border border-emerald-100 dark:border-emerald-900/50 flex flex-col justify-between space-y-3">
+            <div class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700 flex flex-col justify-between space-y-3">
               <div>
-                <div class="flex items-center gap-2 text-emerald-700 dark:text-emerald-300 font-bold text-xs sm:text-sm"><i class="fa-solid fa-file-arrow-up text-base"></i><span>Restaurar Backup</span></div>
-                <p class="text-[11px] text-slate-600 dark:text-slate-400 mt-1">Carregue um arquivo <code>.json</code> de backup gerado anteriormente.</p>
+                <div class="flex items-center gap-2 text-slate-700 dark:text-slate-300 font-bold text-xs sm:text-sm"><i class="fa-solid fa-file-arrow-up text-base"></i><span>Restaurar Backup</span></div>
+                <p class="text-[11px] text-slate-500 mt-1">Carregue um arquivo <code>.json</code> de backup gerado anteriormente.</p>
               </div>
               <div>
                 <input type="file" id="backup-file-input" accept=".json" class="hidden" onchange="handleBackupFileSelect(event)" />
@@ -704,24 +687,10 @@
               </div>
             </div>
           </div>
-        </div>
-
-        <!-- Supabase -->
-        <div class="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
-          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2.5">
-            <h2 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white flex items-center gap-2"><i class="fa-solid fa-database text-emerald-600"></i><span>Conexão com Banco Supabase</span></h2>
-            <span id="supabase-status-badge" class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300">Modo Local Ativo</span>
-          </div>
-          <div class="space-y-3">
-            <div><label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Supabase Project URL</label><input type="text" id="cfg-supabase-url" placeholder="https://xyzcompany.supabase.co" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm font-mono dark:text-white" /></div>
-            <div><label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Supabase Anon Key</label><input type="password" id="cfg-supabase-key" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..." class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm font-mono dark:text-white" /></div>
-          </div>
-          <div class="flex flex-wrap gap-2.5 pt-2">
-            <button onclick="connectSupabase()" type="button" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-sm flex items-center gap-1.5"><i class="fa-solid fa-link"></i><span>Conectar Supabase</span></button>
-            <button onclick="promptResetSampleData()" type="button" class="px-4 py-2.5 bg-rose-50 dark:bg-rose-950/50 hover:bg-rose-100 text-rose-700 dark:text-rose-400 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-1.5 sm:ml-auto"><i class="fa-solid fa-rotate-right"></i><span>Restaurar Padrões</span></button>
+          <div class="pt-2 flex justify-end">
+             <button onclick="promptResetSampleData()" type="button" class="px-4 py-2 bg-rose-50 dark:bg-rose-950/50 hover:bg-rose-100 text-rose-700 dark:text-rose-400 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"><i class="fa-solid fa-rotate-right"></i><span>Restaurar Padrões de Fábrica</span></button>
           </div>
         </div>
-
       </section>
 
     </main>
@@ -747,9 +716,7 @@
           </div>
           <div>
             <label class="block text-xs font-semibold mb-1">Categoria *</label>
-            <select id="prod-category" required class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white">
-              <!-- preenchido via js -->
-            </select>
+            <select id="prod-category" required class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white"></select>
           </div>
           <div>
             <label class="block text-xs font-semibold mb-1">Custo (R$)</label>
@@ -821,9 +788,7 @@
       <form id="stock-entry-form" onsubmit="saveStockEntry(event)" class="space-y-4">
         <div>
           <label class="block text-xs font-semibold mb-1">Produto *</label>
-          <select id="stock-entry-product" required class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white">
-            <!-- preenchido via js -->
-          </select>
+          <select id="stock-entry-product" required class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white"></select>
         </div>
         <div>
           <label class="block text-xs font-semibold mb-1">Quantidade a Adicionar *</label>
@@ -834,6 +799,64 @@
           <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-xs shadow-md">Adicionar</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL EDITAR DATA VENDA ================= -->
+  <div id="modal-edit-date" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl max-w-sm w-full p-6 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-white">
+      <div class="flex justify-between items-center mb-4 border-b border-slate-100 dark:border-slate-800 pb-2">
+        <h3 class="text-base font-bold"><i class="fa-solid fa-calendar-day text-indigo-500 mr-2"></i>Editar Data da Venda</h3>
+        <button onclick="closeEditDateModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i class="fa-solid fa-xmark text-xl"></i></button>
+      </div>
+      <form onsubmit="saveSaleDate(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold mb-1">Nova Data</label>
+          <input type="date" id="edit-sale-date" required class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white" />
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeEditDateModal()" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold rounded-xl text-xs">Cancelar</button>
+          <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-xs shadow-md">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL SCRIPT SQL ================= -->
+  <div id="modal-sql" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl max-w-2xl w-full p-6 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-white flex flex-col max-h-[90vh]">
+      <div class="flex justify-between items-center mb-4 border-b border-slate-100 dark:border-slate-800 pb-2">
+        <h3 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-code text-indigo-500"></i> Script SQL Supabase</h3>
+        <button onclick="closeSqlSchemaModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i class="fa-solid fa-xmark text-xl"></i></button>
+      </div>
+      <p class="text-xs text-slate-500 mb-3">Copie o código abaixo e cole no <strong>SQL Editor</strong> do seu painel Supabase. As regras RLS foram desativadas para permitir o fluxo completo.</p>
+      <div class="flex-1 overflow-y-auto bg-slate-950 p-4 rounded-xl relative">
+        <button type="button" onclick="copySqlScript()" class="absolute top-2 right-2 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-bold rounded-lg transition"><i class="fa-solid fa-copy mr-1"></i> Copiar</button>
+        <pre id="sql-script-content" class="text-[11px] text-emerald-400 font-mono whitespace-pre-wrap">
+CREATE TABLE IF NOT EXISTS products (
+  id TEXT PRIMARY KEY, name TEXT NOT NULL, barcode TEXT, category TEXT,
+  "costPrice" NUMERIC, "salePrice" NUMERIC, stock NUMERIC, "minStock" NUMERIC, description TEXT
+);
+ALTER TABLE products DISABLE ROW LEVEL SECURITY;
+
+CREATE TABLE IF NOT EXISTS customers (
+  id TEXT PRIMARY KEY, name TEXT NOT NULL, phone TEXT, email TEXT, address TEXT,
+  credit NUMERIC, debt NUMERIC
+);
+ALTER TABLE customers DISABLE ROW LEVEL SECURITY;
+
+CREATE TABLE IF NOT EXISTS sales (
+  id TEXT PRIMARY KEY, date TEXT, seller TEXT, "customerId" TEXT, "customerName" TEXT, "customerPhone" TEXT,
+  items JSONB, subtotal NUMERIC, discount NUMERIC, "creditUsed" NUMERIC, total NUMERIC, "totalCost" NUMERIC,
+  "paymentMethod" TEXT, "receivedAmount" NUMERIC, "changeAmount" NUMERIC, "debtAmount" NUMERIC, "creditGenerated" NUMERIC, "dueDate" TEXT, status TEXT
+);
+ALTER TABLE sales DISABLE ROW LEVEL SECURITY;
+
+CREATE TABLE IF NOT EXISTS settings (
+  id TEXT PRIMARY KEY, data JSONB
+);
+ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
+      </div>
     </div>
   </div>
 
@@ -858,27 +881,6 @@
           Fechar
         </button>
       </div>
-    </div>
-  </div>
-
-  <!-- ================= MODAL DE EDIÇÃO DE DATA DA VENDA ================= -->
-  <div id="modal-edit-date" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl max-w-sm w-full p-6 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-white">
-      <div class="flex justify-between items-center mb-4 border-b border-slate-100 dark:border-slate-800 pb-2">
-        <h3 class="text-lg font-bold">Editar Data da Venda</h3>
-        <button onclick="closeEditDateModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i class="fa-solid fa-xmark text-xl"></i></button>
-      </div>
-      <form id="edit-date-form" onsubmit="saveNewSaleDate(event)" class="space-y-4">
-        <input type="hidden" id="edit-date-sale-id">
-        <div>
-          <label class="block text-xs font-semibold mb-1">Nova Data da Venda *</label>
-          <input type="date" required id="edit-date-input" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white" />
-        </div>
-        <div class="flex justify-end gap-2 pt-2">
-          <button type="button" onclick="closeEditDateModal()" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold rounded-xl text-xs">Cancelar</button>
-          <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-xs shadow-md">Atualizar Data</button>
-        </div>
-      </form>
     </div>
   </div>
 
@@ -917,7 +919,7 @@
       { id: '1', name: 'João Carlos Pereira', phone: '(11) 98123-4567', email: 'joao.pereira@email.com', address: 'Rua das Flores, 120', credit: 0, debt: 0 }
     ];
 
-    const DEFAULT_USERS = {
+    let appUsers = {
       admin: { user: 'admin', pass: '123' },
       vendedor: { user: 'vendedor', pass: '123' }
     };
@@ -931,18 +933,80 @@
     let posCreditUsed = 0; 
     let currentPosCategory = '';
     let supabaseClient = null;
+    let editSaleId = null;
 
     let products = [];
     let customers = [];
     let sales = [];
     let companySettings = {
-      name: 'GestãoPro', doc: '12.345.678/0001-90', phone: '(11) 98765-4321', pixKey: '48999344103 -- JORGE L SILVEIRA --BANCO DO BRASIL'
+      name: 'Mercadinho Express', doc: '12.345.678/0001-90', phone: '(11) 98765-4321', pixKey: '48999344103 -- JORGE L SILVEIRA --BANCO DO BRASIL'
     };
-    let usersSettings = JSON.parse(JSON.stringify(DEFAULT_USERS));
 
     let weeklyChartInstance = null;
     let paymentChartInstance = null;
     let categoryChartInstance = null;
+
+    // Normalizadores para blindar contra campos em minúsculas do Postgres ou tipos inválidos
+    function normalizeProduct(p) {
+      if (!p) return null;
+      return {
+        id: String(p.id || 'P-' + Date.now()),
+        name: p.name || 'Produto sem Nome',
+        barcode: p.barcode || '',
+        category: p.category || 'Variedades & Outros',
+        costPrice: Number(p.costPrice ?? p.costprice ?? 0) || 0,
+        salePrice: Number(p.salePrice ?? p.saleprice ?? 0) || 0,
+        stock: Number(p.stock ?? 0) || 0,
+        minStock: Number(p.minStock ?? p.minstock ?? 0) || 0,
+        description: p.description || ''
+      };
+    }
+
+    function normalizeCustomer(c) {
+      if (!c) return null;
+      return {
+        id: String(c.id || 'C-' + Date.now()),
+        name: c.name || 'Cliente',
+        phone: c.phone || '',
+        email: c.email || '',
+        address: c.address || '',
+        credit: Number(c.credit ?? 0) || 0,
+        debt: Number(c.debt ?? 0) || 0
+      };
+    }
+
+    function normalizeSale(s) {
+      if (!s) return null;
+      let parsedItems = [];
+      try {
+        if (Array.isArray(s.items)) parsedItems = s.items;
+        else if (typeof s.items === 'string') parsedItems = JSON.parse(s.items || '[]');
+      } catch (e) {
+        parsedItems = [];
+      }
+
+      return {
+        id: String(s.id || 'V-' + Date.now()),
+        date: s.date || new Date().toISOString(),
+        seller: s.seller || 'Vendedor',
+        customerId: s.customerId ?? s.customerid ?? null,
+        customerName: s.customerName ?? s.customername ?? 'Consumidor',
+        customerPhone: s.customerPhone ?? s.customerphone ?? '',
+        items: parsedItems,
+        subtotal: Number(s.subtotal ?? s.total ?? 0) || 0,
+        discount: Number(s.discount ?? 0) || 0,
+        creditUsed: Number(s.creditUsed ?? s.creditused ?? 0) || 0,
+        total: Number(s.total ?? 0) || 0,
+        totalCost: Number(s.totalCost ?? s.totalcost ?? 0) || 0,
+        paymentMethod: s.paymentMethod ?? s.paymentmethod ?? 'pix',
+        receivedAmount: Number(s.receivedAmount ?? s.receivedamount ?? 0) || 0,
+        changeAmount: Number(s.changeAmount ?? s.changeamount ?? 0) || 0,
+        debtAmount: Number(s.debtAmount ?? s.debtamount ?? 0) || 0,
+        creditGenerated: Number(s.creditGenerated ?? s.creditgenerated ?? 0) || 0,
+        dueDate: s.dueDate ?? s.duedate ?? null,
+        status: s.status || 'paid'
+      };
+    }
 
     window.addEventListener('DOMContentLoaded', () => {
       initTheme();
@@ -954,21 +1018,33 @@
         picker.value = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
       }
 
+      // Recupera credenciais locais
       try {
-        products = JSON.parse(localStorage.getItem('gp_products')) || SAMPLE_PRODUCTS;
-        customers = JSON.parse(localStorage.getItem('gp_customers')) || SAMPLE_CUSTOMERS;
-        sales = JSON.parse(localStorage.getItem('gp_sales')) || [];
-        const savedCompany = JSON.parse(localStorage.getItem('gp_company'));
-        if (savedCompany) companySettings = savedCompany;
         const savedUsers = JSON.parse(localStorage.getItem('gp_users'));
-        if (savedUsers) usersSettings = savedUsers;
+        if (savedUsers && (savedUsers.admin || savedUsers.vendedor)) appUsers = savedUsers;
+      } catch (e) {}
+
+      // Recupera dados locais com higienização completa
+      try {
+        const rawProducts = JSON.parse(localStorage.getItem('gp_products')) || SAMPLE_PRODUCTS;
+        products = rawProducts.map(normalizeProduct).filter(Boolean);
+
+        const rawCustomers = JSON.parse(localStorage.getItem('gp_customers')) || SAMPLE_CUSTOMERS;
+        customers = rawCustomers.map(normalizeCustomer).filter(Boolean);
+
+        const rawSales = JSON.parse(localStorage.getItem('gp_sales')) || [];
+        sales = rawSales.map(normalizeSale).filter(Boolean);
+
+        const savedCompany = JSON.parse(localStorage.getItem('gp_company'));
+        if (savedCompany) companySettings = { ...companySettings, ...savedCompany };
       } catch (e) {
-        products = SAMPLE_PRODUCTS.slice();
-        customers = SAMPLE_CUSTOMERS.slice();
+        console.error('Erro ao ler localStorage:', e);
+        products = SAMPLE_PRODUCTS.map(normalizeProduct);
+        customers = SAMPLE_CUSTOMERS.map(normalizeCustomer);
         sales = [];
-        usersSettings = JSON.parse(JSON.stringify(DEFAULT_USERS));
       }
 
+      // Sessão
       try {
         const savedUser = sessionStorage.getItem('gp_session_user');
         if (savedUser) {
@@ -981,6 +1057,17 @@
       populateCategorySelects();
       populatePosCustomerSelect();
       setupKeyboardShortcuts();
+      
+      // Auto-conectar ao Supabase se chaves existirem
+      const savedSbUrl = localStorage.getItem('gp_sb_url');
+      const savedSbKey = localStorage.getItem('gp_sb_key');
+      if (savedSbUrl && savedSbKey) {
+        const iUrl = document.getElementById('cfg-supabase-url');
+        const iKey = document.getElementById('cfg-supabase-key');
+        if (iUrl) iUrl.value = savedSbUrl;
+        if (iKey) iKey.value = savedSbKey;
+        connectSupabase(true);
+      }
     });
 
     function escapeHtml(unsafe) {
@@ -989,7 +1076,8 @@
     }
 
     function formatCurrency(val) {
-      return Number(val || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      const num = Number(val);
+      return (isNaN(num) ? 0 : num).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
     function showToast(message, type = 'info') {
@@ -1036,21 +1124,19 @@
       const u = uInput.value.trim().toLowerCase();
       const p = pInput.value.trim();
       
-      const adminConf = usersSettings.admin || DEFAULT_USERS.admin;
-      const vendConf = usersSettings.vendedor || DEFAULT_USERS.vendedor;
-
-      if (u === adminConf.user.toLowerCase() && p === adminConf.pass) {
-        currentUser = { username: adminConf.user, name: 'Administrador', role: 'admin' };
-      } else if (u === vendConf.user.toLowerCase() && p === vendConf.pass) {
-        currentUser = { username: vendConf.user, name: 'Vendedor Balcão', role: 'vendedor' };
-      } else {
+      if (appUsers.admin && u === appUsers.admin.user.toLowerCase() && p === appUsers.admin.pass) {
+        currentUser = { username: appUsers.admin.user, name: 'Administrador', role: 'admin' };
+      }
+      else if (appUsers.vendedor && u === appUsers.vendedor.user.toLowerCase() && p === appUsers.vendedor.pass) {
+        currentUser = { username: appUsers.vendedor.user, name: 'Vendedor Balcão', role: 'vendedor' };
+      }
+      else {
         return showToast('Usuário ou senha incorretos!', 'danger');
       }
       
       sessionStorage.setItem('gp_session_user', JSON.stringify(currentUser));
       initApp();
       showToast('Bem-vindo, ' + currentUser.name + '!', 'success');
-      uInput.value = ''; pInput.value = '';
     }
 
     function logout() {
@@ -1058,7 +1144,7 @@
       currentUser = null;
       const ls = document.getElementById('login-screen');
       const aw = document.getElementById('app-wrapper');
-      if(ls) ls.classList.remove('hidden');
+      if(ls) { ls.classList.remove('hidden'); document.getElementById('login-password').value = ''; }
       if(aw) aw.classList.add('hidden');
     }
 
@@ -1069,8 +1155,6 @@
       if (loginScreen) loginScreen.classList.add('hidden');
       if (appWrapper) appWrapper.classList.remove('hidden');
       
-      document.querySelectorAll('.app-version-badge').forEach(el => el.textContent = APP_VERSION);
-
       const isAdmin = currentUser && currentUser.role === 'admin';
       
       const nameEl = document.getElementById('current-user-name');
@@ -1084,6 +1168,7 @@
       if (mobBadge) mobBadge.textContent = isAdmin ? 'Admin' : 'Vendedor';
 
       document.querySelectorAll('.admin-only').forEach(el => el.classList.toggle('hidden', !isAdmin));
+      document.querySelectorAll('.app-version-badge').forEach(el => el.textContent = APP_VERSION);
       navigate('dashboard');
       refreshAllData();
     }
@@ -1093,7 +1178,6 @@
       localStorage.setItem('gp_customers', JSON.stringify(customers));
       localStorage.setItem('gp_sales', JSON.stringify(sales));
       localStorage.setItem('gp_company', JSON.stringify(companySettings));
-      localStorage.setItem('gp_users', JSON.stringify(usersSettings));
     }
 
     function refreshAllData() {
@@ -1124,22 +1208,37 @@
       if (view === 'inventory') renderInventoryTable();
       if (view === 'customers') renderCustomerTable();
       if (view === 'reports') renderReports();
-      if (view === 'settings') loadConfigInputs();
     }
 
     function showConfirmModal(title, message, callback, icon = 'fa-trash-can', isDanger = true) {
       const tEl = document.getElementById('confirm-modal-title');
       const dEl = document.getElementById('confirm-modal-desc');
-      if(tEl) tEl.textContent = title;
-      if(dEl) dEl.innerHTML = message;
+      const iEl = document.getElementById('confirm-modal-icon');
+      const icContainer = document.getElementById('confirm-modal-icon-container');
+      const actBtn = document.getElementById('confirm-modal-action-btn');
+
+      if (tEl) tEl.textContent = title;
+      if (dEl) dEl.innerHTML = message;
+      if (iEl) iEl.className = 'fa-solid ' + icon;
+      if (icContainer) {
+        icContainer.className = isDanger 
+          ? 'w-14 h-14 bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 rounded-2xl flex items-center justify-center text-2xl mx-auto'
+          : 'w-14 h-14 bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 rounded-2xl flex items-center justify-center text-2xl mx-auto';
+      }
+      if (actBtn) {
+        actBtn.className = isDanger
+          ? 'flex-1 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-semibold rounded-xl text-xs shadow-md transition'
+          : 'flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-xs shadow-md transition';
+      }
+
       confirmCallback = callback;
       const m = document.getElementById('modal-confirm');
-      if(m) m.classList.remove('hidden');
+      if (m) m.classList.remove('hidden');
     }
     
     function closeConfirmModal() {
       const m = document.getElementById('modal-confirm');
-      if(m) m.classList.add('hidden');
+      if (m) m.classList.add('hidden');
       confirmCallback = null;
     }
     
@@ -1155,51 +1254,46 @@
       
       sales.forEach(s => {
         if (s.status === 'cancelled') return;
-        if (s.date && s.date.startsWith(today)) { sToday += s.total; cToday++; }
-        if (s.date && s.date.startsWith(month)) { sMonth += s.total; pMonth += (s.total - (s.totalCost||0)); }
+        const tot = Number(s.total) || 0;
+        const cst = Number(s.totalCost) || 0;
+        if (s.date && s.date.startsWith(today)) { sToday += tot; cToday++; }
+        if (s.date && s.date.startsWith(month)) { sMonth += tot; pMonth += (tot - cst); }
       });
+
       const low = products.filter(p => Number(p.stock) <= Number(p.minStock));
-      
-      // Cálculo do Valor Investido em Estoque
-      let totalInvested = 0;
-      let totalItemsInStock = 0;
-      products.forEach(p => {
-        if (p.stock > 0) {
-          totalInvested += (p.costPrice || 0) * p.stock;
-          totalItemsInStock += p.stock;
-        }
-      });
-      
+      const totalInvested = products.reduce((acc, p) => acc + (Number(p.stock || 0) * Number(p.costPrice || 0)), 0);
+      const totalItems = products.reduce((acc, p) => acc + Number(p.stock || 0), 0);
+
       const elst = document.getElementById('dash-sales-today');
       const eloc = document.getElementById('dash-orders-count');
       const elsm = document.getElementById('dash-sales-month');
       const elpm = document.getElementById('dash-profit-month');
       const elsc = document.getElementById('dash-low-stock-count');
       const elti = document.getElementById('dash-total-invested');
-      const eltp = document.getElementById('dash-total-products-count');
+      const eltc = document.getElementById('dash-total-items');
       
       if(elst) elst.textContent = formatCurrency(sToday);
-      if(eloc) eloc.textContent = cToday + ' pedido' + (cToday === 1 ? '' : 's');
+      if(eloc) eloc.textContent = cToday + ' pedido' + (cToday === 1 ? '' : 's') + ' hoje';
       if(elsm) elsm.textContent = formatCurrency(sMonth);
       if(elpm) elpm.textContent = formatCurrency(pMonth);
       if(elsc) elsc.textContent = low.length;
       if(elti) elti.textContent = formatCurrency(totalInvested);
-      if(eltp) eltp.textContent = totalItemsInStock + ' itens no total';
+      if(eltc) eltc.textContent = totalItems + ' itens físicos';
       
       const tb = document.getElementById('dash-low-stock-table');
       if (tb) {
         tb.innerHTML = low.length === 0 ? '<tr><td colspan="3" class="py-6 text-center text-slate-400 text-xs">Estoque saudável!</td></tr>' : 
           low.map(p => `<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
             <td class="py-2 px-3 font-semibold dark:text-white truncate max-w-[120px]">${escapeHtml(p.name)}</td>
-            <td class="py-2 px-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold ${p.stock==0?'bg-rose-100 text-rose-700':'bg-amber-100 text-amber-800'}">${p.stock}</span></td>
+            <td class="py-2 px-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold ${p.stock <= 0 ? 'bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-400' : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'}">${p.stock}</span></td>
             <td class="py-2 px-3 text-right"><button onclick="quickStockAdd('${p.id}')" class="px-2 py-1 bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 rounded-lg text-xs">+ Repor</button></td>
           </tr>`).join('');
       }
 
-      const pendingDebts = sales.filter(s => s.status === 'partial' && s.debtAmount > 0);
-      pendingDebts.sort((a,b) => new Date(a.dueDate) - new Date(b.dueDate));
+      const pendingDebts = sales.filter(s => s.status === 'partial' && Number(s.debtAmount || 0) > 0);
+      pendingDebts.sort((a,b) => new Date(a.dueDate || 0) - new Date(b.dueDate || 0));
       
-      const totalDebts = pendingDebts.reduce((acc, s) => acc + s.debtAmount, 0);
+      const totalDebts = pendingDebts.reduce((acc, s) => acc + (Number(s.debtAmount) || 0), 0);
       const eltd = document.getElementById('dash-debts-total');
       const eldc = document.getElementById('dash-debts-count');
       if(eltd) eltd.textContent = formatCurrency(totalDebts);
@@ -1211,11 +1305,12 @@
           debtTb.innerHTML = '<tr><td colspan="4" class="py-6 text-center text-slate-400 text-xs">Nenhum fiado pendente!</td></tr>';
         } else {
           debtTb.innerHTML = pendingDebts.map(s => {
-            const isOverdue = new Date(s.dueDate) < new Date(today);
+            const isOverdue = s.dueDate && new Date(s.dueDate) < new Date(today);
             const badge = isOverdue ? 'bg-rose-100 text-rose-700 dark:bg-rose-900/60 dark:text-rose-400' : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300';
+            const dateStr = s.dueDate ? new Date(s.dueDate).toLocaleDateString('pt-BR') : 'Sem data';
             return `<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
               <td class="py-2 px-3 font-semibold dark:text-white truncate max-w-[120px]">${escapeHtml(s.customerName)}</td>
-              <td class="py-2 px-3"><span class="${badge} px-1.5 py-0.5 rounded text-[10px] font-bold">${new Date(s.dueDate).toLocaleDateString('pt-BR')}</span></td>
+              <td class="py-2 px-3"><span class="${badge} px-1.5 py-0.5 rounded text-[10px] font-bold">${dateStr}</span></td>
               <td class="py-2 px-3 font-bold text-rose-600 dark:text-rose-400 text-right">${formatCurrency(s.debtAmount)}</td>
               <td class="py-2 px-3 text-center"><button onclick="receiveDebt('${s.id}')" title="Dar Baixa" class="px-2 py-1 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 rounded-lg text-xs"><i class="fa-solid fa-check"></i></button></td>
             </tr>`;
@@ -1227,32 +1322,19 @@
       renderWeeklyChart();
     }
 
-    function receiveDebt(saleId) {
-      showConfirmModal('Receber Pagamento (Fiado)', 'Confirmar o recebimento integral deste valor pendente?', () => {
-        const s = sales.find(x => String(x.id) === String(saleId));
-        if (s) {
-          if (s.customerId) {
-            const c = customers.find(x => String(x.id) === String(s.customerId));
-            if (c) c.debt = Math.max(0, (c.debt || 0) - s.debtAmount);
-          }
-          s.status = 'paid';
-          s.debtAmount = 0;
-          showToast('Pagamento recebido e baixado com sucesso!', 'success');
-          refreshAllData();
-        }
-      }, 'fa-hand-holding-dollar', false);
-    }
-
     function renderTopProducts() {
       const map = {};
       sales.forEach(s => {
         if (s.status === 'cancelled') return;
-        s.items.forEach(i => map[i.name] = (map[i.name]||0) + i.qty);
+        const itemsList = Array.isArray(s.items) ? s.items : [];
+        itemsList.forEach(i => {
+          if (i && i.name) map[i.name] = (map[i.name] || 0) + (Number(i.qty) || 0);
+        });
       });
       const sorted = Object.entries(map).sort((a,b)=>b[1]-a[1]).slice(0,4);
       const c = document.getElementById('dash-top-products');
       if(c) {
-        c.innerHTML = sorted.length ? sorted.map((s,i)=>`<div class="flex justify-between items-center text-xs p-2 bg-slate-50 dark:bg-slate-800 rounded-lg border dark:border-slate-700"><span class="font-semibold dark:text-white">${i+1}. ${escapeHtml(s[0])}</span><span class="font-bold dark:text-white">${s[1]} un.</span></div>`).join('') : '<p class="text-xs text-slate-400 py-4 text-center">Nenhuma venda.</p>';
+        c.innerHTML = sorted.length ? sorted.map((s,i)=>`<div class="flex justify-between items-center text-xs p-2 bg-slate-50 dark:bg-slate-800 rounded-lg border dark:border-slate-700"><span class="font-semibold dark:text-white">${i+1}. ${escapeHtml(s[0])}</span><span class="font-bold dark:text-white">${s[1]} un.</span></div>`).join('') : '<p class="text-xs text-slate-400 py-4 text-center">Nenhuma venda registrada.</p>';
       }
     }
 
@@ -1263,7 +1345,11 @@
       for(let i=6;i>=0;i--){
         const d = new Date(); d.setDate(d.getDate()-i);
         lbls.push(d.toLocaleDateString('pt-BR',{weekday:'short'}));
-        dta.push(sales.filter(s=>s.status !== 'cancelled' && s.date && s.date.startsWith(d.toISOString().slice(0,10))).reduce((a,s)=>a+s.total,0));
+        const dayStr = d.toISOString().slice(0,10);
+        const dayTotal = sales
+          .filter(s => s.status !== 'cancelled' && s.date && s.date.startsWith(dayStr))
+          .reduce((a,s) => a + (Number(s.total) || 0), 0);
+        dta.push(dayTotal);
       }
       const isDark = document.documentElement.classList.contains('dark');
       const tickColor = isDark ? '#94a3b8' : '#475569';
@@ -1301,13 +1387,10 @@
       }).join('') : '<p class="col-span-full py-8 text-center text-xs text-slate-400">Sem resultados.</p>';
     }
 
-    function setPosCategory(cat) {
-      currentPosCategory = cat;
-      renderPosCatalogue();
-    }
-
+    function setPosCategory(cat) { currentPosCategory = cat; renderPosCatalogue(); }
     function filterPosProducts() { renderPosCatalogue(); }
     function clearPosSearch() { const i=document.getElementById('pos-search-input'); if(i){i.value='';i.focus()} currentPosCategory=''; renderPosCatalogue(); }
+    
     function handlePosBarcodeEnter(e) {
       if(e.key==='Enter') {
         const v = e.target.value.trim().toLowerCase();
@@ -1328,9 +1411,7 @@
         opts += `<option value="${c.id}">${escapeHtml(c.name)}${creditText}${debtText}</option>`;
       });
       select.innerHTML = opts;
-      if (currentVal && customers.some(c => String(c.id) === String(currentVal))) {
-        select.value = currentVal;
-      }
+      if (currentVal && customers.some(c => String(c.id) === String(currentVal))) select.value = currentVal;
       handleCustomerSelect();
     }
 
@@ -1356,12 +1437,8 @@
     function removeFromCart(id) { currentCart = currentCart.filter(x=>String(x.id)!==String(id)); updateCartUI(); }
     
     function clearCart() { 
-      currentCart=[]; 
-      posCreditUsed = 0;
-      const d=document.getElementById('pos-discount-input'); 
-      const r=document.getElementById('pos-amount-received'); 
-      const dd=document.getElementById('pos-due-date');
-      const cb=document.getElementById('pos-save-credit');
+      currentCart=[]; posCreditUsed = 0;
+      const d=document.getElementById('pos-discount-input'), r=document.getElementById('pos-amount-received'), dd=document.getElementById('pos-due-date'), cb=document.getElementById('pos-save-credit');
       if(d) d.value='0.00'; 
       if(r) { r.value=''; r.dataset.manual = ""; }
       if(dd) dd.value='';
@@ -1375,6 +1452,19 @@
       if(!c) return;
       c.innerHTML = currentCart.length ? currentCart.map(i=>`<div class="py-2 flex justify-between text-xs border-b dark:border-slate-800 last:border-0"><div class="flex-1 min-w-0"><h5 class="font-semibold dark:text-white truncate">${escapeHtml(i.name)}</h5><span class="text-[11px] text-slate-500">${formatCurrency(i.salePrice)} x ${i.qty} = <strong class="dark:text-white">${formatCurrency(i.salePrice*i.qty)}</strong></span></div><div class="flex items-center gap-1.5"><button onclick="changeCartQty('${i.id}',-1)" class="w-6 h-6 bg-slate-100 dark:bg-slate-700 dark:text-white rounded font-bold">-</button><span class="w-5 text-center dark:text-white font-bold">${i.qty}</span><button onclick="changeCartQty('${i.id}',1)" class="w-6 h-6 bg-slate-100 dark:bg-slate-700 dark:text-white rounded font-bold">+</button><button onclick="removeFromCart('${i.id}')" class="w-6 h-6 text-rose-500 hover:bg-rose-50 rounded ml-1"><i class="fa-solid fa-trash-can"></i></button></div></div>`).join('') : '<p class="py-8 text-center text-xs text-slate-400">Carrinho vazio</p>';
       updateCartTotals();
+    }
+
+    function fillTotalReceived() {
+      const sub = currentCart.reduce((a,b)=>a+(b.salePrice*b.qty),0);
+      const discountEl = document.getElementById('pos-discount-input');
+      const desc = discountEl ? parseFloat(discountEl.value)||0 : 0;
+      let tot = Math.max(0, sub - desc - posCreditUsed);
+      const recEl = document.getElementById('pos-amount-received');
+      if (recEl) {
+        recEl.value = tot > 0 ? tot.toFixed(2) : '';
+        recEl.dataset.manual = "";
+        calculateChange();
+      }
     }
 
     function updateCartTotals() {
@@ -1394,36 +1484,19 @@
       const cr = document.getElementById('pos-applied-credit-row');
       const crv = document.getElementById('pos-applied-credit-value');
       if (cr && crv) {
-        if(posCreditUsed > 0) {
-          cr.classList.remove('hidden');
-          crv.textContent = formatCurrency(posCreditUsed);
-        } else {
-          cr.classList.add('hidden');
-        }
+        if(posCreditUsed > 0) { cr.classList.remove('hidden'); crv.textContent = formatCurrency(posCreditUsed); }
+        else cr.classList.add('hidden');
       }
 
       const recEl = document.getElementById('pos-amount-received');
-      if(recEl) {
-        if (currentCart.length > 0) {
-          recEl.value = tot > 0 ? tot.toFixed(2) : (sub > 0 ? sub.toFixed(2) : '');
-        } else {
-          recEl.value = '';
-        }
+      if(recEl && !recEl.dataset.manual && currentCart.length > 0) {
+        recEl.value = tot > 0 ? tot.toFixed(2) : '';
+      } else if (recEl && currentCart.length === 0) {
+        recEl.value = '';
+        recEl.dataset.manual = "";
       }
       
       calculateChange();
-    }
-
-    function syncReceivedWithTotal() {
-      const sub = currentCart.reduce((a,b)=>a+(b.salePrice*b.qty),0);
-      const discountEl = document.getElementById('pos-discount-input');
-      const d = discountEl ? parseFloat(discountEl.value)||0 : 0;
-      const tot = Math.max(0, sub - d - posCreditUsed);
-      const recEl = document.getElementById('pos-amount-received');
-      if (recEl) {
-        recEl.value = tot > 0 ? tot.toFixed(2) : (sub > 0 ? sub.toFixed(2) : '');
-        calculateChange();
-      }
     }
 
     function handleCustomerSelect() {
@@ -1465,12 +1538,13 @@
         const a = b.dataset.method === m;
         b.className = `pay-method-btn py-2 rounded-xl text-xs font-semibold flex flex-col items-center gap-1 transition border ${a?'border-indigo-600 bg-indigo-50 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300':'border-slate-200 bg-white text-slate-600 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300'}`;
       });
-      syncReceivedWithTotal();
+      fillTotalReceived();
     }
 
     function calculateChange() {
       const recEl = document.getElementById('pos-amount-received');
       if(!recEl) return;
+      if(recEl.value !== '') recEl.dataset.manual = "true"; else recEl.dataset.manual = "";
 
       const r = parseFloat(recEl.value) || 0;
       const sub = currentCart.reduce((a,b)=>a+(b.salePrice*b.qty),0);
@@ -1506,7 +1580,7 @@
       }
     }
 
-    function finalizeSale() {
+    async function finalizeSale() {
       if(!currentCart.length) return showToast('Carrinho vazio!', 'warning');
       
       const sub = currentCart.reduce((a,b)=>a+(b.salePrice*b.qty),0);
@@ -1532,7 +1606,7 @@
         if (!custId) return showToast('Para vender pendente (fiado), selecione um cliente!', 'danger');
         const ddEl = document.getElementById('pos-due-date');
         dueDate = ddEl ? ddEl.value : '';
-        if (!dueDate) return showToast('Informe a Vencimento para o valor restante!', 'warning');
+        if (!dueDate) return showToast('Informe o Vencimento para o valor restante!', 'warning');
         const todayStr = new Date().toISOString().slice(0,10);
         if (dueDate < todayStr) return showToast('A data de vencimento não pode ser no passado!', 'warning');
         debtAmount = tot - r;
@@ -1547,14 +1621,13 @@
 
       if (custId && cust) {
         cust.credit = Math.max(0, (cust.credit || 0) - posCreditUsed + creditGenerated);
-        if (debtAmount > 0) {
-          cust.debt = (cust.debt || 0) + debtAmount;
-        }
+        if (debtAmount > 0) cust.debt = (cust.debt || 0) + debtAmount;
+        syncToSupabase('customers', cust);
       }
 
       currentCart.forEach(ci => { 
-        const p=products.find(x=>String(x.id)===String(ci.id)); 
-        if(p) p.stock = Math.max(0, p.stock-ci.qty); 
+        const p = products.find(x=>String(x.id)===String(ci.id)); 
+        if(p) { p.stock = Math.max(0, p.stock-ci.qty); syncToSupabase('products', p); }
       });
       
       const s = { 
@@ -1569,6 +1642,8 @@
 
       sales.unshift(s); 
       currentLastSale = s;
+      
+      syncToSupabase('sales', s);
       refreshAllData();
 
       if(typeof confetti==='function') confetti({particleCount:50, spread:60, origin:{y:0.8}});
@@ -1583,9 +1658,6 @@
       currentLastSale = s;
       const m = document.getElementById('receipt-modal-content');
       if(!m) return;
-      const cancelledNotice = s.status === 'cancelled' 
-        ? '<div class="bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300 text-center py-1.5 font-black text-xs rounded-lg mb-2 uppercase border border-rose-300 dark:border-rose-800">*** VENDA CANCELADA / ESTORNADA ***</div>' 
-        : '';
       let itemsHtml = s.items.map(i=>`<tr><td>${i.qty}x</td><td class="truncate max-w-[120px]">${escapeHtml(i.name)}</td><td class="text-right">${formatCurrency(i.salePrice*i.qty)}</td></tr>`).join('');
       let extraHtml = '';
       if(s.discount > 0) extraHtml += `<div class="flex justify-between text-rose-600"><span>Desconto:</span> <span>-${formatCurrency(s.discount)}</span></div>`;
@@ -1594,7 +1666,37 @@
       if(s.creditGenerated > 0) extraHtml += `<div class="flex justify-between text-emerald-600 font-bold border-t border-dashed mt-1 pt-1"><span>Troco em Crédito:</span> <span>${formatCurrency(s.creditGenerated)}</span></div>`;
       else if(s.changeAmount > 0) extraHtml += `<div class="flex justify-between font-bold border-t border-dashed mt-1 pt-1"><span>Troco Devolvido:</span> <span>${formatCurrency(s.changeAmount)}</span></div>`;
 
-      m.innerHTML = `${cancelledNotice}<div class="text-center border-b border-dashed pb-2"><h2 class="font-bold text-sm">${escapeHtml(companySettings.name)}</h2><p class="text-[10px]">CUPOM NÃO FISCAL</p></div><div class="py-2 text-[11px] border-b border-dashed"><div>Cód: ${s.id}</div><div>Data: ${new Date(s.date).toLocaleString('pt-BR')}</div><div>Cliente: ${escapeHtml(s.customerName)}</div></div><div class="py-2 border-b border-dashed"><table class="w-full text-[11px]"><tbody>${itemsHtml}</tbody></table></div><div class="py-2 text-[11px] flex flex-col gap-0.5"><div class="flex justify-between"><span>Subtotal:</span><span>${formatCurrency(s.subtotal)}</span></div>${extraHtml}<div class="flex justify-between font-bold text-sm mt-1 pt-1 border-t border-slate-300"><span>TOTAL A PAGAR:</span><span>${formatCurrency(s.total)}</span></div><div class="flex justify-between"><span>Pago Agora (${s.paymentMethod.toUpperCase()}):</span><span>${formatCurrency(s.receivedAmount)}</span></div></div><div class="pt-2 mt-1 border-t border-dashed text-center text-[10px] text-slate-500 dark:text-slate-400 font-sans leading-tight">Toda troca de produtos deve ser feita no prazo máximo de 20 dias a partir da entrega.</div>`;
+      const isCancelled = s.status === 'cancelled';
+
+      m.innerHTML = `
+        ${isCancelled ? '<div class="text-center bg-rose-100 dark:bg-rose-900/60 text-rose-700 dark:text-rose-300 font-bold py-1 mb-2 rounded">*** VENDA CANCELADA / ESTORNADA ***</div>' : ''}
+        <div class="text-center border-b border-dashed pb-2">
+          <h2 class="font-bold text-sm">${escapeHtml(companySettings.name)}</h2>
+          <p class="text-[10px]">CUPOM NÃO FISCAL</p>
+        </div>
+        <div class="py-2 text-[11px] border-b border-dashed">
+          <div>Cód: ${s.id}</div>
+          <div>Data: ${new Date(s.date).toLocaleString('pt-BR')}</div>
+          <div>Cliente: ${escapeHtml(s.customerName)}</div>
+        </div>
+        <div class="py-2 border-b border-dashed">
+          <table class="w-full text-[11px]"><tbody>${itemsHtml}</tbody></table>
+        </div>
+        <div class="py-2 text-[11px] flex flex-col gap-0.5">
+          <div class="flex justify-between"><span>Subtotal:</span><span>${formatCurrency(s.subtotal)}</span></div>
+          ${extraHtml}
+          <div class="flex justify-between font-bold text-sm mt-1 pt-1 border-t border-slate-300 dark:border-slate-700">
+            <span>TOTAL A PAGAR:</span><span>${formatCurrency(s.total)}</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Pago (${(s.paymentMethod || 'pix').toUpperCase()}):</span><span>${formatCurrency(s.receivedAmount)}</span>
+          </div>
+        </div>
+        <div class="pt-2 text-center text-[10px] text-slate-500 border-t border-dashed mt-2">
+          <p class="font-bold uppercase mb-0.5">Aviso de Troca</p>
+          <p>Toda troca de produtos deve ser feita no prazo máximo de 20 dias a partir da entrega.</p>
+        </div>
+      `;
       const mr = document.getElementById('modal-receipt');
       if (mr) mr.classList.remove('hidden');
     }
@@ -1607,111 +1709,40 @@
     function shareReceiptWhatsApp() {
       if (!currentLastSale) return;
       const s = currentLastSale;
-      const storeName = companySettings.name && companySettings.name !== 'Mercadinho Express'
-        ? companySettings.name
-        : 'GestãoPro';
-      const pixInfo = companySettings.pixKey && companySettings.pixKey.trim() !== '' && companySettings.pixKey !== 'loja@exemplo.com.br'
-        ? companySettings.pixKey
-        : '48999344103 -- JORGE L SILVEIRA --BANCO DO BRASIL';
-
+      const storeName = companySettings.name || 'GestãoPro';
       let text = `*COMPROVANTE DE COMPRA -  ${storeName}*\n`;
-      text += `Cód: ${s.id}\n`;
-      text += `Data: ${new Date(s.date).toLocaleString('pt-BR')}\n`;
-      text += `Cliente: ${s.customerName || 'Consumidor'}\n\n`;
+      text += `Cód: ${s.id}\nData: ${new Date(s.date).toLocaleString('pt-BR')}\nCliente: ${s.customerName || 'Consumidor'}\n\n`;
       text += `*Itens:*\n`;
-      s.items.forEach(i => {
+      const itemsList = Array.isArray(s.items) ? s.items : [];
+      itemsList.forEach(i => {
         text += `- ${i.qty}x ${i.name} (${formatCurrency(i.salePrice)})\n`;
       });
-      text += `\n*Total:* ${formatCurrency(s.total)}\n`;
-      text += `Pagamento: ${s.paymentMethod.toUpperCase()}\n`;
+      text += `\n*Total:* ${formatCurrency(s.total)}\nPagamento: ${(s.paymentMethod || '').toUpperCase()}\n`;
       if (s.debtAmount > 0) {
-        text += `Valor Pendente (Fiado): ${formatCurrency(s.debtAmount)}\nVencimento: ${new Date(s.dueDate).toLocaleDateString('pt-BR')}\n`;
+        const dueStr = s.dueDate ? new Date(s.dueDate).toLocaleDateString('pt-BR') : 'Sem data';
+        text += `Valor Pendente (Fiado): ${formatCurrency(s.debtAmount)}\nVencimento: ${dueStr}\n`;
       }
-      text += `\nCHAVE PIX : ${pixInfo}\n`;
-      text += `*AVISO DE TROCA:*\n`;
-      text += `Toda troca de produtos deve ser feita no prazo máximo de 20 dias a partir da entrega.\n\n`;
+      text += `\nCHAVE PIX : ${companySettings.pixKey || '48999344103 -- JORGE L SILVEIRA --BANCO DO BRASIL'}\n`;
+      text += `*AVISO DE TROCA:*\nToda troca de produtos deve ser feita no prazo máximo de 20 dias a partir da entrega.\n\n`;
       text += `Obrigado pela preferência!`;
-
+      
       const encoded = encodeURIComponent(text);
-      const phone = s.customerPhone ? s.customerPhone.replace(/\D/g, '') : '';
+      const phone = s.customerPhone ? String(s.customerPhone).replace(/\D/g, '') : '';
       const url = phone ? `https://wa.me/55${phone}?text=${encoded}` : `https://wa.me/?text=${encoded}`;
       window.open(url, '_blank');
     }
 
     function setupKeyboardShortcuts() {
       window.addEventListener('keydown', (e) => {
-        if (e.key === 'F2') {
-          e.preventDefault();
-          navigate('pos');
-        }
+        if (e.key === 'F2') { e.preventDefault(); navigate('pos'); }
       });
-    }
-
-    function loadConfigInputs() {
-      const n = document.getElementById('cfg-company-name');
-      const d = document.getElementById('cfg-company-doc');
-      const p = document.getElementById('cfg-company-phone');
-      const pk = document.getElementById('cfg-pix-key');
-      if (n) n.value = companySettings.name || '';
-      if (d) d.value = companySettings.doc || '';
-      if (p) p.value = companySettings.phone || '';
-      if (pk) pk.value = companySettings.pixKey || '';
-
-      const uA = document.getElementById('cfg-admin-user');
-      const uV = document.getElementById('cfg-vend-user');
-      if(uA) uA.value = (usersSettings.admin && usersSettings.admin.user) ? usersSettings.admin.user : 'admin';
-      if(uV) uV.value = (usersSettings.vendedor && usersSettings.vendedor.user) ? usersSettings.vendedor.user : 'vendedor';
-    }
-
-    function saveCompanySettings() {
-      const n = document.getElementById('cfg-company-name');
-      const d = document.getElementById('cfg-company-doc');
-      const p = document.getElementById('cfg-company-phone');
-      const pk = document.getElementById('cfg-pix-key');
-      companySettings = {
-        name: n ? n.value : '',
-        doc: d ? d.value : '',
-        phone: p ? p.value : '',
-        pixKey: pk ? pk.value : ''
-      };
-      saveData();
-      showToast('Dados da empresa salvos!', 'success');
-    }
-
-    function saveUsersSettings() {
-      const uA = document.getElementById('cfg-admin-user').value.trim();
-      const pA = document.getElementById('cfg-admin-pass').value.trim();
-      const uV = document.getElementById('cfg-vend-user').value.trim();
-      const pV = document.getElementById('cfg-vend-pass').value.trim();
-
-      if (!uA || !uV) {
-        return showToast('O nome de utilizador não pode ficar vazio!', 'warning');
-      }
-
-      usersSettings.admin.user = uA;
-      if (pA !== '') usersSettings.admin.pass = pA;
-
-      usersSettings.vendedor.user = uV;
-      if (pV !== '') usersSettings.vendedor.pass = pV;
-
-      saveData();
-      
-      document.getElementById('cfg-admin-pass').value = '';
-      document.getElementById('cfg-vend-pass').value = '';
-      
-      showToast('Credenciais atualizadas com sucesso!', 'success');
     }
 
     function populateCategorySelects() {
       const sel = document.getElementById('inventory-filter-category');
-      if (sel) {
-        sel.innerHTML = '<option value="">Categoria (Todas)</option>' + CATEGORIES.map(c => `<option value="${c}">${c}</option>`).join('');
-      }
-
+      if (sel) sel.innerHTML = '<option value="">Categoria (Todas)</option>' + CATEGORIES.map(c => `<option value="${c}">${c}</option>`).join('');
       const prodSel = document.getElementById('prod-category');
-      if (prodSel) {
-        prodSel.innerHTML = '<option value="">Selecione...</option>' + CATEGORIES.map(c => `<option value="${c}">${c}</option>`).join('');
-      }
+      if (prodSel) prodSel.innerHTML = '<option value="">Selecione...</option>' + CATEGORIES.map(c => `<option value="${c}">${c}</option>`).join('');
     }
 
     function renderInventoryTable() {
@@ -1749,6 +1780,103 @@
       }).join('') : '<tr><td colspan="7" class="py-8 text-center text-slate-400 text-xs">Nenhum produto encontrado.</td></tr>';
     }
 
+    function openProductModal(id = null) {
+      const modal = document.getElementById('modal-product');
+      const title = document.getElementById('product-modal-title');
+      const form = document.getElementById('product-form');
+      if (!modal) return;
+      form.reset(); document.getElementById('prod-id').value = '';
+      if (id) {
+        const p = products.find(x => String(x.id) === String(id));
+        if (p) {
+          title.textContent = 'Editar Produto';
+          document.getElementById('prod-id').value = p.id;
+          document.getElementById('prod-name').value = p.name;
+          document.getElementById('prod-barcode').value = p.barcode || '';
+          document.getElementById('prod-category').value = p.category;
+          document.getElementById('prod-cost').value = p.costPrice || '';
+          document.getElementById('prod-price').value = p.salePrice || '';
+          document.getElementById('prod-stock').value = p.stock || 0;
+          document.getElementById('prod-min-stock').value = p.minStock || 0;
+        }
+      } else title.textContent = 'Novo Produto';
+      modal.classList.remove('hidden');
+    }
+    
+    function closeProductModal() { document.getElementById('modal-product').classList.add('hidden'); }
+
+    function saveProduct(e) {
+      e.preventDefault();
+      const id = document.getElementById('prod-id').value;
+      const name = document.getElementById('prod-name').value.trim();
+      const barcode = document.getElementById('prod-barcode').value.trim();
+      const category = document.getElementById('prod-category').value;
+      const costPrice = parseFloat(document.getElementById('prod-cost').value) || 0;
+      const salePrice = parseFloat(document.getElementById('prod-price').value) || 0;
+      const stock = parseInt(document.getElementById('prod-stock').value) || 0;
+      const minStock = parseInt(document.getElementById('prod-min-stock').value) || 0;
+
+      if (!name || !category || !salePrice) return showToast('Preencha os campos obrigatórios.', 'warning');
+
+      let savedObj = null;
+      if (id) {
+        savedObj = products.find(x => String(x.id) === String(id));
+        if (savedObj) {
+          savedObj.name = name; savedObj.barcode = barcode; savedObj.category = category;
+          savedObj.costPrice = costPrice; savedObj.salePrice = salePrice;
+          savedObj.stock = stock; savedObj.minStock = minStock;
+          showToast('Produto atualizado!', 'success');
+        }
+      } else {
+        savedObj = { id: 'P-' + Date.now(), name, barcode, category, costPrice, salePrice, stock, minStock, description: '' };
+        products.push(savedObj);
+        showToast('Produto cadastrado com sucesso!', 'success');
+      }
+      closeProductModal(); refreshAllData();
+      if(savedObj) syncToSupabase('products', savedObj);
+    }
+
+    function editProduct(id) { openProductModal(id); }
+    function deleteProduct(id) {
+      showConfirmModal('Excluir Produto', 'Deseja realmente remover este produto?', () => {
+        products = products.filter(p => String(p.id) !== String(id));
+        refreshAllData(); deleteFromSupabase('products', id);
+        showToast('Produto removido!', 'success');
+      });
+    }
+
+    function openStockEntryModal() {
+      const modal = document.getElementById('modal-stock-entry');
+      const select = document.getElementById('stock-entry-product');
+      if (!modal || !select) return;
+      document.getElementById('stock-entry-form').reset();
+      select.innerHTML = '<option value="">Selecione um produto...</option>' + products.map(p => `<option value="${p.id}">${escapeHtml(p.name)} (Estoque: ${p.stock})</option>`).join('');
+      modal.classList.remove('hidden');
+    }
+
+    function closeStockEntryModal() { document.getElementById('modal-stock-entry').classList.add('hidden'); }
+
+    function saveStockEntry(e) {
+      e.preventDefault();
+      const id = document.getElementById('stock-entry-product').value;
+      const qty = parseInt(document.getElementById('stock-entry-qty').value) || 0;
+      if (!id || qty <= 0) return showToast('Selecione um produto e uma quantidade válida.', 'warning');
+      const p = products.find(x => String(x.id) === String(id));
+      if (p) {
+        p.stock += qty;
+        showToast(`Adicionado ${qty} unidades ao estoque de ${p.name}.`, 'success');
+        closeStockEntryModal(); refreshAllData(); syncToSupabase('products', p);
+      }
+    }
+
+    function quickStockAdd(id) {
+      const p = products.find(x => String(x.id) === String(id));
+      if (p) {
+        p.stock += 10; refreshAllData(); syncToSupabase('products', p);
+        showToast('10 un. adicionadas rapidamente!', 'success');
+      }
+    }
+
     function renderCustomerTable() {
       const tbody = document.getElementById('customers-table-body');
       if (!tbody) return;
@@ -1771,36 +1899,166 @@
       }).join('') : '<tr><td colspan="6" class="py-8 text-center text-slate-400 text-xs">Nenhum cliente encontrado.</td></tr>';
     }
 
+    function openCustomerModal(id = null) {
+      const modal = document.getElementById('modal-customer');
+      const title = document.getElementById('customer-modal-title');
+      const form = document.getElementById('customer-form');
+      if (!modal) return;
+      form.reset(); document.getElementById('cust-id').value = '';
+      if (id) {
+        const c = customers.find(x => String(x.id) === String(id));
+        if (c) {
+          title.textContent = 'Editar Cliente';
+          document.getElementById('cust-id').value = c.id;
+          document.getElementById('cust-name').value = c.name;
+          document.getElementById('cust-phone').value = c.phone || '';
+          document.getElementById('cust-email').value = c.email || '';
+          document.getElementById('cust-address').value = c.address || '';
+        }
+      } else title.textContent = 'Novo Cliente';
+      modal.classList.remove('hidden');
+    }
+    
+    function closeCustomerModal() { document.getElementById('modal-customer').classList.add('hidden'); }
+
+    function saveCustomer(e) {
+      e.preventDefault();
+      const id = document.getElementById('cust-id').value;
+      const name = document.getElementById('cust-name').value.trim();
+      const phone = document.getElementById('cust-phone').value.trim();
+      const email = document.getElementById('cust-email').value.trim();
+      const address = document.getElementById('cust-address').value.trim();
+
+      if (!name) return showToast('Preencha o nome do cliente.', 'warning');
+
+      let savedObj = null;
+      if (id) {
+        savedObj = customers.find(x => String(x.id) === String(id));
+        if (savedObj) {
+          savedObj.name = name; savedObj.phone = phone; savedObj.email = email; savedObj.address = address;
+          showToast('Cliente atualizado!', 'success');
+        }
+      } else {
+        savedObj = { id: 'C-' + Date.now(), name, phone, email, address, credit: 0, debt: 0 };
+        customers.push(savedObj);
+        showToast('Cliente cadastrado com sucesso!', 'success');
+      }
+      closeCustomerModal(); refreshAllData();
+      if(savedObj) syncToSupabase('customers', savedObj);
+    }
+
+    function editCustomer(id) { openCustomerModal(id); }
+    function deleteCustomer(id) {
+      showConfirmModal('Excluir Cliente', 'Deseja realmente remover este cliente?', () => {
+        customers = customers.filter(c => String(c.id) !== String(id));
+        refreshAllData(); deleteFromSupabase('customers', id);
+        showToast('Cliente removido!', 'success');
+      });
+    }
+
+    function receiveDebt(saleId) {
+      showConfirmModal('Receber Pagamento (Fiado)', 'Confirmar o recebimento integral deste valor pendente?', () => {
+        const s = sales.find(x => String(x.id) === String(saleId));
+        if (s) {
+          if (s.customerId) {
+            const c = customers.find(x => String(x.id) === String(s.customerId));
+            if (c) { c.debt = Math.max(0, (c.debt || 0) - s.debtAmount); syncToSupabase('customers', c); }
+          }
+          s.status = 'paid';
+          s.debtAmount = 0;
+          showToast('Pagamento recebido e baixado com sucesso!', 'success');
+          refreshAllData(); syncToSupabase('sales', s);
+        }
+      }, 'fa-hand-holding-dollar', false);
+    }
+
+    function openEditDateModal(id) {
+      editSaleId = id;
+      const s = sales.find(x => String(x.id) === String(id));
+      if (s) {
+        document.getElementById('edit-sale-date').value = s.date.slice(0, 10);
+        document.getElementById('modal-edit-date').classList.remove('hidden');
+      }
+    }
+
+    function closeEditDateModal() {
+      document.getElementById('modal-edit-date').classList.add('hidden');
+      editSaleId = null;
+    }
+
+    function saveSaleDate(e) {
+      e.preventDefault();
+      const newDate = document.getElementById('edit-sale-date').value;
+      const s = sales.find(x => String(x.id) === String(editSaleId));
+      if (s && newDate) {
+        const timePart = s.date.substring(10);
+        s.date = newDate + timePart;
+        refreshAllData();
+        syncToSupabase('sales', s);
+        closeEditDateModal();
+        showToast('Data da compra atualizada com sucesso!', 'success');
+      }
+    }
+
+    function cancelSale(id) {
+      showConfirmModal('Cancelar Venda', 'Deseja realmente cancelar esta venda? <strong>Os itens serão estornados para o estoque</strong> e as dívidas/créditos ajustados.', () => {
+        executeCancelSale(id);
+      }, 'fa-ban', true);
+    }
+
+    function executeCancelSale(id) {
+      const s = sales.find(x => String(x.id) === String(id));
+      if (!s || s.status === 'cancelled') return;
+
+      const itemsList = Array.isArray(s.items) ? s.items : [];
+      itemsList.forEach(item => {
+        const prod = products.find(p => String(p.id) === String(item.id));
+        if (prod) {
+          prod.stock = (Number(prod.stock) || 0) + (Number(item.qty) || 0);
+          syncToSupabase('products', prod);
+        }
+      });
+
+      if (s.customerId) {
+        const c = customers.find(x => String(x.id) === String(s.customerId));
+        if (c) {
+          if (s.debtAmount > 0) {
+            c.debt = Math.max(0, (Number(c.debt) || 0) - Number(s.debtAmount));
+          }
+          if (s.creditUsed > 0) {
+            c.credit = (Number(c.credit) || 0) + Number(s.creditUsed);
+          }
+          if (s.creditGenerated > 0) {
+            c.credit = Math.max(0, (Number(c.credit) || 0) - Number(s.creditGenerated));
+          }
+          syncToSupabase('customers', c);
+        }
+      }
+
+      s.status = 'cancelled';
+      syncToSupabase('sales', s);
+      saveData();
+      refreshAllData();
+      showToast('Venda cancelada e estoque estornado com sucesso!', 'success');
+    }
+
     function renderReports() {
       const period = document.getElementById('reports-period-filter')?.value || 'month';
       const pickerContainer = document.getElementById('reports-month-picker-container');
       const picker = document.getElementById('reports-month-picker');
-      
       if (pickerContainer) pickerContainer.classList.toggle('hidden', period !== 'month');
 
       let filteredSales = [...sales];
       const todayStr = new Date().toISOString().slice(0,10);
 
-      if (period === 'today') {
-        filteredSales = sales.filter(s => s.date && s.date.startsWith(todayStr));
-      } else if (period === 'month' && picker) {
-        const mVal = picker.value;
-        if (mVal) filteredSales = sales.filter(s => s.date && s.date.startsWith(mVal));
-      } else if (period === '7days') {
-        const d = new Date(); d.setDate(d.getDate() - 7);
-        filteredSales = sales.filter(s => new Date(s.date) >= d);
-      } else if (period === '30days') {
-        const d = new Date(); d.setDate(d.getDate() - 30);
-        filteredSales = sales.filter(s => new Date(s.date) >= d);
-      }
+      if (period === 'today') { filteredSales = sales.filter(s => s.date && s.date.startsWith(todayStr)); } 
+      else if (period === 'month' && picker && picker.value) { filteredSales = sales.filter(s => s.date && s.date.startsWith(picker.value)); } 
+      else if (period === '7days') { const d = new Date(); d.setDate(d.getDate() - 7); filteredSales = sales.filter(s => new Date(s.date) >= d); } 
+      else if (period === '30days') { const d = new Date(); d.setDate(d.getDate() - 30); filteredSales = sales.filter(s => new Date(s.date) >= d); }
 
-      // Ordenar por data mais recente
-      filteredSales.sort((a,b) => new Date(b.date) - new Date(a.date));
-
-      // As métricas financeiras consideram apenas vendas ativas (não canceladas)
       const activeSales = filteredSales.filter(s => s.status !== 'cancelled');
-      const totalRev = activeSales.reduce((a,b)=>a+b.total,0);
-      const totalCost = activeSales.reduce((a,b)=>a+(b.totalCost||0),0);
+      const totalRev = activeSales.reduce((a,b)=>a + (Number(b.total) || 0), 0);
+      const totalCost = activeSales.reduce((a,b)=>a + (Number(b.totalCost) || 0), 0);
       const netProfit = totalRev - totalCost;
       const avgTicket = activeSales.length ? totalRev / activeSales.length : 0;
       const margin = totalRev > 0 ? (netProfit / totalRev) * 100 : 0;
@@ -1823,34 +2081,36 @@
       if (historyTb) {
         historyTb.innerHTML = filteredSales.length ? filteredSales.map(s => {
           const isCancelled = s.status === 'cancelled';
-          const statusBadge = isCancelled 
-            ? 'bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-400' 
-            : (s.status === 'partial' ? 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300' : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300');
-          const statusText = isCancelled ? 'Cancelada' : (s.status === 'partial' ? 'Fiado Parcial' : 'Pago');
-          
-          const payDebtBtn = (!isCancelled && s.status === 'partial' && s.debtAmount > 0) 
-            ? `<button onclick="receiveDebt('${s.id}')" title="Quitar Dívida" class="px-2 py-1 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900 text-emerald-600 dark:text-emerald-400 rounded text-xs ml-1 transition"><i class="fa-solid fa-check"></i></button>` 
-            : '';
-            
-          const editDateBtn = !isCancelled 
-            ? `<button onclick="openEditDateModal('${s.id}')" title="Editar Data" class="px-2 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded text-xs transition ml-1"><i class="fa-solid fa-calendar-day"></i></button>` 
-            : '';
+          let statusBadge = 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300';
+          let statusText = 'Pago';
 
-          const cancelBtn = !isCancelled 
-            ? `<button onclick="cancelSale('${s.id}')" title="Cancelar Venda e Estornar Estoque" class="px-2 py-1 bg-rose-50 dark:bg-rose-950/60 hover:bg-rose-100 dark:hover:bg-rose-900 text-rose-600 dark:text-rose-400 rounded text-xs transition ml-1"><i class="fa-solid fa-ban"></i></button>` 
-            : '';
+          if (isCancelled) {
+            statusBadge = 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300';
+            statusText = 'Cancelada';
+          } else if (s.status === 'partial') {
+            statusBadge = 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300';
+            statusText = 'Fiado Parcial';
+          }
 
-          return `<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 ${isCancelled ? 'opacity-70 bg-rose-50/30 dark:bg-rose-950/10' : ''}">
-            <td class="py-3 px-3 sm:px-4 font-mono text-xs font-semibold ${isCancelled ? 'line-through text-slate-400' : ''}">${s.id}</td>
+          const rowClass = isCancelled ? 'opacity-50 line-through bg-slate-50/50 dark:bg-slate-900/30' : 'hover:bg-slate-50 dark:hover:bg-slate-800/40';
+
+          return `<tr class="${rowClass}">
+            <td class="py-3 px-3 sm:px-4 font-mono text-xs font-semibold">${s.id}</td>
             <td class="py-3 px-3 sm:px-4 text-xs">${new Date(s.date).toLocaleString('pt-BR')}</td>
             <td class="py-3 px-3 sm:px-4 font-medium dark:text-white">${escapeHtml(s.customerName)}</td>
             <td class="py-3 px-3 sm:px-4 hidden sm:table-cell"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${statusBadge}">${statusText}</span></td>
-            <td class="py-3 px-3 sm:px-4 text-right font-bold ${isCancelled ? 'line-through text-slate-400' : 'text-indigo-600 dark:text-indigo-400'}">${formatCurrency(s.total)}</td>
-            <td class="py-3 px-3 sm:px-4 text-center whitespace-nowrap"><button onclick="openReceiptModalFromHistory('${s.id}')" title="Ver Recibo" class="px-2 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded text-xs transition"><i class="fa-solid fa-eye"></i></button>${editDateBtn}${payDebtBtn}${cancelBtn}</td>
+            <td class="py-3 px-3 sm:px-4 text-right font-bold text-indigo-600 dark:text-indigo-400">${formatCurrency(s.total)}</td>
+            <td class="py-3 px-3 sm:px-4 text-center space-x-1 no-underline">
+              <button onclick="openReceiptModalFromHistory('${s.id}')" class="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded text-xs" title="Ver Recibo"><i class="fa-solid fa-eye"></i></button>
+              ${!isCancelled ? `
+                <button onclick="openEditDateModal('${s.id}')" class="admin-only px-2 py-1 bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 rounded text-xs" title="Editar Data"><i class="fa-solid fa-calendar-day"></i></button>
+                <button onclick="cancelSale('${s.id}')" class="admin-only px-2 py-1 bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400 rounded text-xs" title="Cancelar Venda & Estornar Estoque"><i class="fa-solid fa-ban"></i></button>
+              ` : ''}
+              ${s.status === 'partial' && !isCancelled ? `<button onclick="receiveDebt('${s.id}')" class="px-2 py-1 bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 rounded text-xs" title="Quitar Dívida"><i class="fa-solid fa-hand-holding-dollar"></i></button>` : ''}
+            </td>
           </tr>`;
         }).join('') : '<tr><td colspan="6" class="py-8 text-center text-slate-400 text-xs">Nenhuma venda encontrada no período.</td></tr>';
       }
-
       renderReportsCharts(activeSales);
     }
 
@@ -1858,42 +2118,36 @@
       const isDark = document.documentElement.classList.contains('dark');
       const tickColor = isDark ? '#94a3b8' : '#475569';
 
-      // Payment methods chart
       const payCtx = document.getElementById('chart-payment-methods');
       if (payCtx) {
         const pmMap = { pix: 0, dinheiro: 0, credito: 0, debito: 0 };
-        filteredSales.forEach(s => { if (pmMap[s.paymentMethod] !== undefined) pmMap[s.paymentMethod] += s.total; });
+        filteredSales.forEach(s => { 
+          const method = (s.paymentMethod || 'pix').toLowerCase();
+          if (pmMap[method] !== undefined) pmMap[method] += (Number(s.total) || 0); 
+        });
         if (paymentChartInstance) paymentChartInstance.destroy();
         paymentChartInstance = new Chart(payCtx, {
           type: 'doughnut',
-          data: {
-            labels: ['Pix', 'Dinheiro', 'Crédito', 'Débito'],
-            datasets: [{ data: [pmMap.pix, pmMap.dinheiro, pmMap.credito, pmMap.debito], backgroundColor: ['#10b981', '#6366f1', '#f59e0b', '#3b82f6'] }]
-          },
+          data: { labels: ['Pix', 'Dinheiro', 'Crédito', 'Débito'], datasets: [{ data: [pmMap.pix, pmMap.dinheiro, pmMap.credito, pmMap.debito], backgroundColor: ['#10b981', '#6366f1', '#f59e0b', '#3b82f6'] }] },
           options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: tickColor, font: { size: 11 } } } } }
         });
       }
 
-      // Categories chart
       const catCtx = document.getElementById('chart-categories');
       if (catCtx) {
         const catMap = {};
-        filteredSales.forEach(s => s.items.forEach(i => { catMap[i.category] = (catMap[i.category] || 0) + (i.salePrice * i.qty); }));
+        filteredSales.forEach(s => {
+          const itemsList = Array.isArray(s.items) ? s.items : [];
+          itemsList.forEach(i => { 
+            const cName = i.category || 'Variedades & Outros';
+            catMap[cName] = (catMap[cName] || 0) + (Number(i.salePrice || 0) * Number(i.qty || 1)); 
+          });
+        });
         if (categoryChartInstance) categoryChartInstance.destroy();
         categoryChartInstance = new Chart(catCtx, {
           type: 'bar',
-          data: {
-            labels: Object.keys(catMap),
-            datasets: [{ data: Object.values(catMap), backgroundColor: '#4f46e5', borderRadius: 4 }]
-          },
-          options: {
-            responsive: true, maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-              x: { ticks: { color: tickColor, font: { size: 10 } } },
-              y: { ticks: { color: tickColor, font: { size: 10 } }, beginAtZero: true }
-            }
-          }
+          data: { labels: Object.keys(catMap), datasets: [{ data: Object.values(catMap), backgroundColor: '#4f46e5', borderRadius: 4 }] },
+          options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: tickColor, font: { size: 10 } } }, y: { ticks: { color: tickColor, font: { size: 10 } }, beginAtZero: true } } }
         });
       }
     }
@@ -1904,450 +2158,335 @@
       if (!picker || !picker.value) return;
       const parts = picker.value.split('-');
       let y = parseInt(parts[0]), m = parseInt(parts[1]) + dir;
-      if (m > 12) { m = 1; y++; }
-      else if (m < 1) { m = 12; y--; }
+      if (m > 12) { m = 1; y++; } else if (m < 1) { m = 12; y--; }
       picker.value = y + '-' + String(m).padStart(2, '0');
       renderReports();
     }
-
-    function openReceiptModalFromHistory(id) {
-      const s = sales.find(x => String(x.id) === String(id));
-      if (s) openReceiptModal(s);
-    }
-
-    function openEditDateModal(id) {
-      const modal = document.getElementById('modal-edit-date');
-      const input = document.getElementById('edit-date-input');
-      const idInput = document.getElementById('edit-date-sale-id');
-      
-      const s = sales.find(x => String(x.id) === String(id));
-      if (s && modal && input && idInput) {
-        idInput.value = s.id;
-        // Pega apenas o YYYY-MM-DD da data original
-        input.value = s.date.slice(0, 10);
-        modal.classList.remove('hidden');
-      }
-    }
-
-    function closeEditDateModal() {
-      const modal = document.getElementById('modal-edit-date');
-      if(modal) modal.classList.add('hidden');
-    }
-
-    function saveNewSaleDate(e) {
-      e.preventDefault();
-      const id = document.getElementById('edit-date-sale-id').value;
-      const dateVal = document.getElementById('edit-date-input').value;
-      
-      if(!id || !dateVal) return;
-
-      const s = sales.find(x => String(x.id) === String(id));
-      if (s) {
-        // Mantém a hora original, substitui apenas a data
-        const oldTime = s.date.slice(10);
-        s.date = dateVal + oldTime;
-        saveData();
-        showToast('Data da venda atualizada com sucesso!', 'success');
-        closeEditDateModal();
-        renderReports();
-        // Se estiver no dashboard, também atualiza lá
-        if (currentView === 'dashboard') renderDashboard();
-      }
-    }
-
-    function exportSystemBackup() {
-      const data = { version: APP_VERSION, products, customers, sales, companySettings, usersSettings };
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'gestaopro-backup-' + new Date().toISOString().slice(0,10) + '.json';
-      a.click();
-      showToast('Backup exportado com sucesso!', 'success');
-    }
-
-    function handleBackupFileSelect(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (evt) => {
-        try {
-          const data = JSON.parse(evt.target.result);
-          if (data.products) products = data.products;
-          if (data.customers) customers = data.customers;
-          if (data.sales) sales = data.sales;
-          if (data.companySettings) companySettings = data.companySettings;
-          if (data.usersSettings) usersSettings = data.usersSettings;
-          refreshAllData();
-          loadConfigInputs();
-          showToast('Backup restaurado com sucesso!', 'success');
-        } catch (err) {
-          showToast('Arquivo de backup inválido!', 'danger');
-        }
-      };
-      reader.readAsText(file);
-    }
-
-    function connectSupabase() {
-      const url = document.getElementById('cfg-supabase-url')?.value.trim();
-      const key = document.getElementById('cfg-supabase-key')?.value.trim();
-      if (!url || !key) return showToast('Preencha URL e Key do Supabase!', 'warning');
-      try {
-        supabaseClient = window.supabase.createClient(url, key);
-        const badge = document.getElementById('supabase-status-badge');
-        if (badge) {
-          badge.textContent = 'Supabase Conectado';
-          badge.className = 'px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300';
-        }
-        showToast('Conectado ao Supabase com sucesso!', 'success');
-      } catch (e) {
-        showToast('Erro ao conectar ao Supabase', 'danger');
-      }
-    }
-
-    function showSqlSchemaModal() {
-      showToast('Configuração padrão do Supabase ativa.', 'info');
-    }
-
-    function promptResetSampleData() {
-      showConfirmModal('Restaurar Padrões', 'Tem certeza que deseja restaurar os dados de exemplo? <strong>Isto apagará os dados atuais.</strong>', () => {
-        products = SAMPLE_PRODUCTS.slice();
-        customers = SAMPLE_CUSTOMERS.slice();
-        sales = [];
-        usersSettings = JSON.parse(JSON.stringify(DEFAULT_USERS));
-        refreshAllData();
-        loadConfigInputs();
-        showToast('Dados restaurados para o padrão!', 'success');
-      }, 'fa-rotate-right', true);
-    }
-
-    // --- PRODUCT CRUD ---
-    function openProductModal(id = null) {
-      const modal = document.getElementById('modal-product');
-      const title = document.getElementById('product-modal-title');
-      const form = document.getElementById('product-form');
-      
-      if (!modal) return;
-      
-      form.reset();
-      document.getElementById('prod-id').value = '';
-
-      if (id) {
-        const p = products.find(x => String(x.id) === String(id));
-        if (p) {
-          title.textContent = 'Editar Produto';
-          document.getElementById('prod-id').value = p.id;
-          document.getElementById('prod-name').value = p.name;
-          document.getElementById('prod-barcode').value = p.barcode || '';
-          document.getElementById('prod-category').value = p.category;
-          document.getElementById('prod-cost').value = p.costPrice || '';
-          document.getElementById('prod-price').value = p.salePrice || '';
-          document.getElementById('prod-stock').value = p.stock || 0;
-          document.getElementById('prod-min-stock').value = p.minStock || 0;
-        }
-      } else {
-        title.textContent = 'Novo Produto';
-      }
-      
-      modal.classList.remove('hidden');
-    }
-
-    function closeProductModal() {
-      document.getElementById('modal-product').classList.add('hidden');
-    }
-
-    function saveProduct(e) {
-      e.preventDefault();
-      const id = document.getElementById('prod-id').value;
-      const name = document.getElementById('prod-name').value.trim();
-      const barcode = document.getElementById('prod-barcode').value.trim();
-      const category = document.getElementById('prod-category').value;
-      const costPrice = parseFloat(document.getElementById('prod-cost').value) || 0;
-      const salePrice = parseFloat(document.getElementById('prod-price').value) || 0;
-      const stock = parseInt(document.getElementById('prod-stock').value) || 0;
-      const minStock = parseInt(document.getElementById('prod-min-stock').value) || 0;
-
-      if (!name || !category || !salePrice) {
-        return showToast('Preencha os campos obrigatórios.', 'warning');
-      }
-
-      if (id) {
-        const p = products.find(x => String(x.id) === String(id));
-        if (p) {
-          p.name = name;
-          p.barcode = barcode;
-          p.category = category;
-          p.costPrice = costPrice;
-          p.salePrice = salePrice;
-          p.stock = stock;
-          p.minStock = minStock;
-          showToast('Produto atualizado!', 'success');
-        }
-      } else {
-        const newProduct = {
-          id: 'P-' + Date.now(),
-          name, barcode, category, costPrice, salePrice, stock, minStock, description: ''
-        };
-        products.push(newProduct);
-        showToast('Produto cadastrado com sucesso!', 'success');
-      }
-
-      closeProductModal();
-      refreshAllData();
-    }
-
-    function editProduct(id) { openProductModal(id); }
-
-    function deleteProduct(id) {
-      showConfirmModal('Excluir Produto', 'Deseja realmente remover este produto?', () => {
-        products = products.filter(p => String(p.id) !== String(id));
-        refreshAllData();
-        showToast('Produto removido!', 'success');
-      });
-    }
-
-    // --- CUSTOMER CRUD ---
-    function openCustomerModal(id = null) {
-      const modal = document.getElementById('modal-customer');
-      const title = document.getElementById('customer-modal-title');
-      const form = document.getElementById('customer-form');
-      
-      if (!modal) return;
-      
-      form.reset();
-      document.getElementById('cust-id').value = '';
-
-      if (id) {
-        const c = customers.find(x => String(x.id) === String(id));
-        if (c) {
-          title.textContent = 'Editar Cliente';
-          document.getElementById('cust-id').value = c.id;
-          document.getElementById('cust-name').value = c.name;
-          document.getElementById('cust-phone').value = c.phone || '';
-          document.getElementById('cust-email').value = c.email || '';
-          document.getElementById('cust-address').value = c.address || '';
-        }
-      } else {
-        title.textContent = 'Novo Cliente';
-      }
-      
-      modal.classList.remove('hidden');
-    }
-
-    function closeCustomerModal() {
-      document.getElementById('modal-customer').classList.add('hidden');
-    }
-
-    function saveCustomer(e) {
-      e.preventDefault();
-      const id = document.getElementById('cust-id').value;
-      const name = document.getElementById('cust-name').value.trim();
-      const phone = document.getElementById('cust-phone').value.trim();
-      const email = document.getElementById('cust-email').value.trim();
-      const address = document.getElementById('cust-address').value.trim();
-
-      if (!name) return showToast('Preencha o nome do cliente.', 'warning');
-
-      if (id) {
-        const c = customers.find(x => String(x.id) === String(id));
-        if (c) {
-          c.name = name;
-          c.phone = phone;
-          c.email = email;
-          c.address = address;
-          showToast('Cliente atualizado!', 'success');
-        }
-      } else {
-        const newCustomer = {
-          id: 'C-' + Date.now(),
-          name, phone, email, address, credit: 0, debt: 0
-        };
-        customers.push(newCustomer);
-        showToast('Cliente cadastrado com sucesso!', 'success');
-      }
-
-      closeCustomerModal();
-      refreshAllData();
-    }
-
-    function editCustomer(id) { openCustomerModal(id); }
-
-    function deleteCustomer(id) {
-      showConfirmModal('Excluir Cliente', 'Deseja realmente remover este cliente?', () => {
-        customers = customers.filter(c => String(c.id) !== String(id));
-        refreshAllData();
-        showToast('Cliente removido!', 'success');
-      });
-    }
-
-    // --- STOCK ENTRY MODAL ---
-    function openStockEntryModal() {
-      const modal = document.getElementById('modal-stock-entry');
-      const select = document.getElementById('stock-entry-product');
-      
-      if (!modal || !select) return;
-      
-      document.getElementById('stock-entry-form').reset();
-      
-      select.innerHTML = '<option value="">Selecione um produto...</option>' + 
-        products.map(p => `<option value="${p.id}">${escapeHtml(p.name)} (Estoque: ${p.stock})</option>`).join('');
-      
-      modal.classList.remove('hidden');
-    }
-
-    function closeStockEntryModal() { document.getElementById('modal-stock-entry').classList.add('hidden'); }
-
-    function saveStockEntry(e) {
-      e.preventDefault();
-      const id = document.getElementById('stock-entry-product').value;
-      const qty = parseInt(document.getElementById('stock-entry-qty').value) || 0;
-
-      if (!id || qty <= 0) return showToast('Selecione um produto e uma quantidade válida.', 'warning');
-
-      const p = products.find(x => String(x.id) === String(id));
-      if (p) {
-        p.stock += qty;
-        showToast(`Adicionado ${qty} unidades ao estoque de ${p.name}.`, 'success');
-        closeStockEntryModal();
-        refreshAllData();
-      }
-    }
-
-    function quickStockAdd(id) {
-      const p = products.find(x => String(x.id) === String(id));
-      if (p) {
-        p.stock += 10;
-        refreshAllData();
-        showToast('10 un. adicionadas rapidamente!', 'success');
-      }
-    }
-
-    function cancelSale(saleId) {
-      showConfirmModal(
-        'Cancelar Venda e Estornar',
-        'Tem certeza que deseja <strong>cancelar esta venda</strong>?<br><span class="text-rose-600 dark:text-rose-400 font-semibold">Todos os itens da venda voltarão ao estoque</span> e dívidas/créditos gerados serão ajustados.',
-        () => executeCancelSale(saleId),
-        'fa-ban',
-        true
-      );
-    }
-
-    function executeCancelSale(saleId) {
-      const s = sales.find(x => String(x.id) === String(saleId));
-      if (!s) return showToast('Venda não encontrada.', 'danger');
-      if (s.status === 'cancelled') return showToast('Esta venda já está cancelada.', 'warning');
-
-      // 1. Estornar as quantidades vendidas de volta para o estoque
-      let returnedItemsCount = 0;
-      if (Array.isArray(s.items)) {
-        s.items.forEach(item => {
-          const prod = products.find(p => String(p.id) === String(item.id));
-          if (prod) {
-            prod.stock = (Number(prod.stock) || 0) + Number(item.qty || 0);
-            returnedItemsCount += Number(item.qty || 0);
-            if (typeof syncToSupabase === 'function') syncToSupabase('products', prod);
-          }
-        });
-      }
-
-      // 2. Ajustar contas do cliente (fiado e créditos) caso tenha sido um cliente cadastrado
-      if (s.customerId) {
-        const cust = customers.find(c => String(c.id) === String(s.customerId));
-        if (cust) {
-          // Abate da dívida o valor pendente desta venda
-          if (s.debtAmount && s.debtAmount > 0) {
-            cust.debt = Math.max(0, (Number(cust.debt) || 0) - Number(s.debtAmount));
-          }
-          // Devolve ao saldo do cliente o crédito que ele utilizou nesta venda
-          if (s.creditUsed && s.creditUsed > 0) {
-            cust.credit = (Number(cust.credit) || 0) + Number(s.creditUsed);
-          }
-          // Se o troco gerou crédito na loja, remove esse crédito gerado
-          if (s.creditGenerated && s.creditGenerated > 0) {
-            cust.credit = Math.max(0, (Number(cust.credit) || 0) - Number(s.creditGenerated));
-          }
-          if (typeof syncToSupabase === 'function') syncToSupabase('customers', cust);
-        }
-      }
-
-      // 3. Atualizar o status da venda para 'cancelled'
-      s.status = 'cancelled';
-      s.cancelledAt = new Date().toISOString();
-      if (typeof syncToSupabase === 'function') syncToSupabase('sales', s);
-
-      refreshAllData();
-      showToast(`Venda ${s.id} cancelada! ${returnedItemsCount} itens estornados ao estoque.`, 'success');
-    }
+    
+    function openReceiptModalFromHistory(id) { const s = sales.find(x => String(x.id) === String(id)); if (s) openReceiptModal(s); }
 
     function exportReportsCSV() {
-      // 1. Obter o período selecionado para pegar as mesmas vendas do ecrã
       const period = document.getElementById('reports-period-filter')?.value || 'month';
       const picker = document.getElementById('reports-month-picker');
       let filteredSales = [...sales];
       const todayStr = new Date().toISOString().slice(0,10);
 
-      if (period === 'today') {
-        filteredSales = sales.filter(s => s.date && s.date.startsWith(todayStr));
-      } else if (period === 'month' && picker) {
-        const mVal = picker.value;
-        if (mVal) filteredSales = sales.filter(s => s.date && s.date.startsWith(mVal));
-      } else if (period === '7days') {
-        const d = new Date(); d.setDate(d.getDate() - 7);
-        filteredSales = sales.filter(s => new Date(s.date) >= d);
-      } else if (period === '30days') {
-        const d = new Date(); d.setDate(d.getDate() - 30);
-        filteredSales = sales.filter(s => new Date(s.date) >= d);
-      }
+      if (period === 'today') { filteredSales = sales.filter(s => s.date && s.date.startsWith(todayStr)); } 
+      else if (period === 'month' && picker && picker.value) { filteredSales = sales.filter(s => s.date && s.date.startsWith(picker.value)); } 
+      else if (period === '7days') { const d = new Date(); d.setDate(d.getDate() - 7); filteredSales = sales.filter(s => new Date(s.date) >= d); } 
+      else if (period === '30days') { const d = new Date(); d.setDate(d.getDate() - 30); filteredSales = sales.filter(s => new Date(s.date) >= d); }
 
-      // Ordenar cronologicamente
-      filteredSales.sort((a,b) => new Date(a.date) - new Date(b.date));
-
-      if (filteredSales.length === 0) {
-        return showToast('Nenhuma venda no período selecionado para exportar.', 'warning');
-      }
-
-      // 2. Montar o cabeçalho do CSV (Separado por ponto-e-vírgula para melhor leitura no Excel)
-      let csvContent = "Cod. Venda;Data;Hora;Cliente;Status;Forma Pagamento;Desconto;Credito Loja;Fiado;Custo Produtos;Total Venda\n";
-
-      // 3. Montar as linhas
+      let csv = '\uFEFFCódigo;Data;Cliente;Status;Forma Pagamento;Desconto;Crédito Usado;Dívida (Fiado);Custo Prod.;Total Pago\n';
+      
       filteredSales.forEach(s => {
-        const d = new Date(s.date);
-        const dataFormatada = d.toLocaleDateString('pt-BR');
-        const horaFormatada = d.toLocaleTimeString('pt-BR');
-        const statusTexto = s.status === 'cancelled' ? 'Cancelada' : (s.status === 'partial' ? 'Fiado Parcial' : 'Pago');
+        const id = s.id;
+        const date = new Date(s.date).toLocaleString('pt-BR');
+        const client = s.customerName || 'Consumidor';
+        let status = 'Pago';
+        if (s.status === 'cancelled') status = 'Cancelada';
+        else if (s.status === 'partial') status = 'Fiado Parcial';
+        const payment = s.paymentMethod;
         
-        // Formatar valores para trocar ponto por vírgula no decimal, se necessário para o Excel PT-BR
-        const f = (val) => Number(val || 0).toFixed(2).replace('.', ',');
-
-        const row = [
-          s.id,
-          dataFormatada,
-          horaFormatada,
-          escapeHtml(s.customerName),
-          statusTexto,
-          s.paymentMethod.toUpperCase(),
-          f(s.discount),
-          f(s.creditUsed),
-          f(s.debtAmount),
-          f(s.totalCost),
-          f(s.total)
-        ];
+        const formatDec = val => (Number(val) || 0).toFixed(2).replace('.', ',');
         
-        csvContent += row.join(';') + "\n";
+        csv += `${id};${date};${client};${status};${payment};${formatDec(s.discount)};${formatDec(s.creditUsed)};${formatDec(s.debtAmount)};${formatDec(s.totalCost)};${formatDec(s.total)}\n`;
       });
 
-      // 4. Criar e baixar o arquivo (com BOM para UTF-8 ser reconhecido no Excel)
-      const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `relatorio-vendas-${new Date().toISOString().slice(0,10)}.csv`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `relatorio_vendas_${new Date().toISOString().slice(0,10)}.csv`;
+      link.click();
       
-      showToast('Relatório exportado em CSV com sucesso.', 'success');
+      showToast('Relatório exportado em CSV com sucesso!', 'success');
+    }
+
+    function loadConfigInputs() {
+      const n = document.getElementById('cfg-company-name');
+      const d = document.getElementById('cfg-company-doc');
+      const p = document.getElementById('cfg-company-phone');
+      const pk = document.getElementById('cfg-pix-key');
+      if (n) n.value = companySettings.name || '';
+      if (d) d.value = companySettings.doc || '';
+      if (p) p.value = companySettings.phone || '';
+      if (pk) pk.value = companySettings.pixKey || '';
+
+      const uA = document.getElementById('cfg-admin-user');
+      const uV = document.getElementById('cfg-vend-user');
+      if(uA) uA.value = (appUsers.admin && appUsers.admin.user) ? appUsers.admin.user : 'admin';
+      if(uV) uV.value = (appUsers.vendedor && appUsers.vendedor.user) ? appUsers.vendedor.user : 'vendedor';
+
+      const sbUrl = localStorage.getItem('gp_sb_url') || '';
+      const sbKey = localStorage.getItem('gp_sb_key') || '';
+      const iUrl = document.getElementById('cfg-supabase-url');
+      const iKey = document.getElementById('cfg-supabase-key');
+      if (iUrl) iUrl.value = sbUrl;
+      if (iKey) iKey.value = sbKey;
+    }
+
+    function saveCompanySettings() {
+      const n = document.getElementById('cfg-company-name');
+      const d = document.getElementById('cfg-company-doc');
+      const p = document.getElementById('cfg-company-phone');
+      const pk = document.getElementById('cfg-pix-key');
+      companySettings = { 
+        name: n ? n.value : '', 
+        doc: d ? d.value : '', 
+        phone: p ? p.value : '', 
+        pixKey: pk ? pk.value : '' 
+      };
+      saveData();
+      syncToSupabase('settings', { id: 'company', data: companySettings });
+      showToast('Dados da empresa salvos!', 'success');
+    }
+
+    function saveUsers() {
+      const adU = document.getElementById('cfg-admin-user')?.value.trim();
+      const adP = document.getElementById('cfg-admin-pass')?.value.trim();
+      const vdU = document.getElementById('cfg-vend-user')?.value.trim();
+      const vdP = document.getElementById('cfg-vend-pass')?.value.trim();
+      
+      if (!adU || !vdU) return showToast('Preencha os logins de acesso!', 'warning');
+      
+      appUsers = {
+        admin: { user: adU, pass: adP || (appUsers.admin ? appUsers.admin.pass : '123') },
+        vendedor: { user: vdU, pass: vdP || (appUsers.vendedor ? appUsers.vendedor.pass : '123') }
+      };
+      
+      localStorage.setItem('gp_users', JSON.stringify(appUsers));
+      syncToSupabase('settings', { id: 'users', data: appUsers });
+      showToast('Usuários atualizados com sucesso!', 'success');
+    }
+
+    function exportSystemBackup() {
+      const data = { 
+        version: APP_VERSION, 
+        products, 
+        customers, 
+        sales, 
+        companySettings, 
+        usersSettings: appUsers 
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); 
+      a.href = url; 
+      a.download = 'gestaopro-backup-' + new Date().toISOString().slice(0,10) + '.json'; 
+      a.click();
+      showToast('Backup exportado com sucesso!', 'success');
+    }
+
+    function handleBackupFileSelect(e) {
+      const file = e.target.files[0]; if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        try {
+          const data = JSON.parse(evt.target.result);
+          if (data.products && Array.isArray(data.products)) products = data.products.map(normalizeProduct).filter(Boolean);
+          if (data.customers && Array.isArray(data.customers)) customers = data.customers.map(normalizeCustomer).filter(Boolean);
+          if (data.sales && Array.isArray(data.sales)) sales = data.sales.map(normalizeSale).filter(Boolean);
+          if (data.companySettings) companySettings = { ...companySettings, ...data.companySettings };
+          if (data.usersSettings) {
+            appUsers = data.usersSettings;
+            localStorage.setItem('gp_users', JSON.stringify(appUsers));
+          }
+          refreshAllData(); loadConfigInputs();
+          showToast('Backup restaurado com sucesso!', 'success');
+        } catch (err) { showToast('Arquivo de backup inválido!', 'danger'); }
+      };
+      reader.readAsText(file);
+    }
+
+    function promptResetSampleData() {
+      showConfirmModal('Restaurar Padrões', 'Tem certeza que deseja apagar todos os dados atuais e voltar ao estado de fábrica (Exemplo)?', () => {
+        products = SAMPLE_PRODUCTS.map(normalizeProduct);
+        customers = SAMPLE_CUSTOMERS.map(normalizeCustomer);
+        sales = [];
+        appUsers = { admin: { user: 'admin', pass: '123' }, vendedor: { user: 'vendedor', pass: '123' } };
+        localStorage.setItem('gp_users', JSON.stringify(appUsers));
+        refreshAllData(); loadConfigInputs();
+        showToast('Dados restaurados para o padrão!', 'success');
+      }, 'fa-rotate-right', true);
+    }
+
+    function updateSupabaseBadge(isConnected) {
+      const badge = document.getElementById('supabase-status-badge');
+      if (!badge) return;
+      if (isConnected) {
+        badge.textContent = 'Supabase Conectado';
+        badge.className = 'px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300';
+      } else {
+        badge.textContent = 'Modo Local Ativo';
+        badge.className = 'px-2.5 py-1 rounded-full text-[11px] font-semibold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300';
+      }
+    }
+
+    async function connectSupabase(isAuto = false) {
+      const url = document.getElementById('cfg-supabase-url')?.value.trim();
+      const key = document.getElementById('cfg-supabase-key')?.value.trim();
+      if (!url || !key) {
+        if (!isAuto) showToast('Preencha a URL e a Key do Supabase!', 'warning');
+        return;
+      }
+      try {
+        if (!window.supabase || typeof window.supabase.createClient !== 'function') {
+          throw new Error('Biblioteca do Supabase não carregada.');
+        }
+
+        supabaseClient = window.supabase.createClient(url, key);
+
+        localStorage.setItem('gp_sb_url', url);
+        localStorage.setItem('gp_sb_key', key);
+
+        const testRes = await supabaseClient.from('products').select('id').limit(1);
+        if (testRes.error) {
+          console.warn('Supabase test warning:', testRes.error.message);
+        }
+
+        updateSupabaseBadge(true);
+        if (!isAuto) {
+          showToast('Configurações salvas e conectado ao Supabase!', 'success');
+          await fetchSupabaseData(false);
+        }
+      } catch (e) {
+        console.error('Supabase Connect Error:', e);
+        updateSupabaseBadge(false);
+        if (!isAuto) {
+          showToast('Erro ao conectar ao Supabase: ' + (e.message || 'Verifique as credenciais'), 'danger');
+        }
+      }
+    }
+
+    function disconnectSupabase() {
+      supabaseClient = null;
+      localStorage.removeItem('gp_sb_url');
+      localStorage.removeItem('gp_sb_key');
+      const iUrl = document.getElementById('cfg-supabase-url');
+      const iKey = document.getElementById('cfg-supabase-key');
+      if (iUrl) iUrl.value = '';
+      if (iKey) iKey.value = '';
+      updateSupabaseBadge(false);
+      showToast('Supabase desconectado. Modo local ativo!', 'info');
+    }
+
+    async function syncToSupabase(table, data) {
+      if (!supabaseClient) return;
+      try {
+        const { error } = await supabaseClient.from(table).upsert(data);
+        if (error) console.error(`Supabase Sync Err [${table}]:`, error.message);
+      } catch (e) {
+        console.error(`Supabase Sync Exception [${table}]:`, e);
+      }
+    }
+
+    async function deleteFromSupabase(table, id) {
+      if (!supabaseClient) return;
+      try {
+        const { error } = await supabaseClient.from(table).delete().eq('id', id);
+        if (error) console.error(`Supabase Delete Err [${table}]:`, error.message);
+      } catch (e) {
+        console.error(`Supabase Delete Exception [${table}]:`, e);
+      }
+    }
+
+    async function fetchSupabaseData(forceOverride = false) {
+      if (!supabaseClient) return;
+      try {
+        const [pRes, cRes, sRes, stRes] = await Promise.all([
+          supabaseClient.from('products').select('*'),
+          supabaseClient.from('customers').select('*'),
+          supabaseClient.from('sales').select('*').order('date', { ascending: false }),
+          supabaseClient.from('settings').select('*')
+        ]);
+
+        if (pRes.error) throw new Error(pRes.error.message);
+        if (cRes.error) throw new Error(cRes.error.message);
+        if (sRes.error) throw new Error(sRes.error.message);
+        
+        if (pRes.data && (pRes.data.length > 0 || forceOverride)) {
+          products = pRes.data.map(normalizeProduct).filter(Boolean);
+        }
+        if (cRes.data && (cRes.data.length > 0 || forceOverride)) {
+          customers = cRes.data.map(normalizeCustomer).filter(Boolean);
+        }
+        if (sRes.data && (sRes.data.length > 0 || forceOverride)) {
+          sales = sRes.data.map(normalizeSale).filter(Boolean);
+        }
+        
+        if (stRes.data && (stRes.data.length > 0 || forceOverride)) {
+          const comp = stRes.data.find(x => x.id === 'company');
+          if (comp && comp.data) companySettings = { ...companySettings, ...comp.data };
+          const usr = stRes.data.find(x => x.id === 'users');
+          if (usr && usr.data) { 
+            appUsers = usr.data; 
+            localStorage.setItem('gp_users', JSON.stringify(appUsers)); 
+          }
+        }
+
+        saveData(); 
+        refreshAllData(); 
+        loadConfigInputs();
+        showToast('Dados da nuvem sincronizados e normalizados!', 'success');
+      } catch (err) {
+        console.error("Supabase Error:", err);
+        showToast('Erro ao puxar dados: ' + (err.message || 'Verifique o Script SQL'), 'danger');
+      }
+    }
+
+    async function forcePullSupabase() {
+      if (!supabaseClient) return showToast('Conecte o Supabase primeiro.', 'warning');
+      showConfirmModal('Baixar da Nuvem', 'Isto irá <strong>substituir todos os seus dados locais</strong> pelos dados gravados no Supabase. Continuar?', async () => {
+        showToast('Baixando dados da nuvem...', 'info');
+        await fetchSupabaseData(true);
+      }, 'fa-cloud-arrow-down', false);
+    }
+
+    async function forcePushSupabase() {
+      if (!supabaseClient) return showToast('Conecte o Supabase primeiro.', 'warning');
+      showConfirmModal('Enviar para a Nuvem', 'Isto irá <strong>enviar todo o seu catálogo, clientes e histórico de vendas locais</strong> para o Supabase. Deseja continuar?', async () => {
+        showToast('Enviando dados para a nuvem...', 'info');
+        try {
+          if (products.length) await supabaseClient.from('products').upsert(products);
+          if (customers.length) await supabaseClient.from('customers').upsert(customers);
+          if (sales.length) await supabaseClient.from('sales').upsert(sales);
+          await supabaseClient.from('settings').upsert([
+            { id: 'company', data: companySettings },
+            { id: 'users', data: appUsers }
+          ]);
+          showToast('Todos os dados foram enviados para o Supabase com sucesso!', 'success');
+        } catch (err) {
+          console.error(err);
+          showToast('Falha no upload! Verifique se executou o Script SQL no Supabase.', 'danger');
+        }
+      }, 'fa-cloud-arrow-up', false);
+    }
+
+    function showSqlSchemaModal() {
+      const modal = document.getElementById('modal-sql');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeSqlSchemaModal() {
+      const modal = document.getElementById('modal-sql');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function copySqlScript() {
+      const pre = document.getElementById('sql-script-content');
+      if (!pre) return;
+      const text = pre.textContent;
+      try {
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        textarea.remove();
+        showToast('Script SQL copiado com sucesso!', 'success');
+      } catch (err) {
+        showToast('Erro ao copiar script SQL.', 'danger');
+      }
     }
   </script>
 </body>
