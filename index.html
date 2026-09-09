@@ -1599,7 +1599,7 @@
     function shareReceiptWhatsApp() {
       if (!currentLastSale) return;
       const s = currentLastSale;
-      let text = `*COMPROVANTE DE VENDA - ${escapeHtml(companySettings.name)}*\n`;
+      let text = `*COMPROVANTE DE COMPRA - ${escapeHtml(companySettings.name)}*\n`;
       text += `Cód: ${s.id}\nData: ${new Date(s.date).toLocaleString('pt-BR')}\nCliente: ${escapeHtml(s.customerName)}\n\n`;
       text += `*Itens:*\n`;
       s.items.forEach(i => {
