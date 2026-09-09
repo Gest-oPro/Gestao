@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GestãoPro - Vendas & Estoque</title>
+  <title>GestãoPro - Vendas & Estoque v3.0.1</title>
   
   <!-- Tailwind CSS CDN com suporte a Dark Mode via classe -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -50,7 +50,7 @@
       .no-print { display: none !important; }
     }
 
-    /* Scrollbar personalizada */
+    /* Scrollbars elegantes */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: rgba(100, 116, 139, 0.1); }
     ::-webkit-scrollbar-thumb { background: rgba(100, 116, 139, 0.3); border-radius: 4px; }
@@ -59,15 +59,15 @@
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 antialiased min-h-screen flex flex-col transition-colors duration-200">
 
-  <!-- ================= NOTIFICAÇÃO TOAST ================= -->
+  <!-- NOTIFICAÇÃO TOAST -->
   <div id="toast-container" class="fixed top-4 right-4 z-[60] flex flex-col gap-2 pointer-events-none max-w-sm w-full"></div>
 
-  <!-- ================= TELA DE LOGIN ================= -->
+  <!-- TELA DE LOGIN -->
   <div id="login-screen" class="fixed inset-0 z-50 bg-gradient-to-br from-indigo-950 via-slate-900 to-brand-900 flex items-center justify-center p-4">
     <div class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-3xl shadow-2xl p-6 sm:p-8 max-w-md w-full border border-white/20 dark:border-slate-800 text-slate-800 dark:text-white">
       
       <div class="flex items-center justify-between mb-4">
-        <span class="text-[11px] font-bold tracking-wider uppercase px-2.5 py-1 bg-indigo-50 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 rounded-lg app-version-badge">v2.9.0</span>
+        <span class="text-[11px] font-bold tracking-wider uppercase px-2.5 py-1 bg-indigo-50 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 rounded-lg app-version-badge">v3.0.1</span>
         <button onclick="toggleTheme()" type="button" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:scale-105 transition" title="Alternar Tema">
           <i class="theme-icon fa-solid fa-moon"></i>
         </button>
@@ -108,10 +108,10 @@
     </div>
   </div>
 
-  <!-- ================= APLICAÇÃO PRINCIPAL ================= -->
+  <!-- APLICAÇÃO PRINCIPAL -->
   <div id="app-wrapper" class="hidden flex-1 flex flex-col md:flex-row min-h-screen">
     
-    <!-- SIDEBAR (Desktop) -->
+    <!-- SIDEBAR DESKTOP -->
     <aside class="w-64 bg-slate-900 dark:bg-slate-950 text-slate-300 flex-shrink-0 hidden md:flex flex-col justify-between border-r border-slate-800">
       <div>
         <div class="p-5 flex items-center justify-between border-b border-slate-800">
@@ -155,7 +155,7 @@
       <div class="p-4 border-t border-slate-800 space-y-3">
         <div class="flex items-center justify-between">
           <span class="text-[10px] font-bold text-slate-500 tracking-wider">VERSÃO ATUAL</span>
-          <span class="text-[10px] font-bold bg-slate-800 px-2 py-0.5 rounded text-indigo-400 border border-slate-700 app-version-badge">v2.9.0</span>
+          <span class="text-[10px] font-bold bg-slate-800 px-2 py-0.5 rounded text-indigo-400 border border-slate-700 app-version-badge">v3.0.1</span>
         </div>
         <div class="flex items-center justify-between pt-1">
           <div class="flex items-center gap-2.5 truncate">
@@ -182,10 +182,10 @@
         </div>
         <div>
           <span class="font-bold text-sm leading-tight block">GestãoPro</span>
-          <span class="text-[9px] text-indigo-400 font-medium app-version-badge">v2.9.0</span>
+          <span class="text-[9px] text-indigo-400 font-medium app-version-badge">v3.0.1</span>
         </div>
       </div>
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-1.5">
         <button onclick="navigate('settings')" type="button" class="admin-only p-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white" title="Configurações">
           <i class="fa-solid fa-gear text-xs"></i>
         </button>
@@ -200,26 +200,25 @@
 
     <!-- MOBILE BOTTOM NAVIGATION -->
     <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 z-40 flex justify-around p-1.5 text-slate-600 dark:text-slate-400 shadow-xl">
-      <button onclick="navigate('dashboard')" type="button" class="mobile-nav-btn flex flex-col items-center gap-0.5 py-1 px-2 text-[11px] font-medium text-indigo-600 dark:text-indigo-400" data-view="dashboard">
+      <button onclick="navigate('dashboard')" type="button" class="mobile-nav-btn flex flex-col items-center gap-0.5 py-1 px-1.5 text-[10px] font-medium text-indigo-600 dark:text-indigo-400" data-view="dashboard">
         <i class="fa-solid fa-chart-pie text-sm"></i><span>Início</span>
       </button>
-      <button onclick="navigate('pos')" type="button" class="mobile-nav-btn flex flex-col items-center gap-0.5 py-1 px-2 text-[11px] font-medium text-slate-500 dark:text-slate-400" data-view="pos">
+      <button onclick="navigate('pos')" type="button" class="mobile-nav-btn flex flex-col items-center gap-0.5 py-1 px-1.5 text-[10px] font-medium text-slate-500 dark:text-slate-400" data-view="pos">
         <i class="fa-solid fa-cash-register text-sm text-emerald-600 dark:text-emerald-400"></i><span>PDV</span>
       </button>
-      <button onclick="navigate('inventory')" type="button" class="mobile-nav-btn flex flex-col items-center gap-0.5 py-1 px-2 text-[11px] font-medium text-slate-500 dark:text-slate-400" data-view="inventory">
+      <button onclick="navigate('inventory')" type="button" class="mobile-nav-btn flex flex-col items-center gap-0.5 py-1 px-1.5 text-[10px] font-medium text-slate-500 dark:text-slate-400" data-view="inventory">
         <i class="fa-solid fa-box-archive text-sm"></i><span>Estoque</span>
       </button>
-      <button onclick="navigate('customers')" type="button" class="mobile-nav-btn flex flex-col items-center gap-0.5 py-1 px-2 text-[11px] font-medium text-slate-500 dark:text-slate-400" data-view="customers">
+      <button onclick="navigate('customers')" type="button" class="mobile-nav-btn flex flex-col items-center gap-0.5 py-1 px-1.5 text-[10px] font-medium text-slate-500 dark:text-slate-400" data-view="customers">
         <i class="fa-solid fa-users text-sm"></i><span>Clientes</span>
       </button>
-      <button onclick="navigate('reports')" type="button" class="mobile-nav-btn admin-only flex flex-col items-center gap-0.5 py-1 px-2 text-[11px] font-medium text-slate-500 dark:text-slate-400" data-view="reports">
+      <button onclick="navigate('reports')" type="button" class="mobile-nav-btn admin-only flex flex-col items-center gap-0.5 py-1 px-1.5 text-[10px] font-medium text-slate-500 dark:text-slate-400" data-view="reports">
         <i class="fa-solid fa-chart-line text-sm"></i><span>Vendas</span>
       </button>
-      <button onclick="navigate('settings')" type="button" class="mobile-nav-btn admin-only flex flex-col items-center gap-0.5 py-1 px-2 text-[11px] font-medium text-slate-500 dark:text-slate-400" data-view="settings">
+      <button onclick="navigate('settings')" type="button" class="mobile-nav-btn admin-only flex flex-col items-center gap-0.5 py-1 px-1.5 text-[10px] font-medium text-slate-500 dark:text-slate-400" data-view="settings">
         <i class="fa-solid fa-gear text-sm"></i><span>Config</span>
       </button>
     </nav>
-
     <!-- CONTEÚDO PRINCIPAL -->
     <main class="flex-1 overflow-y-auto pb-24 md:pb-8 p-3.5 sm:p-6 md:p-8 relative">
       
@@ -235,6 +234,7 @@
           </button>
         </div>
 
+        <!-- Grade de Indicadores -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
           <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between relative">
             <div>
@@ -375,6 +375,7 @@
               <button onclick="openCustomerModal()" type="button" class="p-1.5 bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 dark:hover:bg-indigo-900 text-indigo-600 dark:text-indigo-400 rounded-lg" title="Novo cliente"><i class="fa-solid fa-user-plus"></i></button>
             </div>
 
+            <!-- Área de Crédito do Cliente -->
             <div id="pos-customer-credit-info" class="hidden px-3 py-2 bg-emerald-50 dark:bg-emerald-900/30 border-b border-emerald-100 dark:border-emerald-800/50 flex items-center justify-between text-xs">
               <div class="text-emerald-700 dark:text-emerald-400 font-semibold"><i class="fa-solid fa-piggy-bank mr-1"></i> Crédito: <span id="pos-customer-credit-balance">R$ 0,00</span></div>
               <button onclick="applyCustomerCredit()" type="button" class="px-2 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-[10px] font-bold shadow-sm">USAR CRÉDITO</button>
@@ -408,13 +409,13 @@
                 </div>
               </div>
 
-              <!-- Calculadora Dinâmica de Pagamento -->
+              <!-- Calculadora de Pagamento Recebido -->
               <div class="p-2.5 bg-slate-100 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2 text-xs mt-3">
                 <div class="flex items-center justify-between">
-                  <span class="font-bold text-slate-700 dark:text-slate-300">
-                    Valor Recebido Agora (R$):
-                    <button type="button" onclick="fillTotalReceived()" class="ml-1 text-[10px] text-indigo-600 dark:text-indigo-400 underline font-normal">(Puxar Total)</button>
-                  </span>
+                  <div class="flex items-center gap-1.5">
+                    <span class="font-bold text-slate-700 dark:text-slate-300">Valor Recebido Agora (R$):</span>
+                    <button type="button" onclick="resetReceivedToTotal()" class="text-[10px] text-indigo-600 dark:text-indigo-400 font-bold hover:underline" title="Puxar o valor total exato">(Puxar Total)</button>
+                  </div>
                   <input type="number" id="pos-amount-received" min="0" step="0.01" oninput="calculateChange()" class="w-24 px-2 py-1 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded text-right font-bold text-indigo-700 dark:text-indigo-400 outline-none" />
                 </div>
 
@@ -448,7 +449,6 @@
           </div>
         </div>
       </section>
-
       <!-- VIEW: ESTOQUE E PRODUTOS -->
       <section id="view-inventory" class="hidden max-w-7xl mx-auto space-y-5">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -531,7 +531,7 @@
         </div>
       </section>
 
-      <!-- VIEW: RELATÓRIOS -->
+      <!-- VIEW: RELATÓRIOS E HISTÓRICO DE PEDIDOS -->
       <section id="view-reports" class="hidden max-w-7xl mx-auto space-y-5">
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
           <div>
@@ -542,16 +542,25 @@
             <select id="reports-period-filter" onchange="handlePeriodFilterChange()" class="flex-1 sm:flex-none bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 shadow-sm focus:ring-2 focus:ring-indigo-500 outline-none">
               <option value="month" selected>Mês Específico</option><option value="today">Hoje</option><option value="7days">Últimos 7 Dias</option><option value="30days">Últimos 30 Dias</option><option value="all">Todo o Período</option>
             </select>
+            
+            <!-- Seletor de Mês por Nome -->
             <div id="reports-month-picker-container" class="flex items-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-1 shadow-sm">
-              <button onclick="changeSelectedMonth(-1)" type="button" class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-lg text-xs transition"><i class="fa-solid fa-chevron-left"></i></button>
-              <input type="month" id="reports-month-picker" onchange="renderReports()" class="border-0 bg-transparent text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200 px-2 py-0.5 focus:none cursor-pointer" />
-              <button onclick="changeSelectedMonth(1)" type="button" class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-lg text-xs transition"><i class="fa-solid fa-chevron-right"></i></button>
+              <button onclick="changeSelectedMonth(-1)" type="button" class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-lg text-xs transition" title="Mês anterior"><i class="fa-solid fa-chevron-left"></i></button>
+              
+              <div onclick="openReportsMonthPicker()" class="relative flex items-center px-2 py-0.5 cursor-pointer hover:text-indigo-600 transition">
+                <span id="reports-month-label" class="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200 select-none">Mês Atual</span>
+                <input type="month" id="reports-month-picker" onchange="onReportsMonthChange()" class="absolute inset-0 opacity-0 w-full h-full cursor-pointer" />
+              </div>
+
+              <button onclick="changeSelectedMonth(1)" type="button" class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-lg text-xs transition" title="Próximo mês"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
+
             <button onclick="exportReportsCSV()" type="button" class="px-3 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition border border-slate-200 dark:border-slate-700">
               <i class="fa-solid fa-file-excel text-emerald-600 text-sm"></i><span class="hidden sm:inline">Exportar CSV</span>
             </button>
           </div>
         </div>
+
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
           <div class="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
             <p class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase">Faturamento Bruto</p>
@@ -574,6 +583,7 @@
             <span class="text-xs text-emerald-600 dark:text-emerald-400 font-medium" id="report-margin-percent">0% de margem</span>
           </div>
         </div>
+
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
           <div class="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
             <h3 class="font-bold text-slate-900 dark:text-white text-sm sm:text-base mb-3">Vendas por Forma de Pagamento</h3>
@@ -584,6 +594,8 @@
             <div class="h-56 relative flex items-center justify-center"><canvas id="chart-categories"></canvas></div>
           </div>
         </div>
+
+        <!-- Histórico de Pedidos com Ação de Cancelar/Estornar -->
         <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
           <div class="p-4 border-b border-slate-100 dark:border-slate-800">
             <h3 class="font-bold text-slate-900 dark:text-white text-sm sm:text-base">Histórico de Pedidos Realizados</h3>
@@ -605,13 +617,17 @@
           </div>
         </div>
       </section>
-
-      <!-- VIEW: CONFIGURAÇÕES & BACKUP -->
+      <!-- VIEW: CONFIGURAÇÕES & SUPABASE -->
       <section id="view-settings" class="hidden max-w-5xl mx-auto space-y-5">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <div>
             <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">Configurações do Sistema</h1>
             <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Gerencie contas, base de dados e backups locais.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="forceAppUpdate()" type="button" class="px-3.5 py-2 bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 text-indigo-700 dark:text-indigo-300 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition border border-indigo-200 dark:border-indigo-800" title="Limpar cache local e forçar atualização">
+              <i class="fa-solid fa-arrows-rotate text-sm"></i><span>Forçar Atualização</span>
+            </button>
           </div>
         </div>
 
@@ -643,6 +659,7 @@
           </div>
         </div>
 
+        <!-- Conexão Supabase -->
         <div class="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
           <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2.5">
             <h2 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white flex items-center gap-2"><i class="fa-solid fa-cloud text-blue-500"></i><span>Conexão Supabase (Nuvem em Tempo Real)</span></h2>
@@ -653,8 +670,8 @@
             <div><label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Supabase Anon Key</label><input type="password" id="cfg-supabase-key" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..." class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm font-mono dark:text-white" /></div>
           </div>
           <div class="flex flex-wrap gap-2.5 pt-2">
-            <button onclick="connectSupabase()" type="button" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-sm flex items-center gap-1.5"><i class="fa-solid fa-link"></i><span>Salvar e Conectar</span></button>
-            <button onclick="disconnectSupabase()" type="button" class="px-4 py-2.5 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-xs sm:text-sm font-semibold shadow-sm flex items-center gap-1.5"><i class="fa-solid fa-link-slash"></i><span>Desconectar</span></button>
+            <button onclick="saveAndConnectSupabase()" type="button" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-sm flex items-center gap-1.5"><i class="fa-solid fa-link"></i><span>Salvar e Conectar</span></button>
+            <button onclick="disconnectSupabase()" type="button" class="px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-1.5"><i class="fa-solid fa-link-slash"></i><span>Desconectar</span></button>
             <button onclick="showSqlSchemaModal()" type="button" class="px-4 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-1.5 border border-slate-200 dark:border-slate-700"><i class="fa-solid fa-code"></i><span>Ver Script SQL</span></button>
             
             <button onclick="forcePullSupabase()" type="button" class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-sm flex items-center gap-1.5 ml-auto"><i class="fa-solid fa-cloud-arrow-down"></i><span class="hidden sm:inline">Baixar da Nuvem</span></button>
@@ -692,11 +709,9 @@
           </div>
         </div>
       </section>
-
     </main>
   </div>
-
-  <!-- ================= MODAL DE PRODUTO ================= -->
+  <!-- MODAL DE PRODUTO -->
   <div id="modal-product" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl max-w-lg w-full p-6 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-white">
       <div class="flex justify-between items-center mb-4 border-b border-slate-100 dark:border-slate-800 pb-2">
@@ -743,7 +758,7 @@
     </div>
   </div>
 
-  <!-- ================= MODAL DE CLIENTE ================= -->
+  <!-- MODAL DE CLIENTE -->
   <div id="modal-customer" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl max-w-lg w-full p-6 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-white">
       <div class="flex justify-between items-center mb-4 border-b border-slate-100 dark:border-slate-800 pb-2">
@@ -778,7 +793,7 @@
     </div>
   </div>
 
-  <!-- ================= MODAL DE ENTRADA RÁPIDA DE ESTOQUE ================= -->
+  <!-- MODAL DE ENTRADA RÁPIDA DE ESTOQUE -->
   <div id="modal-stock-entry" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl max-w-sm w-full p-6 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-white">
       <div class="flex justify-between items-center mb-4 border-b border-slate-100 dark:border-slate-800 pb-2">
@@ -802,7 +817,7 @@
     </div>
   </div>
 
-  <!-- ================= MODAL EDITAR DATA VENDA ================= -->
+  <!-- MODAL EDITAR DATA VENDA -->
   <div id="modal-edit-date" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl max-w-sm w-full p-6 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-white">
       <div class="flex justify-between items-center mb-4 border-b border-slate-100 dark:border-slate-800 pb-2">
@@ -822,14 +837,14 @@
     </div>
   </div>
 
-  <!-- ================= MODAL SCRIPT SQL ================= -->
+  <!-- MODAL SCRIPT SQL -->
   <div id="modal-sql" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl max-w-2xl w-full p-6 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-white flex flex-col max-h-[90vh]">
       <div class="flex justify-between items-center mb-4 border-b border-slate-100 dark:border-slate-800 pb-2">
         <h3 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-code text-indigo-500"></i> Script SQL Supabase</h3>
         <button onclick="closeSqlSchemaModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i class="fa-solid fa-xmark text-xl"></i></button>
       </div>
-      <p class="text-xs text-slate-500 mb-3">Copie o código abaixo e cole no <strong>SQL Editor</strong> do seu painel Supabase. As regras RLS foram desativadas para permitir o fluxo completo.</p>
+      <p class="text-xs text-slate-500 mb-3">Copie o código abaixo e execute no <strong>SQL Editor</strong> do seu painel Supabase. As regras de RLS foram desativadas para garantir leitura e escrita diretas.</p>
       <div class="flex-1 overflow-y-auto bg-slate-950 p-4 rounded-xl relative">
         <button type="button" onclick="copySqlScript()" class="absolute top-2 right-2 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-bold rounded-lg transition"><i class="fa-solid fa-copy mr-1"></i> Copiar</button>
         <pre id="sql-script-content" class="text-[11px] text-emerald-400 font-mono whitespace-pre-wrap">
@@ -860,7 +875,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
     </div>
   </div>
 
-  <!-- ================= MODAL DE RECIBO ================= -->
+  <!-- MODAL DE RECIBO COM AVISO DE TROCA -->
   <div id="modal-receipt" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl max-w-sm w-full p-6 space-y-4 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-white">
       <div class="text-center no-print">
@@ -884,7 +899,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
     </div>
   </div>
 
-  <!-- ================= MODAL DE CONFIRMAÇÃO ================= -->
+  <!-- MODAL DE CONFIRMAÇÃO -->
   <div id="modal-confirm" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl max-w-sm w-full p-6 text-center space-y-4 border border-slate-200 dark:border-slate-800">
       <div id="confirm-modal-icon-container" class="w-14 h-14 bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 rounded-2xl flex items-center justify-center text-2xl mx-auto">
@@ -900,9 +915,8 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       </div>
     </div>
   </div>
-
   <script>
-    const APP_VERSION = 'v2.9.0';
+    const APP_VERSION = 'v3.0.1';
     
     const CATEGORIES = [
       'Alimentos & Bebidas', 'Mercearia & Limpeza', 'Higiene & Cosméticos',
@@ -945,13 +959,10 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
     let weeklyChartInstance = null;
     let paymentChartInstance = null;
     let categoryChartInstance = null;
-
-    // Normalizadores para blindar contra campos em minúsculas do Postgres ou tipos inválidos
     function normalizeProduct(p) {
-      if (!p) return null;
       return {
-        id: String(p.id || 'P-' + Date.now()),
-        name: p.name || 'Produto sem Nome',
+        id: String(p.id),
+        name: p.name || 'Produto Sem Nome',
         barcode: p.barcode || '',
         category: p.category || 'Variedades & Outros',
         costPrice: Number(p.costPrice ?? p.costprice ?? 0) || 0,
@@ -963,10 +974,9 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
     }
 
     function normalizeCustomer(c) {
-      if (!c) return null;
       return {
-        id: String(c.id || 'C-' + Date.now()),
-        name: c.name || 'Cliente',
+        id: String(c.id),
+        name: c.name || 'Cliente Sem Nome',
         phone: c.phone || '',
         email: c.email || '',
         address: c.address || '',
@@ -976,75 +986,72 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
     }
 
     function normalizeSale(s) {
-      if (!s) return null;
       let parsedItems = [];
-      try {
-        if (Array.isArray(s.items)) parsedItems = s.items;
-        else if (typeof s.items === 'string') parsedItems = JSON.parse(s.items || '[]');
-      } catch (e) {
-        parsedItems = [];
+      if (Array.isArray(s.items)) {
+        parsedItems = s.items;
+      } else if (typeof s.items === 'string') {
+        try { parsedItems = JSON.parse(s.items); } catch(e) { parsedItems = []; }
       }
-
       return {
-        id: String(s.id || 'V-' + Date.now()),
+        id: String(s.id),
         date: s.date || new Date().toISOString(),
         seller: s.seller || 'Vendedor',
-        customerId: s.customerId ?? s.customerid ?? null,
-        customerName: s.customerName ?? s.customername ?? 'Consumidor',
-        customerPhone: s.customerPhone ?? s.customerphone ?? '',
+        customerId: s.customerId || s.customerid || null,
+        customerName: s.customerName || s.customername || 'Consumidor',
+        customerPhone: s.customerPhone || s.customerphone || '',
         items: parsedItems,
-        subtotal: Number(s.subtotal ?? s.total ?? 0) || 0,
+        subtotal: Number(s.subtotal ?? 0) || 0,
         discount: Number(s.discount ?? 0) || 0,
         creditUsed: Number(s.creditUsed ?? s.creditused ?? 0) || 0,
         total: Number(s.total ?? 0) || 0,
         totalCost: Number(s.totalCost ?? s.totalcost ?? 0) || 0,
-        paymentMethod: s.paymentMethod ?? s.paymentmethod ?? 'pix',
+        paymentMethod: s.paymentMethod || s.paymentmethod || 'pix',
         receivedAmount: Number(s.receivedAmount ?? s.receivedamount ?? 0) || 0,
         changeAmount: Number(s.changeAmount ?? s.changeamount ?? 0) || 0,
         debtAmount: Number(s.debtAmount ?? s.debtamount ?? 0) || 0,
         creditGenerated: Number(s.creditGenerated ?? s.creditgenerated ?? 0) || 0,
-        dueDate: s.dueDate ?? s.duedate ?? null,
+        dueDate: s.dueDate || s.duedate || null,
         status: s.status || 'paid'
       };
     }
 
     window.addEventListener('DOMContentLoaded', () => {
       initTheme();
-      document.querySelectorAll('.app-version-badge').forEach(el => el.textContent = APP_VERSION);
+      updateVersionDisplay();
       
       const picker = document.getElementById('reports-month-picker');
       if (picker) {
         const d = new Date();
         picker.value = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+        updateMonthLabel();
       }
 
       // Recupera credenciais locais
       try {
         const savedUsers = JSON.parse(localStorage.getItem('gp_users'));
-        if (savedUsers && (savedUsers.admin || savedUsers.vendedor)) appUsers = savedUsers;
-      } catch (e) {}
+        if (savedUsers && savedUsers.admin) appUsers = savedUsers;
+      } catch (e) { }
 
-      // Recupera dados locais com higienização completa
+      // Recupera dados locais com normalização
       try {
-        const rawProducts = JSON.parse(localStorage.getItem('gp_products')) || SAMPLE_PRODUCTS;
-        products = rawProducts.map(normalizeProduct).filter(Boolean);
+        const rawP = JSON.parse(localStorage.getItem('gp_products'));
+        products = Array.isArray(rawP) && rawP.length ? rawP.map(normalizeProduct) : SAMPLE_PRODUCTS.map(normalizeProduct);
 
-        const rawCustomers = JSON.parse(localStorage.getItem('gp_customers')) || SAMPLE_CUSTOMERS;
-        customers = rawCustomers.map(normalizeCustomer).filter(Boolean);
+        const rawC = JSON.parse(localStorage.getItem('gp_customers'));
+        customers = Array.isArray(rawC) && rawC.length ? rawC.map(normalizeCustomer) : SAMPLE_CUSTOMERS.map(normalizeCustomer);
 
-        const rawSales = JSON.parse(localStorage.getItem('gp_sales')) || [];
-        sales = rawSales.map(normalizeSale).filter(Boolean);
+        const rawS = JSON.parse(localStorage.getItem('gp_sales'));
+        sales = Array.isArray(rawS) ? rawS.map(normalizeSale) : [];
 
         const savedCompany = JSON.parse(localStorage.getItem('gp_company'));
-        if (savedCompany) companySettings = { ...companySettings, ...savedCompany };
+        if (savedCompany) companySettings = Object.assign(companySettings, savedCompany);
       } catch (e) {
-        console.error('Erro ao ler localStorage:', e);
         products = SAMPLE_PRODUCTS.map(normalizeProduct);
         customers = SAMPLE_CUSTOMERS.map(normalizeCustomer);
         sales = [];
       }
 
-      // Sessão
+      // Sessão ativa?
       try {
         const savedUser = sessionStorage.getItem('gp_session_user');
         if (savedUser) {
@@ -1058,18 +1065,17 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       populatePosCustomerSelect();
       setupKeyboardShortcuts();
       
-      // Auto-conectar ao Supabase se chaves existirem
+      // Conectar ao Supabase se as chaves existirem
       const savedSbUrl = localStorage.getItem('gp_sb_url');
       const savedSbKey = localStorage.getItem('gp_sb_key');
       if (savedSbUrl && savedSbKey) {
         const iUrl = document.getElementById('cfg-supabase-url');
         const iKey = document.getElementById('cfg-supabase-key');
-        if (iUrl) iUrl.value = savedSbUrl;
-        if (iKey) iKey.value = savedSbKey;
+        if(iUrl) iUrl.value = savedSbUrl;
+        if(iKey) iKey.value = savedSbKey;
         connectSupabase(true);
       }
     });
-
     function escapeHtml(unsafe) {
       if (unsafe == null) return '';
       return String(unsafe).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
@@ -1078,6 +1084,47 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
     function formatCurrency(val) {
       const num = Number(val);
       return (isNaN(num) ? 0 : num).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    function formatMonthYearLong(yearMonthStr) {
+      if (!yearMonthStr) return '';
+      const parts = yearMonthStr.split('-');
+      if (parts.length < 2) return yearMonthStr;
+      const y = parts[0];
+      const m = parseInt(parts[1], 10);
+      const monthNames = [
+        'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+        'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+      ];
+      const monthName = monthNames[m - 1] || parts[1];
+      return `${monthName} de ${y}`;
+    }
+
+    function updateMonthLabel() {
+      const picker = document.getElementById('reports-month-picker');
+      const label = document.getElementById('reports-month-label');
+      if (picker && label && picker.value) {
+        label.textContent = formatMonthYearLong(picker.value);
+      }
+    }
+
+    function openReportsMonthPicker() {
+      const picker = document.getElementById('reports-month-picker');
+      if (!picker) return;
+      try {
+        if (typeof picker.showPicker === 'function') {
+          picker.showPicker();
+        } else {
+          picker.click();
+        }
+      } catch (e) {
+        picker.focus();
+      }
+    }
+
+    function onReportsMonthChange() {
+      updateMonthLabel();
+      renderReports();
     }
 
     function showToast(message, type = 'info') {
@@ -1091,6 +1138,18 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       c.appendChild(t);
       setTimeout(() => t.classList.remove('-translate-y-2', 'opacity-0'), 10);
       setTimeout(() => { t.classList.add('opacity-0', '-translate-y-2'); setTimeout(() => t.remove(), 300); }, 3200);
+    }
+
+    function updateVersionDisplay() {
+      document.querySelectorAll('.app-version-badge').forEach(el => el.textContent = APP_VERSION);
+    }
+
+    function forceAppUpdate() {
+      localStorage.removeItem('gp_version_check');
+      showToast('Recarregando sistema...', 'info');
+      setTimeout(() => {
+        window.location.href = window.location.pathname + '?v=' + Date.now();
+      }, 500);
     }
 
     function initTheme() {
@@ -1114,7 +1173,6 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
     function updateThemeIcons(isDark) {
       document.querySelectorAll('.theme-icon').forEach(i => i.className = isDark ? 'theme-icon fa-solid fa-sun text-amber-400' : 'theme-icon fa-solid fa-moon text-slate-600 dark:text-slate-300');
     }
-
     function handleLogin(e) {
       if (e) e.preventDefault();
       const uInput = document.getElementById('login-username');
@@ -1124,10 +1182,10 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       const u = uInput.value.trim().toLowerCase();
       const p = pInput.value.trim();
       
-      if (appUsers.admin && u === appUsers.admin.user.toLowerCase() && p === appUsers.admin.pass) {
+      if (u === appUsers.admin.user && p === appUsers.admin.pass) {
         currentUser = { username: appUsers.admin.user, name: 'Administrador', role: 'admin' };
       }
-      else if (appUsers.vendedor && u === appUsers.vendedor.user.toLowerCase() && p === appUsers.vendedor.pass) {
+      else if (u === appUsers.vendedor.user && p === appUsers.vendedor.pass) {
         currentUser = { username: appUsers.vendedor.user, name: 'Vendedor Balcão', role: 'vendedor' };
       }
       else {
@@ -1168,7 +1226,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       if (mobBadge) mobBadge.textContent = isAdmin ? 'Admin' : 'Vendedor';
 
       document.querySelectorAll('.admin-only').forEach(el => el.classList.toggle('hidden', !isAdmin));
-      document.querySelectorAll('.app-version-badge').forEach(el => el.textContent = APP_VERSION);
+      updateVersionDisplay();
       navigate('dashboard');
       refreshAllData();
     }
@@ -1196,12 +1254,23 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
         const el = document.getElementById('view-' + v);
         if (el) el.classList.toggle('hidden', v !== view);
       });
-      document.querySelectorAll('.nav-btn').forEach(b => { b.classList.remove('bg-indigo-600','text-white','shadow-md'); b.classList.add('text-slate-400','hover:text-white','hover:bg-slate-800/80'); });
+      document.querySelectorAll('.nav-btn').forEach(b => { 
+        b.classList.remove('bg-indigo-600','text-white','shadow-md'); 
+        b.classList.add('text-slate-400','hover:text-white','hover:bg-slate-800/80'); 
+      });
       const nb = document.getElementById('nav-' + view);
-      if (nb) { nb.classList.remove('text-slate-400','hover:text-white','hover:bg-slate-800/80'); nb.classList.add('bg-indigo-600','text-white','shadow-md'); }
+      if (nb) { 
+        nb.classList.remove('text-slate-400','hover:text-white','hover:bg-slate-800/80'); 
+        nb.classList.add('bg-indigo-600','text-white','shadow-md'); 
+      }
       document.querySelectorAll('.mobile-nav-btn').forEach(b => {
-        if (b.dataset.view === view) { b.classList.add('text-indigo-600','dark:text-indigo-400'); b.classList.remove('text-slate-500','dark:text-slate-400'); }
-        else { b.classList.remove('text-indigo-600','dark:text-indigo-400'); b.classList.add('text-slate-500','dark:text-slate-400'); }
+        if (b.dataset.view === view) { 
+          b.classList.add('text-indigo-600','dark:text-indigo-400'); 
+          b.classList.remove('text-slate-500','dark:text-slate-400'); 
+        } else { 
+          b.classList.remove('text-indigo-600','dark:text-indigo-400'); 
+          b.classList.add('text-slate-500','dark:text-slate-400'); 
+        }
       });
       if (view === 'dashboard') renderDashboard();
       if (view === 'pos') { renderPosCatalogue(); populatePosCustomerSelect(); setTimeout(() => document.getElementById('pos-search-input')?.focus(), 100); }
@@ -1214,23 +1283,15 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       const tEl = document.getElementById('confirm-modal-title');
       const dEl = document.getElementById('confirm-modal-desc');
       const iEl = document.getElementById('confirm-modal-icon');
-      const icContainer = document.getElementById('confirm-modal-icon-container');
-      const actBtn = document.getElementById('confirm-modal-action-btn');
-
+      const bEl = document.getElementById('confirm-modal-action-btn');
       if (tEl) tEl.textContent = title;
       if (dEl) dEl.innerHTML = message;
       if (iEl) iEl.className = 'fa-solid ' + icon;
-      if (icContainer) {
-        icContainer.className = isDanger 
-          ? 'w-14 h-14 bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 rounded-2xl flex items-center justify-center text-2xl mx-auto'
-          : 'w-14 h-14 bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 rounded-2xl flex items-center justify-center text-2xl mx-auto';
-      }
-      if (actBtn) {
-        actBtn.className = isDanger
+      if (bEl) {
+        bEl.className = isDanger 
           ? 'flex-1 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-semibold rounded-xl text-xs shadow-md transition'
           : 'flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-xs shadow-md transition';
       }
-
       confirmCallback = callback;
       const m = document.getElementById('modal-confirm');
       if (m) m.classList.remove('hidden');
@@ -1246,7 +1307,6 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       if (typeof confirmCallback === 'function') confirmCallback();
       closeConfirmModal();
     }
-
     function renderDashboard() {
       const today = new Date().toISOString().slice(0, 10);
       const month = today.slice(0, 7);
@@ -1254,15 +1314,13 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       
       sales.forEach(s => {
         if (s.status === 'cancelled') return;
-        const tot = Number(s.total) || 0;
-        const cst = Number(s.totalCost) || 0;
-        if (s.date && s.date.startsWith(today)) { sToday += tot; cToday++; }
-        if (s.date && s.date.startsWith(month)) { sMonth += tot; pMonth += (tot - cst); }
+        if (s.date && s.date.startsWith(today)) { sToday += s.total; cToday++; }
+        if (s.date && s.date.startsWith(month)) { sMonth += s.total; pMonth += (s.total - (s.totalCost || 0)); }
       });
-
       const low = products.filter(p => Number(p.stock) <= Number(p.minStock));
-      const totalInvested = products.reduce((acc, p) => acc + (Number(p.stock || 0) * Number(p.costPrice || 0)), 0);
-      const totalItems = products.reduce((acc, p) => acc + Number(p.stock || 0), 0);
+      
+      const totalInvested = products.reduce((acc, p) => acc + (Number(p.stock) * Number(p.costPrice || 0)), 0);
+      const totalItems = products.reduce((acc, p) => acc + Number(p.stock), 0);
 
       const elst = document.getElementById('dash-sales-today');
       const eloc = document.getElementById('dash-orders-count');
@@ -1285,15 +1343,15 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
         tb.innerHTML = low.length === 0 ? '<tr><td colspan="3" class="py-6 text-center text-slate-400 text-xs">Estoque saudável!</td></tr>' : 
           low.map(p => `<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
             <td class="py-2 px-3 font-semibold dark:text-white truncate max-w-[120px]">${escapeHtml(p.name)}</td>
-            <td class="py-2 px-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold ${p.stock <= 0 ? 'bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-400' : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'}">${p.stock}</span></td>
+            <td class="py-2 px-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold ${p.stock==0?'bg-rose-100 text-rose-700':'bg-amber-100 text-amber-800'}">${p.stock}</span></td>
             <td class="py-2 px-3 text-right"><button onclick="quickStockAdd('${p.id}')" class="px-2 py-1 bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 rounded-lg text-xs">+ Repor</button></td>
           </tr>`).join('');
       }
 
-      const pendingDebts = sales.filter(s => s.status === 'partial' && Number(s.debtAmount || 0) > 0);
+      const pendingDebts = sales.filter(s => s.status === 'partial' && s.debtAmount > 0);
       pendingDebts.sort((a,b) => new Date(a.dueDate || 0) - new Date(b.dueDate || 0));
       
-      const totalDebts = pendingDebts.reduce((acc, s) => acc + (Number(s.debtAmount) || 0), 0);
+      const totalDebts = pendingDebts.reduce((acc, s) => acc + s.debtAmount, 0);
       const eltd = document.getElementById('dash-debts-total');
       const eldc = document.getElementById('dash-debts-count');
       if(eltd) eltd.textContent = formatCurrency(totalDebts);
@@ -1307,10 +1365,9 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
           debtTb.innerHTML = pendingDebts.map(s => {
             const isOverdue = s.dueDate && new Date(s.dueDate) < new Date(today);
             const badge = isOverdue ? 'bg-rose-100 text-rose-700 dark:bg-rose-900/60 dark:text-rose-400' : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300';
-            const dateStr = s.dueDate ? new Date(s.dueDate).toLocaleDateString('pt-BR') : 'Sem data';
             return `<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
               <td class="py-2 px-3 font-semibold dark:text-white truncate max-w-[120px]">${escapeHtml(s.customerName)}</td>
-              <td class="py-2 px-3"><span class="${badge} px-1.5 py-0.5 rounded text-[10px] font-bold">${dateStr}</span></td>
+              <td class="py-2 px-3"><span class="${badge} px-1.5 py-0.5 rounded text-[10px] font-bold">${s.dueDate ? new Date(s.dueDate).toLocaleDateString('pt-BR') : '-'}</span></td>
               <td class="py-2 px-3 font-bold text-rose-600 dark:text-rose-400 text-right">${formatCurrency(s.debtAmount)}</td>
               <td class="py-2 px-3 text-center"><button onclick="receiveDebt('${s.id}')" title="Dar Baixa" class="px-2 py-1 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 rounded-lg text-xs"><i class="fa-solid fa-check"></i></button></td>
             </tr>`;
@@ -1326,15 +1383,12 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       const map = {};
       sales.forEach(s => {
         if (s.status === 'cancelled') return;
-        const itemsList = Array.isArray(s.items) ? s.items : [];
-        itemsList.forEach(i => {
-          if (i && i.name) map[i.name] = (map[i.name] || 0) + (Number(i.qty) || 0);
-        });
+        (s.items || []).forEach(i => map[i.name] = (map[i.name]||0) + i.qty);
       });
       const sorted = Object.entries(map).sort((a,b)=>b[1]-a[1]).slice(0,4);
       const c = document.getElementById('dash-top-products');
       if(c) {
-        c.innerHTML = sorted.length ? sorted.map((s,i)=>`<div class="flex justify-between items-center text-xs p-2 bg-slate-50 dark:bg-slate-800 rounded-lg border dark:border-slate-700"><span class="font-semibold dark:text-white">${i+1}. ${escapeHtml(s[0])}</span><span class="font-bold dark:text-white">${s[1]} un.</span></div>`).join('') : '<p class="text-xs text-slate-400 py-4 text-center">Nenhuma venda registrada.</p>';
+        c.innerHTML = sorted.length ? sorted.map((s,i)=>`<div class="flex justify-between items-center text-xs p-2 bg-slate-50 dark:bg-slate-800 rounded-lg border dark:border-slate-700"><span class="font-semibold dark:text-white truncate max-w-[160px]">${i+1}. ${escapeHtml(s[0])}</span><span class="font-bold dark:text-white">${s[1]} un.</span></div>`).join('') : '<p class="text-xs text-slate-400 py-4 text-center">Nenhuma venda.</p>';
       }
     }
 
@@ -1345,26 +1399,25 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       for(let i=6;i>=0;i--){
         const d = new Date(); d.setDate(d.getDate()-i);
         lbls.push(d.toLocaleDateString('pt-BR',{weekday:'short'}));
-        const dayStr = d.toISOString().slice(0,10);
-        const dayTotal = sales
-          .filter(s => s.status !== 'cancelled' && s.date && s.date.startsWith(dayStr))
-          .reduce((a,s) => a + (Number(s.total) || 0), 0);
-        dta.push(dayTotal);
+        dta.push(sales.filter(s=>s.status !== 'cancelled' && s.date && s.date.startsWith(d.toISOString().slice(0,10))).reduce((a,s)=>a+s.total,0));
       }
       const isDark = document.documentElement.classList.contains('dark');
       const tickColor = isDark ? '#94a3b8' : '#475569';
       const gridColor = isDark ? 'rgba(148,163,184,0.12)' : 'rgba(100,116,139,0.1)';
       if(weeklyChartInstance) weeklyChartInstance.destroy();
-      weeklyChartInstance = new Chart(ctx, { type:'bar', data:{labels:lbls, datasets:[{data:dta, backgroundColor:'#6366f1', borderRadius:4}]}, options:{
-        responsive:true, maintainAspectRatio:false,
-        plugins:{legend:{display:false}},
-        scales:{
-          x:{ ticks:{ color: tickColor, font:{size:10} }, grid:{ color: gridColor } },
-          y:{ ticks:{ color: tickColor, font:{size:10} }, grid:{ color: gridColor }, beginAtZero:true }
-        }
-      } });
+      weeklyChartInstance = new Chart(ctx, { 
+        type:'bar', 
+        data:{labels:lbls, datasets:[{data:dta, backgroundColor:'#6366f1', borderRadius:4}]}, 
+        options:{
+          responsive:true, maintainAspectRatio:false,
+          plugins:{legend:{display:false}},
+          scales:{
+            x:{ ticks:{ color: tickColor, font:{size:10} }, grid:{ color: gridColor } },
+            y:{ ticks:{ color: tickColor, font:{size:10} }, grid:{ color: gridColor }, beginAtZero:true }
+          }
+        } 
+      });
     }
-
     function renderPosCatalogue() {
       const si = document.getElementById('pos-search-input');
       const q = (si?.value || '').toLowerCase().trim();
@@ -1372,7 +1425,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       const p = document.getElementById('pos-category-pills');
       
       if(p) {
-        p.innerHTML = `<button onclick="currentPosCategory='';renderPosCatalogue()" class="px-2.5 py-1 rounded-lg text-xs font-medium ${currentPosCategory===''?'bg-indigo-600 text-white':'bg-slate-100 dark:bg-slate-800 dark:text-slate-300'}">Todos</button>` + CATEGORIES.map(c=>`<button onclick="setPosCategory('${c}');renderPosCatalogue()" class="px-2.5 py-1 rounded-lg text-xs font-medium ${currentPosCategory===c?'bg-indigo-600 text-white':'bg-slate-100 dark:bg-slate-800 dark:text-slate-300'}">${escapeHtml(c)}</button>`).join('');
+        p.innerHTML = `<button onclick="currentPosCategory='';renderPosCatalogue()" class="px-2.5 py-1 rounded-lg text-xs font-medium whitespace-nowrap ${currentPosCategory===''?'bg-indigo-600 text-white':'bg-slate-100 dark:bg-slate-800 dark:text-slate-300'}">Todos</button>` + CATEGORIES.map(c=>`<button onclick="setPosCategory('${c}');renderPosCatalogue()" class="px-2.5 py-1 rounded-lg text-xs font-medium whitespace-nowrap ${currentPosCategory===c?'bg-indigo-600 text-white':'bg-slate-100 dark:bg-slate-800 dark:text-slate-300'}">${escapeHtml(c)}</button>`).join('');
       }
 
       if(!grid) return;
@@ -1381,22 +1434,30 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       grid.innerHTML = filt.length ? filt.map(x => {
         const out = x.stock <= 0;
         return `<div onclick="${out ? `showToast('Estoque zerado','danger')` : `addToCart('${x.id}')`}" class="bg-white dark:bg-slate-800 p-3 rounded-2xl border dark:border-slate-700 cursor-pointer hover:border-indigo-500 transition flex flex-col justify-between ${out?'opacity-60':''}">
-          <div><div class="flex justify-between mb-1"><span class="text-[9px] text-slate-400 truncate">${escapeHtml(x.category)}</span><span class="text-[9px] font-bold px-1.5 rounded ${out?'bg-rose-100 text-rose-700':'bg-slate-100 dark:bg-slate-700 dark:text-slate-200'}">${x.stock} un.</span></div>
-          <h4 class="font-bold text-xs dark:text-white leading-tight">${escapeHtml(x.name)}</h4></div>
-          <div class="mt-2 flex justify-between items-center"><span class="text-sm font-black dark:text-white">${formatCurrency(x.salePrice)}</span></div></div>`;
+          <div>
+            <div class="flex justify-between mb-1"><span class="text-[9px] text-slate-400 truncate">${escapeHtml(x.category)}</span><span class="text-[9px] font-bold px-1.5 rounded ${out?'bg-rose-100 text-rose-700':'bg-slate-100 dark:bg-slate-700 dark:text-slate-200'}">${x.stock} un.</span></div>
+            <h4 class="font-bold text-xs dark:text-white leading-tight">${escapeHtml(x.name)}</h4>
+          </div>
+          <div class="mt-2 flex justify-between items-center"><span class="text-sm font-black dark:text-white">${formatCurrency(x.salePrice)}</span></div>
+        </div>`;
       }).join('') : '<p class="col-span-full py-8 text-center text-xs text-slate-400">Sem resultados.</p>';
     }
 
     function setPosCategory(cat) { currentPosCategory = cat; renderPosCatalogue(); }
     function filterPosProducts() { renderPosCatalogue(); }
-    function clearPosSearch() { const i=document.getElementById('pos-search-input'); if(i){i.value='';i.focus()} currentPosCategory=''; renderPosCatalogue(); }
+    function clearPosSearch() { const i=document.getElementById('pos-search-input'); if(i){i.value='';i.focus();} currentPosCategory=''; renderPosCatalogue(); }
     
     function handlePosBarcodeEnter(e) {
       if(e.key==='Enter') {
         const v = e.target.value.trim().toLowerCase();
         const m = products.find(x => (x.barcode||'').toLowerCase()===v || x.name.toLowerCase()===v);
-        if(m) { m.stock<=0 ? showToast('Estoque zerado', 'danger') : addToCart(m.id); e.target.value=''; renderPosCatalogue(); }
-        else showToast('Produto não encontrado', 'warning');
+        if(m) { 
+          m.stock<=0 ? showToast('Estoque zerado', 'danger') : addToCart(m.id); 
+          e.target.value=''; 
+          renderPosCatalogue(); 
+        } else {
+          showToast('Produto não encontrado', 'warning');
+        }
       }
     }
 
@@ -1438,7 +1499,10 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
     
     function clearCart() { 
       currentCart=[]; posCreditUsed = 0;
-      const d=document.getElementById('pos-discount-input'), r=document.getElementById('pos-amount-received'), dd=document.getElementById('pos-due-date'), cb=document.getElementById('pos-save-credit');
+      const d=document.getElementById('pos-discount-input');
+      const r=document.getElementById('pos-amount-received');
+      const dd=document.getElementById('pos-due-date');
+      const cb=document.getElementById('pos-save-credit');
       if(d) d.value='0.00'; 
       if(r) { r.value=''; r.dataset.manual = ""; }
       if(dd) dd.value='';
@@ -1446,25 +1510,37 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       updateCartUI(); 
     }
 
-    function updateCartUI() {
-      const c = document.getElementById('pos-cart-items'), n = document.getElementById('pos-cart-items-count');
-      if(n) n.textContent = currentCart.reduce((a,b)=>a+b.qty,0) + ' itens';
-      if(!c) return;
-      c.innerHTML = currentCart.length ? currentCart.map(i=>`<div class="py-2 flex justify-between text-xs border-b dark:border-slate-800 last:border-0"><div class="flex-1 min-w-0"><h5 class="font-semibold dark:text-white truncate">${escapeHtml(i.name)}</h5><span class="text-[11px] text-slate-500">${formatCurrency(i.salePrice)} x ${i.qty} = <strong class="dark:text-white">${formatCurrency(i.salePrice*i.qty)}</strong></span></div><div class="flex items-center gap-1.5"><button onclick="changeCartQty('${i.id}',-1)" class="w-6 h-6 bg-slate-100 dark:bg-slate-700 dark:text-white rounded font-bold">-</button><span class="w-5 text-center dark:text-white font-bold">${i.qty}</span><button onclick="changeCartQty('${i.id}',1)" class="w-6 h-6 bg-slate-100 dark:bg-slate-700 dark:text-white rounded font-bold">+</button><button onclick="removeFromCart('${i.id}')" class="w-6 h-6 text-rose-500 hover:bg-rose-50 rounded ml-1"><i class="fa-solid fa-trash-can"></i></button></div></div>`).join('') : '<p class="py-8 text-center text-xs text-slate-400">Carrinho vazio</p>';
-      updateCartTotals();
-    }
-
-    function fillTotalReceived() {
+    function resetReceivedToTotal() {
       const sub = currentCart.reduce((a,b)=>a+(b.salePrice*b.qty),0);
       const discountEl = document.getElementById('pos-discount-input');
       const desc = discountEl ? parseFloat(discountEl.value)||0 : 0;
-      let tot = Math.max(0, sub - desc - posCreditUsed);
+      const tot = Math.max(0, sub - desc - posCreditUsed);
       const recEl = document.getElementById('pos-amount-received');
       if (recEl) {
         recEl.value = tot > 0 ? tot.toFixed(2) : '';
         recEl.dataset.manual = "";
         calculateChange();
+        showToast('Valor total sincronizado!', 'info');
       }
+    }
+
+    function updateCartUI() {
+      const c = document.getElementById('pos-cart-items'), n = document.getElementById('pos-cart-items-count');
+      if(n) n.textContent = currentCart.reduce((a,b)=>a+b.qty,0) + ' itens';
+      if(!c) return;
+      c.innerHTML = currentCart.length ? currentCart.map(i=>`<div class="py-2 flex justify-between text-xs border-b dark:border-slate-800 last:border-0">
+        <div class="flex-1 min-w-0 pr-2">
+          <h5 class="font-semibold dark:text-white truncate">${escapeHtml(i.name)}</h5>
+          <span class="text-[11px] text-slate-500">${formatCurrency(i.salePrice)} x ${i.qty} = <strong class="dark:text-white">${formatCurrency(i.salePrice*i.qty)}</strong></span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <button onclick="changeCartQty('${i.id}',-1)" class="w-6 h-6 bg-slate-100 dark:bg-slate-700 dark:text-white rounded font-bold">-</button>
+          <span class="w-5 text-center dark:text-white font-bold">${i.qty}</span>
+          <button onclick="changeCartQty('${i.id}',1)" class="w-6 h-6 bg-slate-100 dark:bg-slate-700 dark:text-white rounded font-bold">+</button>
+          <button onclick="removeFromCart('${i.id}')" class="w-6 h-6 text-rose-500 hover:bg-rose-50 rounded ml-1"><i class="fa-solid fa-trash-can"></i></button>
+        </div>
+      </div>`).join('') : '<p class="py-8 text-center text-xs text-slate-400">Carrinho vazio</p>';
+      updateCartTotals();
     }
 
     function updateCartTotals() {
@@ -1489,16 +1565,11 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       }
 
       const recEl = document.getElementById('pos-amount-received');
-      if(recEl && !recEl.dataset.manual && currentCart.length > 0) {
-        recEl.value = tot > 0 ? tot.toFixed(2) : '';
-      } else if (recEl && currentCart.length === 0) {
-        recEl.value = '';
-        recEl.dataset.manual = "";
-      }
+      if(recEl && !recEl.dataset.manual && currentCart.length > 0) recEl.value = tot > 0 ? tot.toFixed(2) : '';
+      else if (recEl && currentCart.length === 0) recEl.value = '';
       
       calculateChange();
     }
-
     function handleCustomerSelect() {
       const cs = document.getElementById('pos-customer-select');
       const custId = cs ? cs.value : '';
@@ -1534,11 +1605,13 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
 
     function selectPaymentMethod(m) {
       selectedPayment = m;
-      document.querySelectorAll('.pay-method-btn').forEach(b=>{
+      document.querySelectorAll('.pay-method-btn').forEach(b => {
         const a = b.dataset.method === m;
         b.className = `pay-method-btn py-2 rounded-xl text-xs font-semibold flex flex-col items-center gap-1 transition border ${a?'border-indigo-600 bg-indigo-50 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300':'border-slate-200 bg-white text-slate-600 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300'}`;
       });
-      fillTotalReceived();
+      // Puxa o total automaticamente caso não tenha alterado manualmente
+      const recEl = document.getElementById('pos-amount-received');
+      if (recEl && !recEl.dataset.manual) resetReceivedToTotal();
     }
 
     function calculateChange() {
@@ -1626,7 +1699,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       }
 
       currentCart.forEach(ci => { 
-        const p = products.find(x=>String(x.id)===String(ci.id)); 
+        const p=products.find(x=>String(x.id)===String(ci.id)); 
         if(p) { p.stock = Math.max(0, p.stock-ci.qty); syncToSupabase('products', p); }
       });
       
@@ -1653,50 +1726,45 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       handleCustomerSelect(); 
       openReceiptModal(s);
     }
-
     function openReceiptModal(s) {
       currentLastSale = s;
       const m = document.getElementById('receipt-modal-content');
       if(!m) return;
-      let itemsHtml = s.items.map(i=>`<tr><td>${i.qty}x</td><td class="truncate max-w-[120px]">${escapeHtml(i.name)}</td><td class="text-right">${formatCurrency(i.salePrice*i.qty)}</td></tr>`).join('');
+      let itemsHtml = (s.items || []).map(i=>`<tr><td>${i.qty}x</td><td class="truncate max-w-[120px]">${escapeHtml(i.name)}</td><td class="text-right">${formatCurrency(i.salePrice*i.qty)}</td></tr>`).join('');
       let extraHtml = '';
       if(s.discount > 0) extraHtml += `<div class="flex justify-between text-rose-600"><span>Desconto:</span> <span>-${formatCurrency(s.discount)}</span></div>`;
       if(s.creditUsed > 0) extraHtml += `<div class="flex justify-between text-emerald-600"><span>Crédito Aplicado:</span> <span>-${formatCurrency(s.creditUsed)}</span></div>`;
-      if(s.debtAmount > 0) extraHtml += `<div class="flex justify-between text-rose-600 font-bold border-t border-dashed mt-1 pt-1"><span>Ficou Devendo:</span> <span>${formatCurrency(s.debtAmount)}</span></div><div class="flex justify-between text-slate-500"><span>Vencimento:</span> <span>${new Date(s.dueDate).toLocaleDateString('pt-BR')}</span></div>`;
+      if(s.debtAmount > 0) extraHtml += `<div class="flex justify-between text-rose-600 font-bold border-t border-dashed mt-1 pt-1"><span>Ficou Devendo:</span> <span>${formatCurrency(s.debtAmount)}</span></div><div class="flex justify-between text-slate-500"><span>Vencimento:</span> <span>${s.dueDate ? new Date(s.dueDate).toLocaleDateString('pt-BR') : '-'}</span></div>`;
       if(s.creditGenerated > 0) extraHtml += `<div class="flex justify-between text-emerald-600 font-bold border-t border-dashed mt-1 pt-1"><span>Troco em Crédito:</span> <span>${formatCurrency(s.creditGenerated)}</span></div>`;
       else if(s.changeAmount > 0) extraHtml += `<div class="flex justify-between font-bold border-t border-dashed mt-1 pt-1"><span>Troco Devolvido:</span> <span>${formatCurrency(s.changeAmount)}</span></div>`;
 
       const isCancelled = s.status === 'cancelled';
+      const cancelledHeader = isCancelled ? `<div class="bg-rose-600 text-white font-bold text-center py-1 mb-2 rounded uppercase text-[10px]">*** VENDA CANCELADA / ESTORNADA ***</div>` : '';
 
-      m.innerHTML = `
-        ${isCancelled ? '<div class="text-center bg-rose-100 dark:bg-rose-900/60 text-rose-700 dark:text-rose-300 font-bold py-1 mb-2 rounded">*** VENDA CANCELADA / ESTORNADA ***</div>' : ''}
-        <div class="text-center border-b border-dashed pb-2">
-          <h2 class="font-bold text-sm">${escapeHtml(companySettings.name)}</h2>
-          <p class="text-[10px]">CUPOM NÃO FISCAL</p>
-        </div>
-        <div class="py-2 text-[11px] border-b border-dashed">
-          <div>Cód: ${s.id}</div>
-          <div>Data: ${new Date(s.date).toLocaleString('pt-BR')}</div>
-          <div>Cliente: ${escapeHtml(s.customerName)}</div>
-        </div>
-        <div class="py-2 border-b border-dashed">
-          <table class="w-full text-[11px]"><tbody>${itemsHtml}</tbody></table>
-        </div>
-        <div class="py-2 text-[11px] flex flex-col gap-0.5">
-          <div class="flex justify-between"><span>Subtotal:</span><span>${formatCurrency(s.subtotal)}</span></div>
-          ${extraHtml}
-          <div class="flex justify-between font-bold text-sm mt-1 pt-1 border-t border-slate-300 dark:border-slate-700">
-            <span>TOTAL A PAGAR:</span><span>${formatCurrency(s.total)}</span>
-          </div>
-          <div class="flex justify-between">
-            <span>Pago (${(s.paymentMethod || 'pix').toUpperCase()}):</span><span>${formatCurrency(s.receivedAmount)}</span>
-          </div>
-        </div>
-        <div class="pt-2 text-center text-[10px] text-slate-500 border-t border-dashed mt-2">
-          <p class="font-bold uppercase mb-0.5">Aviso de Troca</p>
-          <p>Toda troca de produtos deve ser feita no prazo máximo de 20 dias a partir da entrega.</p>
-        </div>
-      `;
+      m.innerHTML = `${cancelledHeader}
+      <div class="text-center border-b border-dashed pb-2">
+        <h2 class="font-bold text-sm">${escapeHtml(companySettings.name)}</h2>
+        <p class="text-[10px]">CUPOM NÃO FISCAL</p>
+      </div>
+      <div class="py-2 text-[11px] border-b border-dashed">
+        <div>Cód: ${s.id}</div>
+        <div>Data: ${new Date(s.date).toLocaleString('pt-BR')}</div>
+        <div>Cliente: ${escapeHtml(s.customerName)}</div>
+      </div>
+      <div class="py-2 border-b border-dashed">
+        <table class="w-full text-[11px]"><tbody>${itemsHtml}</tbody></table>
+      </div>
+      <div class="py-2 text-[11px] flex flex-col gap-0.5">
+        <div class="flex justify-between"><span>Subtotal:</span><span>${formatCurrency(s.subtotal)}</span></div>
+        ${extraHtml}
+        <div class="flex justify-between font-bold text-sm mt-1 pt-1 border-t border-slate-300"><span>TOTAL A PAGAR:</span><span>${formatCurrency(s.total)}</span></div>
+        <div class="flex justify-between"><span>Pago Agora (${s.paymentMethod.toUpperCase()}):</span><span>${formatCurrency(s.receivedAmount)}</span></div>
+      </div>
+      <div class="py-2 border-t border-dashed text-center text-[10px] text-slate-500 dark:text-slate-400 space-y-1">
+        <p class="font-bold">AVISO DE TROCA:</p>
+        <p>Toda troca de produtos deve ser feita no prazo máximo de 20 dias a partir da entrega.</p>
+        <p class="pt-1 font-semibold">Obrigado pela preferência!</p>
+      </div>`;
       const mr = document.getElementById('modal-receipt');
       if (mr) mr.classList.remove('hidden');
     }
@@ -1710,24 +1778,35 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       if (!currentLastSale) return;
       const s = currentLastSale;
       const storeName = companySettings.name || 'GestãoPro';
+      const pixKey = companySettings.pixKey || '48999344103 -- JORGE L SILVEIRA --BANCO DO BRASIL';
+
       let text = `*COMPROVANTE DE COMPRA -  ${storeName}*\n`;
-      text += `Cód: ${s.id}\nData: ${new Date(s.date).toLocaleString('pt-BR')}\nCliente: ${s.customerName || 'Consumidor'}\n\n`;
+      text += `Cód: ${s.id}\n`;
+      text += `Data: ${new Date(s.date).toLocaleString('pt-BR')}\n`;
+      text += `Cliente: ${s.customerName || 'Consumidor'}\n\n`;
+
       text += `*Itens:*\n`;
-      const itemsList = Array.isArray(s.items) ? s.items : [];
-      itemsList.forEach(i => {
-        text += `- ${i.qty}x ${i.name} (${formatCurrency(i.salePrice)})\n`;
+      (s.items || []).forEach(i => {
+        text += `- ${i.qty}x ${i.name} (${formatCurrency(i.salePrice * i.qty)})\n`;
       });
-      text += `\n*Total:* ${formatCurrency(s.total)}\nPagamento: ${(s.paymentMethod || '').toUpperCase()}\n`;
+
+      text += `\nSubtotal: ${formatCurrency(s.subtotal)}\n`;
+      if (s.discount > 0) text += `Desconto: -${formatCurrency(s.discount)}\n`;
+      if (s.creditUsed > 0) text += `Crédito Usado: -${formatCurrency(s.creditUsed)}\n`;
+      text += `Total: ${formatCurrency(s.total)}\n`;
+      text += `Pagamento: ${s.paymentMethod.toUpperCase()}\n`;
       if (s.debtAmount > 0) {
-        const dueStr = s.dueDate ? new Date(s.dueDate).toLocaleDateString('pt-BR') : 'Sem data';
-        text += `Valor Pendente (Fiado): ${formatCurrency(s.debtAmount)}\nVencimento: ${dueStr}\n`;
+        text += `Valor Pendente (Fiado): ${formatCurrency(s.debtAmount)}\n`;
+        text += `Vencimento: ${s.dueDate ? new Date(s.dueDate).toLocaleDateString('pt-BR') : '-'}\n`;
       }
-      text += `\nCHAVE PIX : ${companySettings.pixKey || '48999344103 -- JORGE L SILVEIRA --BANCO DO BRASIL'}\n`;
-      text += `*AVISO DE TROCA:*\nToda troca de produtos deve ser feita no prazo máximo de 20 dias a partir da entrega.\n\n`;
+
+      text += `\nCHAVE PIX : ${pixKey}\n`;
+      text += `*AVISO DE TROCA:*\n`;
+      text += `Toda troca de produtos deve ser feita no prazo máximo de 20 dias a partir da entrega.\n\n`;
       text += `Obrigado pela preferência!`;
-      
+
       const encoded = encodeURIComponent(text);
-      const phone = s.customerPhone ? String(s.customerPhone).replace(/\D/g, '') : '';
+      const phone = s.customerPhone ? s.customerPhone.replace(/\D/g, '') : '';
       const url = phone ? `https://wa.me/55${phone}?text=${encoded}` : `https://wa.me/?text=${encoded}`;
       window.open(url, '_blank');
     }
@@ -1744,7 +1823,6 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       const prodSel = document.getElementById('prod-category');
       if (prodSel) prodSel.innerHTML = '<option value="">Selecione...</option>' + CATEGORIES.map(c => `<option value="${c}">${c}</option>`).join('');
     }
-
     function renderInventoryTable() {
       const tbody = document.getElementById('inventory-table-body');
       if (!tbody) return;
@@ -1884,7 +1962,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       const filt = customers.filter(c => c.name.toLowerCase().includes(q) || (c.phone||'').toLowerCase().includes(q));
 
       tbody.innerHTML = filt.length ? filt.map(c => {
-        const cSales = sales.filter(s => String(s.customerId) === String(c.id)).length;
+        const cSales = sales.filter(s => s.status !== 'cancelled' && String(s.customerId) === String(c.id)).length;
         return `<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
           <td class="py-3 px-3 sm:px-4 font-semibold dark:text-white">${escapeHtml(c.name)}</td>
           <td class="py-3 px-3 sm:px-4 text-xs">${escapeHtml(c.phone||'-')}</td>
@@ -1918,7 +1996,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       } else title.textContent = 'Novo Cliente';
       modal.classList.remove('hidden');
     }
-    
+
     function closeCustomerModal() { document.getElementById('modal-customer').classList.add('hidden'); }
 
     function saveCustomer(e) {
@@ -1955,7 +2033,6 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
         showToast('Cliente removido!', 'success');
       });
     }
-
     function receiveDebt(saleId) {
       showConfirmModal('Receber Pagamento (Fiado)', 'Confirmar o recebimento integral deste valor pendente?', () => {
         const s = sales.find(x => String(x.id) === String(saleId));
@@ -1970,6 +2047,51 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
           refreshAllData(); syncToSupabase('sales', s);
         }
       }, 'fa-hand-holding-dollar', false);
+    }
+
+    function cancelSale(saleId) {
+      const s = sales.find(x => String(x.id) === String(saleId));
+      if (!s) return;
+      if (s.status === 'cancelled') return showToast('Esta venda já está cancelada!', 'warning');
+
+      showConfirmModal(
+        'Cancelar Venda & Estornar Estoque',
+        `Deseja realmente cancelar o pedido <strong>${s.id}</strong>?<br><br>
+        <span class="text-rose-600 font-semibold">• Os produtos serão devolvidos ao estoque imediatamente.</span><br>
+        • Ajustes de dívidas ou créditos de clientes serão revertidos.`,
+        () => executeCancelSale(s),
+        'fa-ban',
+        true
+      );
+    }
+
+    function executeCancelSale(s) {
+      // 1. Estorna itens para o estoque
+      (s.items || []).forEach(item => {
+        const p = products.find(x => String(x.id) === String(item.id));
+        if (p) {
+          p.stock += Number(item.qty || 1);
+          syncToSupabase('products', p);
+        }
+      });
+
+      // 2. Reverte débito e créditos do cliente
+      if (s.customerId) {
+        const c = customers.find(x => String(x.id) === String(s.customerId));
+        if (c) {
+          if (s.debtAmount > 0) c.debt = Math.max(0, (c.debt || 0) - s.debtAmount);
+          if (s.creditUsed > 0) c.credit = (c.credit || 0) + s.creditUsed;
+          if (s.creditGenerated > 0) c.credit = Math.max(0, (c.credit || 0) - s.creditGenerated);
+          syncToSupabase('customers', c);
+        }
+      }
+
+      // 3. Atualiza o status da venda
+      s.status = 'cancelled';
+      syncToSupabase('sales', s);
+
+      refreshAllData();
+      showToast(`Venda ${s.id} cancelada e itens estornados ao estoque!`, 'success');
     }
 
     function openEditDateModal(id) {
@@ -1999,54 +2121,30 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
         showToast('Data da compra atualizada com sucesso!', 'success');
       }
     }
-
-    function cancelSale(id) {
-      showConfirmModal('Cancelar Venda', 'Deseja realmente cancelar esta venda? <strong>Os itens serão estornados para o estoque</strong> e as dívidas/créditos ajustados.', () => {
-        executeCancelSale(id);
-      }, 'fa-ban', true);
-    }
-
-    function executeCancelSale(id) {
-      const s = sales.find(x => String(x.id) === String(id));
-      if (!s || s.status === 'cancelled') return;
-
-      const itemsList = Array.isArray(s.items) ? s.items : [];
-      itemsList.forEach(item => {
-        const prod = products.find(p => String(p.id) === String(item.id));
-        if (prod) {
-          prod.stock = (Number(prod.stock) || 0) + (Number(item.qty) || 0);
-          syncToSupabase('products', prod);
-        }
-      });
-
-      if (s.customerId) {
-        const c = customers.find(x => String(x.id) === String(s.customerId));
-        if (c) {
-          if (s.debtAmount > 0) {
-            c.debt = Math.max(0, (Number(c.debt) || 0) - Number(s.debtAmount));
-          }
-          if (s.creditUsed > 0) {
-            c.credit = (Number(c.credit) || 0) + Number(s.creditUsed);
-          }
-          if (s.creditGenerated > 0) {
-            c.credit = Math.max(0, (Number(c.credit) || 0) - Number(s.creditGenerated));
-          }
-          syncToSupabase('customers', c);
-        }
-      }
-
-      s.status = 'cancelled';
-      syncToSupabase('sales', s);
-      saveData();
-      refreshAllData();
-      showToast('Venda cancelada e estoque estornado com sucesso!', 'success');
-    }
-
     function renderReports() {
       const period = document.getElementById('reports-period-filter')?.value || 'month';
       const pickerContainer = document.getElementById('reports-month-picker-container');
       const picker = document.getElementById('reports-month-picker');
       if (pickerContainer) pickerContainer.classList.toggle('hidden', period !== 'month');
+
+      updateMonthLabel();
+
+      const descEl = document.getElementById('reports-period-description');
+      if (descEl) {
+        if (period === 'today') {
+          descEl.textContent = 'Vendas de Hoje (' + new Date().toLocaleDateString('pt-BR') + ')';
+        } else if (period === '7days') {
+          descEl.textContent = 'Vendas dos últimos 7 dias';
+        } else if (period === '30days') {
+          descEl.textContent = 'Vendas dos últimos 30 dias';
+        } else if (period === 'all') {
+          descEl.textContent = 'Histórico geral de todas as vendas';
+        } else if (period === 'month' && picker && picker.value) {
+          descEl.textContent = 'Histórico de vendas de ' + formatMonthYearLong(picker.value);
+        } else {
+          descEl.textContent = 'Histórico de vendas';
+        }
+      }
 
       let filteredSales = [...sales];
       const todayStr = new Date().toISOString().slice(0,10);
@@ -2056,11 +2154,11 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       else if (period === '7days') { const d = new Date(); d.setDate(d.getDate() - 7); filteredSales = sales.filter(s => new Date(s.date) >= d); } 
       else if (period === '30days') { const d = new Date(); d.setDate(d.getDate() - 30); filteredSales = sales.filter(s => new Date(s.date) >= d); }
 
-      const activeSales = filteredSales.filter(s => s.status !== 'cancelled');
-      const totalRev = activeSales.reduce((a,b)=>a + (Number(b.total) || 0), 0);
-      const totalCost = activeSales.reduce((a,b)=>a + (Number(b.totalCost) || 0), 0);
+      const validSales = filteredSales.filter(s => s.status !== 'cancelled');
+      const totalRev = validSales.reduce((a,b)=>a+b.total,0);
+      const totalCost = validSales.reduce((a,b)=>a+(b.totalCost||0),0);
       const netProfit = totalRev - totalCost;
-      const avgTicket = activeSales.length ? totalRev / activeSales.length : 0;
+      const avgTicket = validSales.length ? totalRev / validSales.length : 0;
       const margin = totalRev > 0 ? (netProfit / totalRev) * 100 : 0;
 
       const trev = document.getElementById('report-total-revenue');
@@ -2071,7 +2169,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       const mper = document.getElementById('report-margin-percent');
 
       if(trev) trev.textContent = formatCurrency(totalRev);
-      if(tcnt) tcnt.textContent = activeSales.length + ' vendas ativas no período';
+      if(tcnt) tcnt.textContent = validSales.length + ' vendas ativas no período';
       if(avgt) avgt.textContent = formatCurrency(avgTicket);
       if(tcost) tcost.textContent = formatCurrency(totalCost);
       if(nprof) nprof.textContent = formatCurrency(netProfit);
@@ -2092,26 +2190,24 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
             statusText = 'Fiado Parcial';
           }
 
-          const rowClass = isCancelled ? 'opacity-50 line-through bg-slate-50/50 dark:bg-slate-900/30' : 'hover:bg-slate-50 dark:hover:bg-slate-800/40';
+          const strikeClass = isCancelled ? 'line-through opacity-60' : '';
 
-          return `<tr class="${rowClass}">
-            <td class="py-3 px-3 sm:px-4 font-mono text-xs font-semibold">${s.id}</td>
-            <td class="py-3 px-3 sm:px-4 text-xs">${new Date(s.date).toLocaleString('pt-BR')}</td>
-            <td class="py-3 px-3 sm:px-4 font-medium dark:text-white">${escapeHtml(s.customerName)}</td>
+          return `<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+            <td class="py-3 px-3 sm:px-4 font-mono text-xs font-semibold ${strikeClass}">${s.id}</td>
+            <td class="py-3 px-3 sm:px-4 text-xs ${strikeClass}">${new Date(s.date).toLocaleString('pt-BR')}</td>
+            <td class="py-3 px-3 sm:px-4 font-medium dark:text-white ${strikeClass}">${escapeHtml(s.customerName)}</td>
             <td class="py-3 px-3 sm:px-4 hidden sm:table-cell"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${statusBadge}">${statusText}</span></td>
-            <td class="py-3 px-3 sm:px-4 text-right font-bold text-indigo-600 dark:text-indigo-400">${formatCurrency(s.total)}</td>
-            <td class="py-3 px-3 sm:px-4 text-center space-x-1 no-underline">
+            <td class="py-3 px-3 sm:px-4 text-right font-bold ${isCancelled ? 'text-slate-400 line-through' : 'text-indigo-600 dark:text-indigo-400'}">${formatCurrency(s.total)}</td>
+            <td class="py-3 px-3 sm:px-4 text-center space-x-1 whitespace-nowrap">
               <button onclick="openReceiptModalFromHistory('${s.id}')" class="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded text-xs" title="Ver Recibo"><i class="fa-solid fa-eye"></i></button>
-              ${!isCancelled ? `
-                <button onclick="openEditDateModal('${s.id}')" class="admin-only px-2 py-1 bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 rounded text-xs" title="Editar Data"><i class="fa-solid fa-calendar-day"></i></button>
-                <button onclick="cancelSale('${s.id}')" class="admin-only px-2 py-1 bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400 rounded text-xs" title="Cancelar Venda & Estornar Estoque"><i class="fa-solid fa-ban"></i></button>
-              ` : ''}
+              ${!isCancelled ? `<button onclick="openEditDateModal('${s.id}')" class="admin-only px-2 py-1 bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 rounded text-xs" title="Editar Data"><i class="fa-solid fa-calendar-day"></i></button>` : ''}
               ${s.status === 'partial' && !isCancelled ? `<button onclick="receiveDebt('${s.id}')" class="px-2 py-1 bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 rounded text-xs" title="Quitar Dívida"><i class="fa-solid fa-hand-holding-dollar"></i></button>` : ''}
+              ${!isCancelled ? `<button onclick="cancelSale('${s.id}')" class="admin-only px-2 py-1 bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400 rounded text-xs" title="Cancelar e Estornar"><i class="fa-solid fa-ban"></i></button>` : ''}
             </td>
           </tr>`;
         }).join('') : '<tr><td colspan="6" class="py-8 text-center text-slate-400 text-xs">Nenhuma venda encontrada no período.</td></tr>';
       }
-      renderReportsCharts(activeSales);
+      renderReportsCharts(validSales);
     }
 
     function renderReportsCharts(filteredSales) {
@@ -2121,10 +2217,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       const payCtx = document.getElementById('chart-payment-methods');
       if (payCtx) {
         const pmMap = { pix: 0, dinheiro: 0, credito: 0, debito: 0 };
-        filteredSales.forEach(s => { 
-          const method = (s.paymentMethod || 'pix').toLowerCase();
-          if (pmMap[method] !== undefined) pmMap[method] += (Number(s.total) || 0); 
-        });
+        filteredSales.forEach(s => { if (pmMap[s.paymentMethod] !== undefined) pmMap[s.paymentMethod] += s.total; });
         if (paymentChartInstance) paymentChartInstance.destroy();
         paymentChartInstance = new Chart(payCtx, {
           type: 'doughnut',
@@ -2136,13 +2229,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       const catCtx = document.getElementById('chart-categories');
       if (catCtx) {
         const catMap = {};
-        filteredSales.forEach(s => {
-          const itemsList = Array.isArray(s.items) ? s.items : [];
-          itemsList.forEach(i => { 
-            const cName = i.category || 'Variedades & Outros';
-            catMap[cName] = (catMap[cName] || 0) + (Number(i.salePrice || 0) * Number(i.qty || 1)); 
-          });
-        });
+        filteredSales.forEach(s => (s.items || []).forEach(i => { catMap[i.category] = (catMap[i.category] || 0) + (i.salePrice * i.qty); }));
         if (categoryChartInstance) categoryChartInstance.destroy();
         categoryChartInstance = new Chart(catCtx, {
           type: 'bar',
@@ -2153,13 +2240,15 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
     }
 
     function handlePeriodFilterChange() { renderReports(); }
+    
     function changeSelectedMonth(dir) {
       const picker = document.getElementById('reports-month-picker');
       if (!picker || !picker.value) return;
       const parts = picker.value.split('-');
-      let y = parseInt(parts[0]), m = parseInt(parts[1]) + dir;
+      let y = parseInt(parts[0], 10), m = parseInt(parts[1], 10) + dir;
       if (m > 12) { m = 1; y++; } else if (m < 1) { m = 12; y--; }
       picker.value = y + '-' + String(m).padStart(2, '0');
+      updateMonthLabel();
       renderReports();
     }
     
@@ -2186,9 +2275,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
         if (s.status === 'cancelled') status = 'Cancelada';
         else if (s.status === 'partial') status = 'Fiado Parcial';
         const payment = s.paymentMethod;
-        
-        const formatDec = val => (Number(val) || 0).toFixed(2).replace('.', ',');
-        
+        const formatDec = val => (val || 0).toFixed(2).replace('.', ',');
         csv += `${id};${date};${client};${status};${payment};${formatDec(s.discount)};${formatDec(s.creditUsed)};${formatDec(s.debtAmount)};${formatDec(s.totalCost)};${formatDec(s.total)}\n`;
       });
 
@@ -2201,7 +2288,6 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       
       showToast('Relatório exportado em CSV com sucesso!', 'success');
     }
-
     function loadConfigInputs() {
       const n = document.getElementById('cfg-company-name');
       const d = document.getElementById('cfg-company-doc');
@@ -2211,18 +2297,21 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       if (d) d.value = companySettings.doc || '';
       if (p) p.value = companySettings.phone || '';
       if (pk) pk.value = companySettings.pixKey || '';
+      
+      const adU = document.getElementById('cfg-admin-user');
+      const adP = document.getElementById('cfg-admin-pass');
+      const vdU = document.getElementById('cfg-vend-user');
+      const vdP = document.getElementById('cfg-vend-pass');
+      
+      if(adU) adU.value = appUsers.admin.user;
+      if(adP) adP.value = appUsers.admin.pass;
+      if(vdU) vdU.value = appUsers.vendedor.user;
+      if(vdP) vdP.value = appUsers.vendedor.pass;
 
-      const uA = document.getElementById('cfg-admin-user');
-      const uV = document.getElementById('cfg-vend-user');
-      if(uA) uA.value = (appUsers.admin && appUsers.admin.user) ? appUsers.admin.user : 'admin';
-      if(uV) uV.value = (appUsers.vendedor && appUsers.vendedor.user) ? appUsers.vendedor.user : 'vendedor';
-
-      const sbUrl = localStorage.getItem('gp_sb_url') || '';
-      const sbKey = localStorage.getItem('gp_sb_key') || '';
-      const iUrl = document.getElementById('cfg-supabase-url');
-      const iKey = document.getElementById('cfg-supabase-key');
-      if (iUrl) iUrl.value = sbUrl;
-      if (iKey) iKey.value = sbKey;
+      const sbU = document.getElementById('cfg-supabase-url');
+      const sbK = document.getElementById('cfg-supabase-key');
+      if(sbU) sbU.value = localStorage.getItem('gp_sb_url') || '';
+      if(sbK) sbK.value = localStorage.getItem('gp_sb_key') || '';
     }
 
     function saveCompanySettings() {
@@ -2230,12 +2319,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       const d = document.getElementById('cfg-company-doc');
       const p = document.getElementById('cfg-company-phone');
       const pk = document.getElementById('cfg-pix-key');
-      companySettings = { 
-        name: n ? n.value : '', 
-        doc: d ? d.value : '', 
-        phone: p ? p.value : '', 
-        pixKey: pk ? pk.value : '' 
-      };
+      companySettings = { name: n ? n.value : '', doc: d ? d.value : '', phone: p ? p.value : '', pixKey: pk ? pk.value : '' };
       saveData();
       syncToSupabase('settings', { id: 'company', data: companySettings });
       showToast('Dados da empresa salvos!', 'success');
@@ -2247,33 +2331,23 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       const vdU = document.getElementById('cfg-vend-user')?.value.trim();
       const vdP = document.getElementById('cfg-vend-pass')?.value.trim();
       
-      if (!adU || !vdU) return showToast('Preencha os logins de acesso!', 'warning');
+      if (!adU || !adP || !vdU || !vdP) return showToast('Preencha todas as credenciais de acesso!', 'warning');
       
       appUsers = {
-        admin: { user: adU, pass: adP || (appUsers.admin ? appUsers.admin.pass : '123') },
-        vendedor: { user: vdU, pass: vdP || (appUsers.vendedor ? appUsers.vendedor.pass : '123') }
+        admin: { user: adU, pass: adP },
+        vendedor: { user: vdU, pass: vdP }
       };
       
       localStorage.setItem('gp_users', JSON.stringify(appUsers));
       syncToSupabase('settings', { id: 'users', data: appUsers });
-      showToast('Usuários atualizados com sucesso!', 'success');
+      showToast('Usuários atualizados! As novas senhas já estão em vigor.', 'success');
     }
 
     function exportSystemBackup() {
-      const data = { 
-        version: APP_VERSION, 
-        products, 
-        customers, 
-        sales, 
-        companySettings, 
-        usersSettings: appUsers 
-      };
+      const data = { version: APP_VERSION, products, customers, sales, companySettings, usersSettings: appUsers };
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); 
-      a.href = url; 
-      a.download = 'gestaopro-backup-' + new Date().toISOString().slice(0,10) + '.json'; 
-      a.click();
+      const a = document.createElement('a'); a.href = url; a.download = 'gestaopro-backup-' + new Date().toISOString().slice(0,10) + '.json'; a.click();
       showToast('Backup exportado com sucesso!', 'success');
     }
 
@@ -2283,12 +2357,12 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       reader.onload = (evt) => {
         try {
           const data = JSON.parse(evt.target.result);
-          if (data.products && Array.isArray(data.products)) products = data.products.map(normalizeProduct).filter(Boolean);
-          if (data.customers && Array.isArray(data.customers)) customers = data.customers.map(normalizeCustomer).filter(Boolean);
-          if (data.sales && Array.isArray(data.sales)) sales = data.sales.map(normalizeSale).filter(Boolean);
-          if (data.companySettings) companySettings = { ...companySettings, ...data.companySettings };
-          if (data.usersSettings) {
-            appUsers = data.usersSettings;
+          if (Array.isArray(data.products)) products = data.products.map(normalizeProduct);
+          if (Array.isArray(data.customers)) customers = data.customers.map(normalizeCustomer);
+          if (Array.isArray(data.sales)) sales = data.sales.map(normalizeSale);
+          if (data.companySettings) companySettings = Object.assign(companySettings, data.companySettings);
+          if (data.usersSettings || data.appUsers) {
+            appUsers = data.usersSettings || data.appUsers;
             localStorage.setItem('gp_users', JSON.stringify(appUsers));
           }
           refreshAllData(); loadConfigInputs();
@@ -2300,8 +2374,8 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
 
     function promptResetSampleData() {
       showConfirmModal('Restaurar Padrões', 'Tem certeza que deseja apagar todos os dados atuais e voltar ao estado de fábrica (Exemplo)?', () => {
-        products = SAMPLE_PRODUCTS.map(normalizeProduct);
-        customers = SAMPLE_CUSTOMERS.map(normalizeCustomer);
+        products = SAMPLE_PRODUCTS.map(normalizeProduct); 
+        customers = SAMPLE_CUSTOMERS.map(normalizeCustomer); 
         sales = [];
         appUsers = { admin: { user: 'admin', pass: '123' }, vendedor: { user: 'vendedor', pass: '123' } };
         localStorage.setItem('gp_users', JSON.stringify(appUsers));
@@ -2310,73 +2384,14 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       }, 'fa-rotate-right', true);
     }
 
-    function updateSupabaseBadge(isConnected) {
-      const badge = document.getElementById('supabase-status-badge');
-      if (!badge) return;
-      if (isConnected) {
-        badge.textContent = 'Supabase Conectado';
-        badge.className = 'px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300';
-      } else {
-        badge.textContent = 'Modo Local Ativo';
-        badge.className = 'px-2.5 py-1 rounded-full text-[11px] font-semibold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300';
-      }
-    }
-
-    async function connectSupabase(isAuto = false) {
-      const url = document.getElementById('cfg-supabase-url')?.value.trim();
-      const key = document.getElementById('cfg-supabase-key')?.value.trim();
-      if (!url || !key) {
-        if (!isAuto) showToast('Preencha a URL e a Key do Supabase!', 'warning');
-        return;
-      }
-      try {
-        if (!window.supabase || typeof window.supabase.createClient !== 'function') {
-          throw new Error('Biblioteca do Supabase não carregada.');
-        }
-
-        supabaseClient = window.supabase.createClient(url, key);
-
-        localStorage.setItem('gp_sb_url', url);
-        localStorage.setItem('gp_sb_key', key);
-
-        const testRes = await supabaseClient.from('products').select('id').limit(1);
-        if (testRes.error) {
-          console.warn('Supabase test warning:', testRes.error.message);
-        }
-
-        updateSupabaseBadge(true);
-        if (!isAuto) {
-          showToast('Configurações salvas e conectado ao Supabase!', 'success');
-          await fetchSupabaseData(false);
-        }
-      } catch (e) {
-        console.error('Supabase Connect Error:', e);
-        updateSupabaseBadge(false);
-        if (!isAuto) {
-          showToast('Erro ao conectar ao Supabase: ' + (e.message || 'Verifique as credenciais'), 'danger');
-        }
-      }
-    }
-
-    function disconnectSupabase() {
-      supabaseClient = null;
-      localStorage.removeItem('gp_sb_url');
-      localStorage.removeItem('gp_sb_key');
-      const iUrl = document.getElementById('cfg-supabase-url');
-      const iKey = document.getElementById('cfg-supabase-key');
-      if (iUrl) iUrl.value = '';
-      if (iKey) iKey.value = '';
-      updateSupabaseBadge(false);
-      showToast('Supabase desconectado. Modo local ativo!', 'info');
-    }
-
+    // INTEGRAÇÃO SUPABASE ROBUSTA
     async function syncToSupabase(table, data) {
       if (!supabaseClient) return;
       try {
         const { error } = await supabaseClient.from(table).upsert(data);
-        if (error) console.error(`Supabase Sync Err [${table}]:`, error.message);
+        if (error) console.error("Supabase Sync Err:", error);
       } catch (e) {
-        console.error(`Supabase Sync Exception [${table}]:`, e);
+        console.error("Supabase Ex:", e);
       }
     }
 
@@ -2384,9 +2399,63 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       if (!supabaseClient) return;
       try {
         const { error } = await supabaseClient.from(table).delete().eq('id', id);
-        if (error) console.error(`Supabase Delete Err [${table}]:`, error.message);
+        if (error) console.error("Supabase Del Err:", error);
       } catch (e) {
-        console.error(`Supabase Delete Exception [${table}]:`, e);
+        console.error("Supabase Ex:", e);
+      }
+    }
+
+    async function saveAndConnectSupabase() {
+      const url = document.getElementById('cfg-supabase-url')?.value.trim();
+      const key = document.getElementById('cfg-supabase-key')?.value.trim();
+      if (!url || !key) {
+        showToast('Preencha a URL e a Anon Key do Supabase!', 'warning');
+        return;
+      }
+      localStorage.setItem('gp_sb_url', url);
+      localStorage.setItem('gp_sb_key', key);
+      await connectSupabase(false);
+    }
+
+    function disconnectSupabase() {
+      localStorage.removeItem('gp_sb_url');
+      localStorage.removeItem('gp_sb_key');
+      supabaseClient = null;
+      const badge = document.getElementById('supabase-status-badge');
+      if (badge) {
+        badge.textContent = 'Modo Local Ativo';
+        badge.className = 'px-2.5 py-1 rounded-full text-[11px] font-semibold bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300';
+      }
+      showToast('Desconectado do Supabase! Operando localmente.', 'info');
+    }
+
+    async function connectSupabase(isAuto = false) {
+      const url = localStorage.getItem('gp_sb_url') || document.getElementById('cfg-supabase-url')?.value.trim();
+      const key = localStorage.getItem('gp_sb_key') || document.getElementById('cfg-supabase-key')?.value.trim();
+      if (!url || !key) return;
+
+      try {
+        supabaseClient = window.supabase.createClient(url, key);
+        const badge = document.getElementById('supabase-status-badge');
+        if (badge) {
+          badge.textContent = 'Supabase Conectado';
+          badge.className = 'px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300';
+        }
+        if (!isAuto) showToast('Conectado! Verificando tabelas...', 'info');
+        
+        const res = await supabaseClient.from('products').select('id').limit(1);
+        if (res.error) throw new Error(res.error.message);
+        
+        if (!isAuto) await fetchSupabaseData(false);
+
+      } catch (e) {
+        console.error(e);
+        if (!isAuto) showToast('Erro de conexão! ' + e.message, 'danger');
+        const badge = document.getElementById('supabase-status-badge');
+        if (badge) {
+          badge.textContent = 'Falha na Conexão';
+          badge.className = 'px-2.5 py-1 rounded-full text-[11px] font-semibold bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300';
+        }
       }
     }
 
@@ -2404,47 +2473,36 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
         if (cRes.error) throw new Error(cRes.error.message);
         if (sRes.error) throw new Error(sRes.error.message);
         
-        if (pRes.data && (pRes.data.length > 0 || forceOverride)) {
-          products = pRes.data.map(normalizeProduct).filter(Boolean);
-        }
-        if (cRes.data && (cRes.data.length > 0 || forceOverride)) {
-          customers = cRes.data.map(normalizeCustomer).filter(Boolean);
-        }
-        if (sRes.data && (sRes.data.length > 0 || forceOverride)) {
-          sales = sRes.data.map(normalizeSale).filter(Boolean);
-        }
+        if (pRes.data && (pRes.data.length > 0 || forceOverride)) products = pRes.data.map(normalizeProduct);
+        if (cRes.data && (cRes.data.length > 0 || forceOverride)) customers = cRes.data.map(normalizeCustomer);
+        if (sRes.data && (sRes.data.length > 0 || forceOverride)) sales = sRes.data.map(normalizeSale);
         
         if (stRes.data && (stRes.data.length > 0 || forceOverride)) {
           const comp = stRes.data.find(x => x.id === 'company');
-          if (comp && comp.data) companySettings = { ...companySettings, ...comp.data };
+          if (comp && comp.data) companySettings = Object.assign(companySettings, comp.data);
           const usr = stRes.data.find(x => x.id === 'users');
-          if (usr && usr.data) { 
-            appUsers = usr.data; 
-            localStorage.setItem('gp_users', JSON.stringify(appUsers)); 
-          }
+          if (usr && usr.data) { appUsers = usr.data; localStorage.setItem('gp_users', JSON.stringify(appUsers)); }
         }
 
-        saveData(); 
-        refreshAllData(); 
-        loadConfigInputs();
-        showToast('Dados da nuvem sincronizados e normalizados!', 'success');
+        saveData(); refreshAllData(); loadConfigInputs();
+        showToast('Dados da nuvem sincronizados localmente!', 'success');
       } catch (err) {
         console.error("Supabase Error:", err);
-        showToast('Erro ao puxar dados: ' + (err.message || 'Verifique o Script SQL'), 'danger');
+        showToast('Erro de leitura! Verifique o script SQL e as tabelas.', 'danger');
       }
     }
 
     async function forcePullSupabase() {
       if (!supabaseClient) return showToast('Conecte o Supabase primeiro.', 'warning');
-      showConfirmModal('Baixar da Nuvem', 'Isto irá <strong>substituir todos os seus dados locais</strong> pelos dados gravados no Supabase. Continuar?', async () => {
-        showToast('Baixando dados da nuvem...', 'info');
+      showConfirmModal('Baixar da Nuvem', 'Isto irá <b>substituir os dados locais</b> pelos que estão no Supabase. Continuar?', async () => {
+        showToast('Baixando dados...', 'info');
         await fetchSupabaseData(true);
       }, 'fa-cloud-arrow-down', false);
     }
 
     async function forcePushSupabase() {
       if (!supabaseClient) return showToast('Conecte o Supabase primeiro.', 'warning');
-      showConfirmModal('Enviar para a Nuvem', 'Isto irá <strong>enviar todo o seu catálogo, clientes e histórico de vendas locais</strong> para o Supabase. Deseja continuar?', async () => {
+      showConfirmModal('Enviar para a Nuvem', 'Isto irá gravar todo o catálogo e vendas atuais para o Supabase. Continuar?', async () => {
         showToast('Enviando dados para a nuvem...', 'info');
         try {
           if (products.length) await supabaseClient.from('products').upsert(products);
@@ -2454,10 +2512,10 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
             { id: 'company', data: companySettings },
             { id: 'users', data: appUsers }
           ]);
-          showToast('Todos os dados foram enviados para o Supabase com sucesso!', 'success');
+          showToast('Todos os dados foram enviados com sucesso!', 'success');
         } catch (err) {
           console.error(err);
-          showToast('Falha no upload! Verifique se executou o Script SQL no Supabase.', 'danger');
+          showToast('Falha no upload! Verifique as permissões de tabela no Supabase.', 'danger');
         }
       }, 'fa-cloud-arrow-up', false);
     }
@@ -2466,7 +2524,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       const modal = document.getElementById('modal-sql');
       if (modal) modal.classList.remove('hidden');
     }
-
+    
     function closeSqlSchemaModal() {
       const modal = document.getElementById('modal-sql');
       if (modal) modal.classList.add('hidden');
@@ -2476,17 +2534,13 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       const pre = document.getElementById('sql-script-content');
       if (!pre) return;
       const text = pre.textContent;
-      try {
-        const textarea = document.createElement("textarea");
-        textarea.value = text;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand("copy");
-        textarea.remove();
-        showToast('Script SQL copiado com sucesso!', 'success');
-      } catch (err) {
-        showToast('Erro ao copiar script SQL.', 'danger');
-      }
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      textarea.remove();
+      showToast('Script SQL copiado com sucesso!', 'success');
     }
   </script>
 </body>
