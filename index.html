@@ -440,7 +440,12 @@
               <!-- Calculadora Dinâmica de Pagamento -->
               <div class="p-2.5 bg-slate-100 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2 text-xs mt-3">
                 <div class="flex items-center justify-between">
-                  <span class="font-bold text-slate-700 dark:text-slate-300">Valor Recebido Agora (R$):</span>
+                  <div class="flex items-center gap-1.5">
+                    <span class="font-bold text-slate-700 dark:text-slate-300">Valor Recebido Agora (R$):</span>
+                    <button type="button" onclick="syncReceivedWithTotal()" title="Puxar valor total da venda" class="text-[10px] text-indigo-600 dark:text-indigo-400 hover:underline font-bold cursor-pointer">
+                      (Puxar Total)
+                    </button>
+                  </div>
                   <input type="number" id="pos-amount-received" min="0" step="0.01" oninput="calculateChange()" class="w-24 px-2 py-1 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded text-right font-bold text-indigo-700 dark:text-indigo-400 outline-none" />
                 </div>
 
@@ -1149,6 +1154,7 @@
       let sToday = 0, cToday = 0, sMonth = 0, pMonth = 0;
       
       sales.forEach(s => {
+        if (s.status === 'cancelled') return;
         if (s.date && s.date.startsWith(today)) { sToday += s.total; cToday++; }
         if (s.date && s.date.startsWith(month)) { sMonth += s.total; pMonth += (s.total - (s.totalCost||0)); }
       });
@@ -1239,7 +1245,10 @@
 
     function renderTopProducts() {
       const map = {};
-      sales.forEach(s => s.items.forEach(i => map[i.name] = (map[i.name]||0) + i.qty));
+      sales.forEach(s => {
+        if (s.status === 'cancelled') return;
+        s.items.forEach(i => map[i.name] = (map[i.name]||0) + i.qty);
+      });
       const sorted = Object.entries(map).sort((a,b)=>b[1]-a[1]).slice(0,4);
       const c = document.getElementById('dash-top-products');
       if(c) {
@@ -1254,7 +1263,7 @@
       for(let i=6;i>=0;i--){
         const d = new Date(); d.setDate(d.getDate()-i);
         lbls.push(d.toLocaleDateString('pt-BR',{weekday:'short'}));
-        dta.push(sales.filter(s=>s.date && s.date.startsWith(d.toISOString().slice(0,10))).reduce((a,s)=>a+s.total,0));
+        dta.push(sales.filter(s=>s.status !== 'cancelled' && s.date && s.date.startsWith(d.toISOString().slice(0,10))).reduce((a,s)=>a+s.total,0));
       }
       const isDark = document.documentElement.classList.contains('dark');
       const tickColor = isDark ? '#94a3b8' : '#475569';
@@ -1394,13 +1403,27 @@
       }
 
       const recEl = document.getElementById('pos-amount-received');
-      if(recEl && !recEl.dataset.manual && currentCart.length > 0) {
-        recEl.value = tot > 0 ? tot.toFixed(2) : '';
-      } else if (recEl && currentCart.length === 0) {
-        recEl.value = '';
+      if(recEl) {
+        if (currentCart.length > 0) {
+          recEl.value = tot > 0 ? tot.toFixed(2) : (sub > 0 ? sub.toFixed(2) : '');
+        } else {
+          recEl.value = '';
+        }
       }
       
       calculateChange();
+    }
+
+    function syncReceivedWithTotal() {
+      const sub = currentCart.reduce((a,b)=>a+(b.salePrice*b.qty),0);
+      const discountEl = document.getElementById('pos-discount-input');
+      const d = discountEl ? parseFloat(discountEl.value)||0 : 0;
+      const tot = Math.max(0, sub - d - posCreditUsed);
+      const recEl = document.getElementById('pos-amount-received');
+      if (recEl) {
+        recEl.value = tot > 0 ? tot.toFixed(2) : (sub > 0 ? sub.toFixed(2) : '');
+        calculateChange();
+      }
     }
 
     function handleCustomerSelect() {
@@ -1442,14 +1465,12 @@
         const a = b.dataset.method === m;
         b.className = `pay-method-btn py-2 rounded-xl text-xs font-semibold flex flex-col items-center gap-1 transition border ${a?'border-indigo-600 bg-indigo-50 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300':'border-slate-200 bg-white text-slate-600 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300'}`;
       });
+      syncReceivedWithTotal();
     }
 
     function calculateChange() {
       const recEl = document.getElementById('pos-amount-received');
       if(!recEl) return;
-      
-      if(recEl.value !== '') recEl.dataset.manual = "true";
-      else recEl.dataset.manual = "";
 
       const r = parseFloat(recEl.value) || 0;
       const sub = currentCart.reduce((a,b)=>a+(b.salePrice*b.qty),0);
@@ -1562,6 +1583,9 @@
       currentLastSale = s;
       const m = document.getElementById('receipt-modal-content');
       if(!m) return;
+      const cancelledNotice = s.status === 'cancelled' 
+        ? '<div class="bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300 text-center py-1.5 font-black text-xs rounded-lg mb-2 uppercase border border-rose-300 dark:border-rose-800">*** VENDA CANCELADA / ESTORNADA ***</div>' 
+        : '';
       let itemsHtml = s.items.map(i=>`<tr><td>${i.qty}x</td><td class="truncate max-w-[120px]">${escapeHtml(i.name)}</td><td class="text-right">${formatCurrency(i.salePrice*i.qty)}</td></tr>`).join('');
       let extraHtml = '';
       if(s.discount > 0) extraHtml += `<div class="flex justify-between text-rose-600"><span>Desconto:</span> <span>-${formatCurrency(s.discount)}</span></div>`;
@@ -1570,7 +1594,7 @@
       if(s.creditGenerated > 0) extraHtml += `<div class="flex justify-between text-emerald-600 font-bold border-t border-dashed mt-1 pt-1"><span>Troco em Crédito:</span> <span>${formatCurrency(s.creditGenerated)}</span></div>`;
       else if(s.changeAmount > 0) extraHtml += `<div class="flex justify-between font-bold border-t border-dashed mt-1 pt-1"><span>Troco Devolvido:</span> <span>${formatCurrency(s.changeAmount)}</span></div>`;
 
-      m.innerHTML = `<div class="text-center border-b border-dashed pb-2"><h2 class="font-bold text-sm">${escapeHtml(companySettings.name)}</h2><p class="text-[10px]">CUPOM NÃO FISCAL</p></div><div class="py-2 text-[11px] border-b border-dashed"><div>Cód: ${s.id}</div><div>Data: ${new Date(s.date).toLocaleString('pt-BR')}</div><div>Cliente: ${escapeHtml(s.customerName)}</div></div><div class="py-2 border-b border-dashed"><table class="w-full text-[11px]"><tbody>${itemsHtml}</tbody></table></div><div class="py-2 text-[11px] flex flex-col gap-0.5"><div class="flex justify-between"><span>Subtotal:</span><span>${formatCurrency(s.subtotal)}</span></div>${extraHtml}<div class="flex justify-between font-bold text-sm mt-1 pt-1 border-t border-slate-300"><span>TOTAL A PAGAR:</span><span>${formatCurrency(s.total)}</span></div><div class="flex justify-between"><span>Pago Agora (${s.paymentMethod.toUpperCase()}):</span><span>${formatCurrency(s.receivedAmount)}</span></div></div>`;
+      m.innerHTML = `${cancelledNotice}<div class="text-center border-b border-dashed pb-2"><h2 class="font-bold text-sm">${escapeHtml(companySettings.name)}</h2><p class="text-[10px]">CUPOM NÃO FISCAL</p></div><div class="py-2 text-[11px] border-b border-dashed"><div>Cód: ${s.id}</div><div>Data: ${new Date(s.date).toLocaleString('pt-BR')}</div><div>Cliente: ${escapeHtml(s.customerName)}</div></div><div class="py-2 border-b border-dashed"><table class="w-full text-[11px]"><tbody>${itemsHtml}</tbody></table></div><div class="py-2 text-[11px] flex flex-col gap-0.5"><div class="flex justify-between"><span>Subtotal:</span><span>${formatCurrency(s.subtotal)}</span></div>${extraHtml}<div class="flex justify-between font-bold text-sm mt-1 pt-1 border-t border-slate-300"><span>TOTAL A PAGAR:</span><span>${formatCurrency(s.total)}</span></div><div class="flex justify-between"><span>Pago Agora (${s.paymentMethod.toUpperCase()}):</span><span>${formatCurrency(s.receivedAmount)}</span></div></div><div class="pt-2 mt-1 border-t border-dashed text-center text-[10px] text-slate-500 dark:text-slate-400 font-sans leading-tight">Toda troca de produtos deve ser feita no prazo máximo de 20 dias a partir da entrega.</div>`;
       const mr = document.getElementById('modal-receipt');
       if (mr) mr.classList.remove('hidden');
     }
@@ -1583,7 +1607,7 @@
     function shareReceiptWhatsApp() {
       if (!currentLastSale) return;
       const s = currentLastSale;
-      let text = `*COMPROVANTE DE VENDA - ${escapeHtml(companySettings.name)}*\n`;
+      let text = `*COMPROVANTE DE COMPRA - ${escapeHtml(companySettings.name)}*\n`;
       text += `Cód: ${s.id}\nData: ${new Date(s.date).toLocaleString('pt-BR')}\nCliente: ${escapeHtml(s.customerName)}\n\n`;
       text += `*Itens:*\n`;
       s.items.forEach(i => {
@@ -1594,6 +1618,7 @@
       if (s.debtAmount > 0) {
         text += `Valor Pendente (Fiado): ${formatCurrency(s.debtAmount)}\nVencimento: ${new Date(s.dueDate).toLocaleDateString('pt-BR')}\n`;
       }
+      text += `\nCHAVE PIX : 48999344103 -- JORGE L SILVEIRA --BANCO DO BRASIL`;
       text += `\n*AVISO DE TROCA:*\nToda troca de produtos deve ser feita no prazo máximo de 20 dias a partir da entrega.\n`;
       text += `\nObrigado pela preferência!`;
       const encoded = encodeURIComponent(text);
@@ -1761,10 +1786,12 @@
       // Ordenar por data mais recente
       filteredSales.sort((a,b) => new Date(b.date) - new Date(a.date));
 
-      const totalRev = filteredSales.reduce((a,b)=>a+b.total,0);
-      const totalCost = filteredSales.reduce((a,b)=>a+(b.totalCost||0),0);
+      // As métricas financeiras consideram apenas vendas ativas (não canceladas)
+      const activeSales = filteredSales.filter(s => s.status !== 'cancelled');
+      const totalRev = activeSales.reduce((a,b)=>a+b.total,0);
+      const totalCost = activeSales.reduce((a,b)=>a+(b.totalCost||0),0);
       const netProfit = totalRev - totalCost;
-      const avgTicket = filteredSales.length ? totalRev / filteredSales.length : 0;
+      const avgTicket = activeSales.length ? totalRev / activeSales.length : 0;
       const margin = totalRev > 0 ? (netProfit / totalRev) * 100 : 0;
 
       const trev = document.getElementById('report-total-revenue');
@@ -1775,7 +1802,7 @@
       const mper = document.getElementById('report-margin-percent');
 
       if(trev) trev.textContent = formatCurrency(totalRev);
-      if(tcnt) tcnt.textContent = filteredSales.length + ' vendas no período';
+      if(tcnt) tcnt.textContent = activeSales.length + ' vendas ativas no período';
       if(avgt) avgt.textContent = formatCurrency(avgTicket);
       if(tcost) tcost.textContent = formatCurrency(totalCost);
       if(nprof) nprof.textContent = formatCurrency(netProfit);
@@ -1784,27 +1811,36 @@
       const historyTb = document.getElementById('sales-history-table');
       if (historyTb) {
         historyTb.innerHTML = filteredSales.length ? filteredSales.map(s => {
-          const statusBadge = s.status === 'partial' ? 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300' : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300';
-          const statusText = s.status === 'partial' ? 'Fiado Parcial' : 'Pago';
+          const isCancelled = s.status === 'cancelled';
+          const statusBadge = isCancelled 
+            ? 'bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-400' 
+            : (s.status === 'partial' ? 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300' : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300');
+          const statusText = isCancelled ? 'Cancelada' : (s.status === 'partial' ? 'Fiado Parcial' : 'Pago');
           
-          const payDebtBtn = s.status === 'partial' && s.debtAmount > 0 
+          const payDebtBtn = (!isCancelled && s.status === 'partial' && s.debtAmount > 0) 
             ? `<button onclick="receiveDebt('${s.id}')" title="Quitar Dívida" class="px-2 py-1 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900 text-emerald-600 dark:text-emerald-400 rounded text-xs ml-1 transition"><i class="fa-solid fa-check"></i></button>` 
             : '';
             
-          const editDateBtn = `<button onclick="openEditDateModal('${s.id}')" title="Editar Data" class="px-2 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded text-xs transition ml-1"><i class="fa-solid fa-calendar-day"></i></button>`;
+          const editDateBtn = !isCancelled 
+            ? `<button onclick="openEditDateModal('${s.id}')" title="Editar Data" class="px-2 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded text-xs transition ml-1"><i class="fa-solid fa-calendar-day"></i></button>` 
+            : '';
 
-          return `<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
-            <td class="py-3 px-3 sm:px-4 font-mono text-xs font-semibold">${s.id}</td>
+          const cancelBtn = !isCancelled 
+            ? `<button onclick="cancelSale('${s.id}')" title="Cancelar Venda e Estornar Estoque" class="px-2 py-1 bg-rose-50 dark:bg-rose-950/60 hover:bg-rose-100 dark:hover:bg-rose-900 text-rose-600 dark:text-rose-400 rounded text-xs transition ml-1"><i class="fa-solid fa-ban"></i></button>` 
+            : '';
+
+          return `<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 ${isCancelled ? 'opacity-70 bg-rose-50/30 dark:bg-rose-950/10' : ''}">
+            <td class="py-3 px-3 sm:px-4 font-mono text-xs font-semibold ${isCancelled ? 'line-through text-slate-400' : ''}">${s.id}</td>
             <td class="py-3 px-3 sm:px-4 text-xs">${new Date(s.date).toLocaleString('pt-BR')}</td>
             <td class="py-3 px-3 sm:px-4 font-medium dark:text-white">${escapeHtml(s.customerName)}</td>
             <td class="py-3 px-3 sm:px-4 hidden sm:table-cell"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${statusBadge}">${statusText}</span></td>
-            <td class="py-3 px-3 sm:px-4 text-right font-bold text-indigo-600 dark:text-indigo-400">${formatCurrency(s.total)}</td>
-            <td class="py-3 px-3 sm:px-4 text-center whitespace-nowrap"><button onclick="openReceiptModalFromHistory('${s.id}')" title="Ver Recibo" class="px-2 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded text-xs transition"><i class="fa-solid fa-eye"></i></button>${editDateBtn}${payDebtBtn}</td>
+            <td class="py-3 px-3 sm:px-4 text-right font-bold ${isCancelled ? 'line-through text-slate-400' : 'text-indigo-600 dark:text-indigo-400'}">${formatCurrency(s.total)}</td>
+            <td class="py-3 px-3 sm:px-4 text-center whitespace-nowrap"><button onclick="openReceiptModalFromHistory('${s.id}')" title="Ver Recibo" class="px-2 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded text-xs transition"><i class="fa-solid fa-eye"></i></button>${editDateBtn}${payDebtBtn}${cancelBtn}</td>
           </tr>`;
         }).join('') : '<tr><td colspan="6" class="py-8 text-center text-slate-400 text-xs">Nenhuma venda encontrada no período.</td></tr>';
       }
 
-      renderReportsCharts(filteredSales);
+      renderReportsCharts(activeSales);
     }
 
     function renderReportsCharts(filteredSales) {
@@ -2175,6 +2211,63 @@
       }
     }
 
+    function cancelSale(saleId) {
+      showConfirmModal(
+        'Cancelar Venda e Estornar',
+        'Tem certeza que deseja <strong>cancelar esta venda</strong>?<br><span class="text-rose-600 dark:text-rose-400 font-semibold">Todos os itens da venda voltarão ao estoque</span> e dívidas/créditos gerados serão ajustados.',
+        () => executeCancelSale(saleId),
+        'fa-ban',
+        true
+      );
+    }
+
+    function executeCancelSale(saleId) {
+      const s = sales.find(x => String(x.id) === String(saleId));
+      if (!s) return showToast('Venda não encontrada.', 'danger');
+      if (s.status === 'cancelled') return showToast('Esta venda já está cancelada.', 'warning');
+
+      // 1. Estornar as quantidades vendidas de volta para o estoque
+      let returnedItemsCount = 0;
+      if (Array.isArray(s.items)) {
+        s.items.forEach(item => {
+          const prod = products.find(p => String(p.id) === String(item.id));
+          if (prod) {
+            prod.stock = (Number(prod.stock) || 0) + Number(item.qty || 0);
+            returnedItemsCount += Number(item.qty || 0);
+            if (typeof syncToSupabase === 'function') syncToSupabase('products', prod);
+          }
+        });
+      }
+
+      // 2. Ajustar contas do cliente (fiado e créditos) caso tenha sido um cliente cadastrado
+      if (s.customerId) {
+        const cust = customers.find(c => String(c.id) === String(s.customerId));
+        if (cust) {
+          // Abate da dívida o valor pendente desta venda
+          if (s.debtAmount && s.debtAmount > 0) {
+            cust.debt = Math.max(0, (Number(cust.debt) || 0) - Number(s.debtAmount));
+          }
+          // Devolve ao saldo do cliente o crédito que ele utilizou nesta venda
+          if (s.creditUsed && s.creditUsed > 0) {
+            cust.credit = (Number(cust.credit) || 0) + Number(s.creditUsed);
+          }
+          // Se o troco gerou crédito na loja, remove esse crédito gerado
+          if (s.creditGenerated && s.creditGenerated > 0) {
+            cust.credit = Math.max(0, (Number(cust.credit) || 0) - Number(s.creditGenerated));
+          }
+          if (typeof syncToSupabase === 'function') syncToSupabase('customers', cust);
+        }
+      }
+
+      // 3. Atualizar o status da venda para 'cancelled'
+      s.status = 'cancelled';
+      s.cancelledAt = new Date().toISOString();
+      if (typeof syncToSupabase === 'function') syncToSupabase('sales', s);
+
+      refreshAllData();
+      showToast(`Venda ${s.id} cancelada! ${returnedItemsCount} itens estornados ao estoque.`, 'success');
+    }
+
     function exportReportsCSV() {
       // 1. Obter o período selecionado para pegar as mesmas vendas do ecrã
       const period = document.getElementById('reports-period-filter')?.value || 'month';
@@ -2210,7 +2303,7 @@
         const d = new Date(s.date);
         const dataFormatada = d.toLocaleDateString('pt-BR');
         const horaFormatada = d.toLocaleTimeString('pt-BR');
-        const statusTexto = s.status === 'partial' ? 'Fiado Parcial' : 'Pago';
+        const statusTexto = s.status === 'cancelled' ? 'Cancelada' : (s.status === 'partial' ? 'Fiado Parcial' : 'Pago');
         
         // Formatar valores para trocar ponto por vírgula no decimal, se necessário para o Excel PT-BR
         const f = (val) => Number(val || 0).toFixed(2).replace('.', ',');
