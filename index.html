@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GestãoPro - Vendas & Estoque v3.2.0</title>
+  <title>GestãoPro - Vendas & Estoque v3.2.1</title>
   
   <!-- Tailwind CSS CDN com suporte a Dark Mode via classe -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -67,7 +67,7 @@
     <div class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-3xl shadow-2xl p-6 sm:p-8 max-w-md w-full border border-white/20 dark:border-slate-800 text-slate-800 dark:text-white">
       
       <div class="flex items-center justify-between mb-4">
-        <span class="text-[11px] font-bold tracking-wider uppercase px-2.5 py-1 bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 rounded-lg app-version-badge">v3.2.0</span>
+        <span class="text-[11px] font-bold tracking-wider uppercase px-2.5 py-1 bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 rounded-lg app-version-badge">v3.2.1</span>
         <button onclick="toggleTheme()" type="button" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:scale-105 transition" title="Alternar Tema">
           <i class="theme-icon fa-solid fa-moon"></i>
         </button>
@@ -155,7 +155,7 @@
       <div class="p-4 border-t border-slate-800 space-y-3">
         <div class="flex items-center justify-between">
           <span class="text-[10px] font-bold text-slate-500 tracking-wider">VERSÃO ATUAL</span>
-          <span class="text-[10px] font-bold bg-slate-800 px-2 py-0.5 rounded text-indigo-400 border border-slate-700 app-version-badge">v3.2.0</span>
+          <span class="text-[10px] font-bold bg-slate-800 px-2 py-0.5 rounded text-indigo-400 border border-slate-700 app-version-badge">v3.2.1</span>
         </div>
         <div class="flex items-center justify-between pt-1">
           <div class="flex items-center gap-2.5 truncate">
@@ -182,7 +182,7 @@
         </div>
         <div>
           <span class="font-bold text-sm leading-tight block">GestãoPro</span>
-          <span class="text-[9px] text-indigo-400 font-medium app-version-badge">v3.2.0</span>
+          <span class="text-[9px] text-indigo-400 font-medium app-version-badge">v3.2.1</span>
         </div>
       </div>
       <div class="flex items-center gap-2">
@@ -434,14 +434,13 @@
             
             <div class="p-3.5 bg-slate-50/80 dark:bg-slate-800/40 border-t border-slate-200 dark:border-slate-800 rounded-b-2xl space-y-2.5">
               
-              <!-- Painel de Troca (Descarte & Abatimento no Faturamento) -->
+              <!-- Painel de Troca (Abatimento no Faturamento) -->
               <div class="p-2 bg-indigo-50/70 dark:bg-indigo-950/40 rounded-xl border border-indigo-200 dark:border-indigo-900/60 space-y-1.5 text-xs">
                 <div class="flex items-center justify-between font-bold text-indigo-900 dark:text-indigo-300">
                   <span class="flex items-center gap-1.5">
                     <i class="fa-solid fa-arrows-rotate text-indigo-600 dark:text-indigo-400"></i>
                     <span>Troca de Produtos</span>
                   </span>
-                  <span class="text-[9px] font-normal text-rose-500 dark:text-rose-400">Peças descartadas (não voltam ao estoque)</span>
                 </div>
                 
                 <div class="grid grid-cols-2 gap-2">
@@ -738,7 +737,7 @@
             <p class="text-xs text-slate-500 dark:text-slate-400">Gerencie contas, nuvem Supabase e backups locais</p>
           </div>
           <div class="flex items-center gap-2">
-            <span class="text-xs font-semibold px-2 py-0.5 bg-indigo-50 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 rounded-lg app-version-badge">v3.2.0</span>
+            <span class="text-xs font-semibold px-2 py-0.5 bg-indigo-50 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 rounded-lg app-version-badge">v3.2.1</span>
             <button onclick="forceBrowserReload()" type="button" class="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold shadow-xs transition flex items-center gap-1.5" title="Recarregar forçadamente limpando caches">
               <i class="fa-solid fa-arrows-rotate"></i><span>Forçar Atualização</span>
             </button>
@@ -1037,7 +1036,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
 
   <!-- ================= LÓGICA JAVASCRIPT PRINCIPAL ================= -->
   <script>
-    const APP_VERSION = 'v3.2.0';
+    const APP_VERSION = 'v3.2.1';
     
     const CATEGORIES = [
       'Alimentos & Bebidas', 'Mercearia & Limpeza', 'Higiene & Cosméticos',
