@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GestãoPro - Vendas & Estoque v3.1.8</title>
+  <title>GestãoPro - Vendas & Estoque v3.2.0</title>
   
   <!-- Tailwind CSS CDN com suporte a Dark Mode via classe -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -67,7 +67,7 @@
     <div class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-3xl shadow-2xl p-6 sm:p-8 max-w-md w-full border border-white/20 dark:border-slate-800 text-slate-800 dark:text-white">
       
       <div class="flex items-center justify-between mb-4">
-        <span class="text-[11px] font-bold tracking-wider uppercase px-2.5 py-1 bg-indigo-50 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 rounded-lg app-version-badge">v3.1.8</span>
+        <span class="text-[11px] font-bold tracking-wider uppercase px-2.5 py-1 bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 rounded-lg app-version-badge">v3.2.0</span>
         <button onclick="toggleTheme()" type="button" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:scale-105 transition" title="Alternar Tema">
           <i class="theme-icon fa-solid fa-moon"></i>
         </button>
@@ -155,7 +155,7 @@
       <div class="p-4 border-t border-slate-800 space-y-3">
         <div class="flex items-center justify-between">
           <span class="text-[10px] font-bold text-slate-500 tracking-wider">VERSÃO ATUAL</span>
-          <span class="text-[10px] font-bold bg-slate-800 px-2 py-0.5 rounded text-indigo-400 border border-slate-700 app-version-badge">v3.1.8</span>
+          <span class="text-[10px] font-bold bg-slate-800 px-2 py-0.5 rounded text-indigo-400 border border-slate-700 app-version-badge">v3.2.0</span>
         </div>
         <div class="flex items-center justify-between pt-1">
           <div class="flex items-center gap-2.5 truncate">
@@ -182,7 +182,7 @@
         </div>
         <div>
           <span class="font-bold text-sm leading-tight block">GestãoPro</span>
-          <span class="text-[9px] text-indigo-400 font-medium app-version-badge">v3.1.8</span>
+          <span class="text-[9px] text-indigo-400 font-medium app-version-badge">v3.2.0</span>
         </div>
       </div>
       <div class="flex items-center gap-2">
@@ -608,6 +608,7 @@
                   <th class="py-2.5 px-3">Cliente</th>
                   <th class="py-2.5 px-3">Contato</th>
                   <th class="py-2.5 px-3 text-center">Compras</th>
+                  <th class="py-2.5 px-3 text-right">Total Gasto</th>
                   <th class="py-2.5 px-3 text-right">Saldo de Crédito</th>
                   <th class="py-2.5 px-3 text-right text-rose-600 dark:text-rose-400">Dívida (Fiado)</th>
                   <th class="py-2.5 px-3 text-right">Ações</th>
@@ -681,6 +682,30 @@
           </div>
         </div>
 
+        <!-- Tabela: Soma do Valor Comprado por Cliente -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden">
+          <div class="p-3 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-users text-indigo-600 dark:text-indigo-400"></i>
+              <h3 class="font-bold text-slate-900 dark:text-white text-xs sm:text-sm">Total Comprado por Cliente (Soma no Período)</h3>
+            </div>
+            <span id="report-customer-summary-count" class="text-[10px] font-bold text-slate-400">0 clientes</span>
+          </div>
+          <div class="overflow-x-auto max-h-60 overflow-y-auto">
+            <table class="w-full text-left text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+              <thead class="bg-slate-50 dark:bg-slate-800/60 text-[10px] font-semibold text-slate-500 uppercase border-b border-slate-200 dark:border-slate-800 sticky top-0">
+                <tr>
+                  <th class="py-2 px-3">Cliente</th>
+                  <th class="py-2 px-3 text-center">Qtd. Pedidos</th>
+                  <th class="py-2 px-3 text-right">Total Comprado (Soma)</th>
+                  <th class="py-2 px-3 text-right">% do Período</th>
+                </tr>
+              </thead>
+              <tbody id="report-customer-summary-table" class="divide-y divide-slate-100 dark:divide-slate-800/60"></tbody>
+            </table>
+          </div>
+        </div>
+
         <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden">
           <div class="p-3 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
             <h3 class="font-bold text-slate-900 dark:text-white text-xs sm:text-sm">Histórico de Pedidos Realizados</h3>
@@ -699,6 +724,7 @@
                 </tr>
               </thead>
               <tbody id="sales-history-table" class="divide-y divide-slate-100 dark:divide-slate-800/60"></tbody>
+              <tfoot id="sales-history-tfoot" class="bg-slate-50 dark:bg-slate-800/80 font-bold border-t border-slate-200 dark:border-slate-700 text-xs"></tfoot>
             </table>
           </div>
         </div>
@@ -712,7 +738,7 @@
             <p class="text-xs text-slate-500 dark:text-slate-400">Gerencie contas, nuvem Supabase e backups locais</p>
           </div>
           <div class="flex items-center gap-2">
-            <span class="text-xs font-semibold px-2 py-0.5 bg-indigo-50 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 rounded-lg app-version-badge">v3.1.8</span>
+            <span class="text-xs font-semibold px-2 py-0.5 bg-indigo-50 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 rounded-lg app-version-badge">v3.2.0</span>
             <button onclick="forceBrowserReload()" type="button" class="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold shadow-xs transition flex items-center gap-1.5" title="Recarregar forçadamente limpando caches">
               <i class="fa-solid fa-arrows-rotate"></i><span>Forçar Atualização</span>
             </button>
@@ -1011,7 +1037,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
 
   <!-- ================= LÓGICA JAVASCRIPT PRINCIPAL ================= -->
   <script>
-    const APP_VERSION = 'v3.1.8';
+    const APP_VERSION = 'v3.2.0';
     
     const CATEGORIES = [
       'Alimentos & Bebidas', 'Mercearia & Limpeza', 'Higiene & Cosméticos',
@@ -2177,11 +2203,15 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       const filt = customers.filter(c => c.name.toLowerCase().includes(q) || (c.phone || '').toLowerCase().includes(q));
 
       tbody.innerHTML = filt.length ? filt.map(c => {
-        const cSales = sales.filter(s => s.status !== 'cancelled' && String(s.customerId) === String(c.id)).length;
+        const matchingSales = sales.filter(s => s.status !== 'cancelled' && String(s.customerId) === String(c.id));
+        const cSalesCount = matchingSales.length;
+        const cTotalSpent = matchingSales.reduce((acc, s) => acc + Number(s.total || 0), 0);
+
         return `<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
           <td class="py-2.5 px-3 font-semibold dark:text-white">${escapeHtml(c.name)}</td>
           <td class="py-2.5 px-3 text-xs">${escapeHtml(c.phone || '-')}</td>
-          <td class="py-2.5 px-3 text-center font-bold">${cSales}</td>
+          <td class="py-2.5 px-3 text-center font-bold">${cSalesCount}</td>
+          <td class="py-2.5 px-3 text-right font-bold text-indigo-600 dark:text-indigo-400">${formatCurrency(cTotalSpent)}</td>
           <td class="py-2.5 px-3 text-right font-bold text-emerald-600 dark:text-emerald-400">${formatCurrency(c.credit)}</td>
           <td class="py-2.5 px-3 text-right font-bold text-rose-600 dark:text-rose-400">${formatCurrency(c.debt)}</td>
           <td class="py-2.5 px-3 text-right space-x-1">
@@ -2189,7 +2219,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
             <button onclick="deleteCustomer('${c.id}')" class="px-2 py-1 bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400 rounded text-xs"><i class="fa-solid fa-trash"></i></button>
           </td>
         </tr>`;
-      }).join('') : '<tr><td colspan="6" class="py-8 text-center text-slate-400 text-xs">Nenhum cliente encontrado.</td></tr>';
+      }).join('') : '<tr><td colspan="7" class="py-8 text-center text-slate-400 text-xs">Nenhum cliente encontrado.</td></tr>';
     }
 
     function openCustomerModal(id = null) {
@@ -2403,12 +2433,17 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
         const limitStr = getLocalDateStr(d);
         filteredSales = filteredSales.filter(s => getLocalDateStr(s.date) >= limitStr); 
         if (subtitleEl) subtitleEl.textContent = 'Vendas dos últimos 30 dias';
-      } else {
+      } 
+      else if (period === 'all') {
+        // Todo o período: mantém todas as vendas ativas registradas no sistema
+        if (subtitleEl) subtitleEl.textContent = 'Todas as vendas registradas (Todo o Histórico)';
+      } 
+      else {
         if (subtitleEl) subtitleEl.textContent = 'Todas as vendas registradas no sistema';
       }
 
-      const totalRev = filteredSales.reduce((a, b) => a + b.total, 0);
-      const totalCost = filteredSales.reduce((a, b) => a + (b.totalCost || 0), 0);
+      const totalRev = filteredSales.reduce((a, b) => a + Number(b.total || 0), 0);
+      const totalCost = filteredSales.reduce((a, b) => a + Number(b.totalCost || 0), 0);
       const netProfit = totalRev - totalCost;
       const avgTicket = filteredSales.length ? totalRev / filteredSales.length : 0;
       const margin = totalRev > 0 ? (netProfit / totalRev) * 100 : 0;
@@ -2426,6 +2461,9 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       if(tcost) tcost.textContent = formatCurrency(totalCost);
       if(nprof) nprof.textContent = formatCurrency(netProfit);
       if(mper) mper.textContent = margin.toFixed(1) + '% de margem';
+
+      // Renderiza o resumo com a soma do valor de cada cliente no período
+      renderCustomerSalesSummary(filteredSales, totalRev);
 
       const historyTb = document.getElementById('sales-history-table');
       if (historyTb) {
@@ -2449,7 +2487,60 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
           </tr>`;
         }).join('') : '<tr><td colspan="6" class="py-8 text-center text-slate-400 text-xs">Nenhuma venda ativa encontrada no período.</td></tr>';
       }
-      renderReportsCharts(filteredSales);
+
+      // Rodapé com a Soma Total de Vendas
+      const tfoot = document.getElementById('sales-history-tfoot');
+      if (tfoot) {
+        tfoot.innerHTML = `<tr>
+          <td colspan="4" class="py-2.5 px-3 uppercase text-slate-700 dark:text-slate-200">Soma Total das Vendas (${filteredSales.length} pedidos)</td>
+          <td class="py-2.5 px-3 text-right font-black text-indigo-600 dark:text-indigo-400 text-sm">${formatCurrency(totalRev)}</td>
+          <td></td>
+        </tr>`;
+      }
+
+      try {
+        renderReportsCharts(filteredSales);
+      } catch(err) {
+        console.warn("Erro ao desenhar gráficos de relatório:", err);
+      }
+    }
+
+    // Calcula e renderiza a soma das compras agrupadas por cada cliente no período selecionado
+    function renderCustomerSalesSummary(filteredSales, totalRevenue) {
+      const summaryTb = document.getElementById('report-customer-summary-table');
+      const countEl = document.getElementById('report-customer-summary-count');
+      if (!summaryTb) return;
+
+      const customerMap = {};
+      filteredSales.forEach(s => {
+        const key = s.customerId ? String(s.customerId) : (s.customerName || 'Consumidor Final');
+        const name = s.customerName || 'Consumidor Final';
+        if (!customerMap[key]) {
+          customerMap[key] = { name: name, count: 0, total: 0 };
+        }
+        customerMap[key].count += 1;
+        customerMap[key].total += Number(s.total || 0);
+      });
+
+      const clientList = Object.values(customerMap);
+      clientList.sort((a, b) => b.total - a.total);
+
+      if (countEl) countEl.textContent = clientList.length + ' cliente' + (clientList.length === 1 ? '' : 's');
+
+      if (clientList.length === 0) {
+        summaryTb.innerHTML = '<tr><td colspan="4" class="py-4 text-center text-slate-400 text-xs">Nenhuma compra por cliente registrada no período.</td></tr>';
+        return;
+      }
+
+      summaryTb.innerHTML = clientList.map(c => {
+        const percent = totalRevenue > 0 ? ((c.total / totalRevenue) * 100).toFixed(1) : '0.0';
+        return `<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+          <td class="py-2 px-3 font-semibold dark:text-white truncate max-w-[180px]">${escapeHtml(c.name)}</td>
+          <td class="py-2 px-3 text-center font-bold">${c.count} pedido${c.count === 1 ? '' : 's'}</td>
+          <td class="py-2 px-3 text-right font-black text-indigo-600 dark:text-indigo-400">${formatCurrency(c.total)}</td>
+          <td class="py-2 px-3 text-right text-xs font-semibold text-slate-500 dark:text-slate-400">${percent}%</td>
+        </tr>`;
+      }).join('');
     }
 
     function renderReportsCharts(filteredSales) {
