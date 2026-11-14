@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GestãoPro - Vendas & Estoque v3.2.1</title>
+  <title>GestãoPro - Vendas & Estoque v3.2.6</title>
   
   <!-- Tailwind CSS CDN com suporte a Dark Mode via classe -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -67,7 +67,7 @@
     <div class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-3xl shadow-2xl p-6 sm:p-8 max-w-md w-full border border-white/20 dark:border-slate-800 text-slate-800 dark:text-white">
       
       <div class="flex items-center justify-between mb-4">
-        <span class="text-[11px] font-bold tracking-wider uppercase px-2.5 py-1 bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 rounded-lg app-version-badge">v3.2.1</span>
+        <span class="text-[11px] font-bold tracking-wider uppercase px-2.5 py-1 bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 rounded-lg app-version-badge">v3.2.6</span>
         <button onclick="toggleTheme()" type="button" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:scale-105 transition" title="Alternar Tema">
           <i class="theme-icon fa-solid fa-moon"></i>
         </button>
@@ -155,7 +155,7 @@
       <div class="p-4 border-t border-slate-800 space-y-3">
         <div class="flex items-center justify-between">
           <span class="text-[10px] font-bold text-slate-500 tracking-wider">VERSÃO ATUAL</span>
-          <span class="text-[10px] font-bold bg-slate-800 px-2 py-0.5 rounded text-indigo-400 border border-slate-700 app-version-badge">v3.2.1</span>
+          <span class="text-[10px] font-bold bg-slate-800 px-2 py-0.5 rounded text-indigo-400 border border-slate-700 app-version-badge">v3.2.6</span>
         </div>
         <div class="flex items-center justify-between pt-1">
           <div class="flex items-center gap-2.5 truncate">
@@ -182,7 +182,7 @@
         </div>
         <div>
           <span class="font-bold text-sm leading-tight block">GestãoPro</span>
-          <span class="text-[9px] text-indigo-400 font-medium app-version-badge">v3.2.1</span>
+          <span class="text-[9px] text-indigo-400 font-medium app-version-badge">v3.2.6</span>
         </div>
       </div>
       <div class="flex items-center gap-2">
@@ -498,7 +498,7 @@
                     <span class="font-bold text-slate-700 dark:text-slate-300">Valor Recebido Agora (R$):</span>
                     <button type="button" onclick="syncReceivedWithTotal()" class="text-[10px] text-indigo-600 dark:text-indigo-400 hover:underline font-semibold" title="Igualar ao total">(Puxar Total)</button>
                   </div>
-                  <input type="number" id="pos-amount-received" min="0" step="0.01" oninput="calculateChange()" class="w-24 px-2 py-0.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded text-right font-bold text-indigo-700 dark:text-indigo-400 outline-none" />
+                  <input type="number" id="pos-amount-received" min="0" step="0.01" placeholder="Em branco = Fiado" oninput="calculateChange(true)" class="w-28 px-2 py-0.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded text-right font-bold text-indigo-700 dark:text-indigo-400 outline-none placeholder:text-[9px] placeholder:font-normal" />
                 </div>
 
                 <!-- Painel Fiado -->
@@ -507,7 +507,7 @@
                     <span>Falta Pagar (Fiado):</span><span id="pos-amount-missing">R$ 0,00</span>
                   </div>
                   <div class="flex items-center justify-between">
-                    <span class="text-slate-600 dark:text-slate-400 font-semibold">Vencimento:</span>
+                    <span class="text-slate-600 dark:text-slate-400 font-semibold">Vencimento <span class="text-[9px] font-normal">(vazio = 30 dias)</span>:</span>
                     <input type="date" id="pos-due-date" class="px-2 py-0.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded outline-none text-slate-700 dark:text-slate-300 text-xs" />
                   </div>
                 </div>
@@ -737,7 +737,7 @@
             <p class="text-xs text-slate-500 dark:text-slate-400">Gerencie contas, nuvem Supabase e backups locais</p>
           </div>
           <div class="flex items-center gap-2">
-            <span class="text-xs font-semibold px-2 py-0.5 bg-indigo-50 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 rounded-lg app-version-badge">v3.2.1</span>
+            <span class="text-xs font-semibold px-2 py-0.5 bg-indigo-50 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 rounded-lg app-version-badge">v3.2.6</span>
             <button onclick="forceBrowserReload()" type="button" class="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold shadow-xs transition flex items-center gap-1.5" title="Recarregar forçadamente limpando caches">
               <i class="fa-solid fa-arrows-rotate"></i><span>Forçar Atualização</span>
             </button>
@@ -849,11 +849,11 @@
           </div>
           <div>
             <label class="block text-[11px] font-semibold mb-1">Custo (R$)</label>
-            <input type="number" step="0.01" min="0" id="prod-cost" class="w-full px-2.5 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white" />
+            <input type="number" step="0.01" min="0" id="prod-cost" value="0" class="w-full px-2.5 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white" />
           </div>
           <div>
-            <label class="block text-[11px] font-semibold mb-1">Venda (R$) *</label>
-            <input type="number" step="0.01" min="0" required id="prod-price" class="w-full px-2.5 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white" />
+            <label class="block text-[11px] font-semibold mb-1">Venda (R$)</label>
+            <input type="number" step="0.01" min="0" id="prod-price" value="0" class="w-full px-2.5 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white" />
           </div>
           <div>
             <label class="block text-[11px] font-semibold mb-1">Estoque Atual *</label>
@@ -951,6 +951,73 @@
     </div>
   </div>
 
+  <!-- ================= MODAL RECEBER FIADO (TOTAL OU PARCIAL) ================= -->
+  <div id="modal-receive-debt" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl max-w-sm w-full p-5 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-white">
+      <div class="flex justify-between items-center mb-3 border-b border-slate-100 dark:border-slate-800 pb-2">
+        <h3 class="text-sm font-bold flex items-center gap-2">
+          <i class="fa-solid fa-hand-holding-dollar text-emerald-600"></i>
+          <span>Receber Fiado / Baixa</span>
+        </h3>
+        <button type="button" onclick="closeReceiveDebtModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <form onsubmit="confirmReceiveDebt(event)" class="space-y-3">
+        <input type="hidden" id="debt-sale-id" />
+
+        <div class="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700 space-y-1 text-xs">
+          <div class="flex justify-between">
+            <span class="text-slate-500">Cliente:</span>
+            <span id="debt-customer-name" class="font-bold text-slate-800 dark:text-white truncate max-w-[180px]">-</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-500">Pedido:</span>
+            <span id="debt-order-code" class="font-mono text-slate-600 dark:text-slate-300">-</span>
+          </div>
+          <div class="flex justify-between items-baseline pt-1 border-t border-slate-200 dark:border-slate-700">
+            <span class="font-semibold text-slate-700 dark:text-slate-300">Saldo Devedor Atual:</span>
+            <span id="debt-current-amount" class="text-base font-black text-rose-600 dark:text-rose-400">R$ 0,00</span>
+          </div>
+        </div>
+
+        <!-- Botões de Escolha Rápida: Total vs Parcial -->
+        <div class="grid grid-cols-2 gap-2">
+          <button type="button" id="btn-debt-type-total" onclick="setDebtPaymentMode('total')" class="py-2 px-3 rounded-xl border border-emerald-600 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 text-xs font-bold flex items-center justify-center gap-1.5 transition">
+            <i class="fa-solid fa-check-double"></i><span>Valor Total</span>
+          </button>
+          <button type="button" id="btn-debt-type-partial" onclick="setDebtPaymentMode('partial')" class="py-2 px-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold flex items-center justify-center gap-1.5 transition">
+            <i class="fa-solid fa-coins"></i><span>Valor Parcial</span>
+          </button>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-600 dark:text-slate-300 mb-1">Valor a Receber Agora (R$) *</label>
+          <input type="number" id="debt-pay-amount" step="0.01" min="0.01" required oninput="updateRemainingDebtPreview()" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-black text-emerald-600 dark:text-emerald-400 focus:ring-2 focus:ring-emerald-500 outline-none text-right" />
+        </div>
+
+        <div id="debt-remaining-preview-box" class="hidden p-2.5 bg-amber-50 dark:bg-amber-950/40 rounded-xl border border-amber-200 dark:border-amber-900/60 space-y-2 text-xs">
+          <div class="flex justify-between font-bold text-amber-800 dark:text-amber-300">
+            <span>Restante Pendente:</span>
+            <span id="debt-remaining-preview">R$ 0,00</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] text-slate-600 dark:text-slate-400 font-semibold">Novo Vencimento:</span>
+            <input type="date" id="debt-new-due-date" class="px-2 py-0.5 bg-white dark:bg-slate-900 border border-amber-300 dark:border-slate-600 rounded text-xs outline-none dark:text-white" />
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeReceiveDebtModal()" class="px-3 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold rounded-xl text-xs">Cancelar</button>
+          <button type="submit" class="flex-1 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow-md shadow-emerald-600/20 flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-circle-check"></i><span>Confirmar Recebimento</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- ================= MODAL SCRIPT SQL ================= -->
   <div id="modal-sql" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl max-w-2xl w-full p-5 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-white flex flex-col max-h-[90vh]">
@@ -1036,7 +1103,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
 
   <!-- ================= LÓGICA JAVASCRIPT PRINCIPAL ================= -->
   <script>
-    const APP_VERSION = 'v3.2.1';
+    const APP_VERSION = 'v3.2.6';
     
     const CATEGORIES = [
       'Alimentos & Bebidas', 'Mercearia & Limpeza', 'Higiene & Cosméticos',
@@ -1069,6 +1136,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
     let isExchangeValManual = false;
     let supabaseClient = null;
     let editSaleId = null;
+    let currentDebtSale = null;
 
     let products = [];
     let customers = [];
@@ -1476,7 +1544,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
                 <div class="text-[9px] ${badge}">Venc: ${formattedDate}</div>
               </td>
               <td class="py-1.5 px-1 font-bold text-rose-600 dark:text-rose-400 text-right text-xs">${formatCurrency(s.debtAmount)}</td>
-              <td class="py-1.5 px-1.5 text-center"><button onclick="receiveDebt('${s.id}')" title="Dar Baixa" class="px-2 py-1 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 rounded-lg text-xs hover:bg-emerald-100"><i class="fa-solid fa-check"></i></button></td>
+              <td class="py-1.5 px-1.5 text-center"><button onclick="receiveDebt('${s.id}')" title="Receber Total ou Parcial" class="px-2 py-1 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 rounded-lg text-xs hover:bg-emerald-100 font-bold"><i class="fa-solid fa-hand-holding-dollar"></i></button></td>
             </tr>`;
           }).join('');
         }
@@ -1729,6 +1797,84 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       updateCartTotals();
     }
 
+    function updateCartUI() {
+      const container = document.getElementById('pos-cart-items');
+      const countEl = document.getElementById('pos-cart-items-count');
+      const totalItems = currentCart.reduce((acc, item) => acc + item.qty, 0);
+      if (countEl) countEl.textContent = totalItems + (totalItems === 1 ? ' item' : ' itens');
+
+      if (container) {
+        if (currentCart.length === 0) {
+          container.innerHTML = `<div class="h-full flex flex-col items-center justify-center text-slate-400 py-6 text-center">
+            <i class="fa-solid fa-basket-shopping text-2xl mb-1 opacity-40"></i>
+            <p class="text-xs">Carrinho vazio</p>
+          </div>`;
+        } else {
+          container.innerHTML = currentCart.map(item => `
+            <div class="py-1.5 flex items-center justify-between gap-2 text-xs">
+              <div class="flex-1 min-w-0">
+                <p class="font-bold text-slate-800 dark:text-white truncate">${escapeHtml(item.name)}</p>
+                <p class="text-[10px] text-slate-400">${formatCurrency(item.salePrice)} un.</p>
+              </div>
+              <div class="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 rounded-lg p-0.5 border border-slate-200 dark:border-slate-700">
+                <button type="button" onclick="changeCartQty('${item.id}', -1)" class="w-5 h-5 rounded flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 font-bold">-</button>
+                <span class="w-5 text-center font-bold text-slate-800 dark:text-white">${item.qty}</span>
+                <button type="button" onclick="changeCartQty('${item.id}', 1)" class="w-5 h-5 rounded flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 font-bold">+</button>
+              </div>
+              <div class="text-right min-w-[65px]">
+                <p class="font-black text-indigo-600 dark:text-indigo-400">${formatCurrency(item.salePrice * item.qty)}</p>
+              </div>
+              <button type="button" onclick="removeFromCart('${item.id}')" class="text-slate-400 hover:text-rose-500 p-1"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+          `).join('');
+        }
+      }
+      updateCartTotals();
+    }
+
+    function updateCartTotals() {
+      const sub = currentCart.reduce((a, b) => a + (b.salePrice * b.qty), 0);
+      const discountEl = document.getElementById('pos-discount-input');
+      const d = discountEl ? parseFloat(discountEl.value) || 0 : 0;
+      const exValEl = document.getElementById('pos-exchange-value');
+      const exchangeVal = exValEl ? parseFloat(exValEl.value) || 0 : 0;
+
+      if (posCreditUsed > Math.max(0, sub - d - exchangeVal)) {
+        posCreditUsed = Math.max(0, sub - d - exchangeVal);
+      }
+
+      const tot = Math.max(0, sub - d - exchangeVal - posCreditUsed);
+
+      const subEl = document.getElementById('pos-subtotal');
+      const grandEl = document.getElementById('pos-grand-total');
+      if (subEl) subEl.textContent = formatCurrency(sub);
+      if (grandEl) grandEl.textContent = formatCurrency(tot);
+
+      const exRow = document.getElementById('pos-applied-exchange-row');
+      const exValSpan = document.getElementById('pos-applied-exchange-value');
+      if (exRow && exValSpan) {
+        if (exchangeVal > 0) {
+          exRow.classList.remove('hidden');
+          exValSpan.textContent = formatCurrency(exchangeVal);
+        } else {
+          exRow.classList.add('hidden');
+        }
+      }
+
+      const credRow = document.getElementById('pos-applied-credit-row');
+      const credValSpan = document.getElementById('pos-applied-credit-value');
+      if (credRow && credValSpan) {
+        if (posCreditUsed > 0) {
+          credRow.classList.remove('hidden');
+          credValSpan.textContent = formatCurrency(posCreditUsed);
+        } else {
+          credRow.classList.add('hidden');
+        }
+      }
+
+      syncReceivedWithTotal();
+    }
+
     function syncReceivedWithTotal() {
       const sub = currentCart.reduce((a, b) => a + (b.salePrice * b.qty), 0);
       const discountEl = document.getElementById('pos-discount-input');
@@ -1738,67 +1884,20 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       const tot = Math.max(0, sub - d - exchangeVal - posCreditUsed);
       
       const recEl = document.getElementById('pos-amount-received');
-      if (recEl) {
-        recEl.value = tot > 0 ? tot.toFixed(2) : '0.00';
-        recEl.dataset.manual = "";
-        calculateChange();
-      }
-    }
+      const cs = document.getElementById('pos-customer-select');
+      const hasCustomer = cs && cs.value !== '';
 
-    function updateCartUI() {
-      const c = document.getElementById('pos-cart-items'), n = document.getElementById('pos-cart-items-count');
-      if(n) n.textContent = currentCart.reduce((a, b) => a + b.qty, 0) + ' itens';
-      if(!c) return;
-      c.innerHTML = currentCart.length ? currentCart.map(i => `<div class="py-1.5 flex justify-between text-xs border-b dark:border-slate-800 last:border-0"><div class="flex-1 min-w-0"><h5 class="font-semibold dark:text-white truncate">${escapeHtml(i.name)}</h5><span class="text-[11px] text-slate-500">${formatCurrency(i.salePrice)} x ${i.qty} = <strong class="dark:text-white">${formatCurrency(i.salePrice * i.qty)}</strong></span></div><div class="flex items-center gap-1.5"><button onclick="changeCartQty('${i.id}',-1)" class="w-5 h-5 bg-slate-100 dark:bg-slate-700 dark:text-white rounded font-bold">-</button><span class="w-4 text-center dark:text-white font-bold text-xs">${i.qty}</span><button onclick="changeCartQty('${i.id}',1)" class="w-5 h-5 bg-slate-100 dark:bg-slate-700 dark:text-white rounded font-bold">+</button><button onclick="removeFromCart('${i.id}')" class="w-5 h-5 text-rose-500 hover:bg-rose-50 rounded ml-1"><i class="fa-solid fa-trash-can text-xs"></i></button></div></div>`).join('') : '<p class="py-6 text-center text-xs text-slate-400">Carrinho vazio</p>';
-      updateCartTotals();
-    }
-
-    function updateCartTotals() {
-      const sub = currentCart.reduce((a, b) => a + (b.salePrice * b.qty), 0);
-      const discountEl = document.getElementById('pos-discount-input');
-      const desc = discountEl ? parseFloat(discountEl.value) || 0 : 0;
-      
-      const exValEl = document.getElementById('pos-exchange-value');
-      const exchangeVal = exValEl ? parseFloat(exValEl.value) || 0 : 0;
-
-      let tot = Math.max(0, sub - desc - exchangeVal);
-      
-      if(posCreditUsed > tot) posCreditUsed = tot;
-      tot = Math.max(0, tot - posCreditUsed);
-
-      const st = document.getElementById('pos-subtotal');
-      const gt = document.getElementById('pos-grand-total');
-      if(st) st.textContent = formatCurrency(sub);
-      if(gt) gt.textContent = formatCurrency(tot);
-      
-      // Linha de Abatimento de Troca
-      const exRow = document.getElementById('pos-applied-exchange-row');
-      const exRowVal = document.getElementById('pos-applied-exchange-value');
-      if (exRow && exRowVal) {
-        if (exchangeVal > 0) {
-          exRow.classList.remove('hidden');
-          exRowVal.textContent = formatCurrency(exchangeVal);
-        } else {
-          exRow.classList.add('hidden');
-        }
-      }
-
-      // Linha de Crédito
-      const cr = document.getElementById('pos-applied-credit-row');
-      const crv = document.getElementById('pos-applied-credit-value');
-      if (cr && crv) {
-        if(posCreditUsed > 0) { cr.classList.remove('hidden'); crv.textContent = formatCurrency(posCreditUsed); }
-        else cr.classList.add('hidden');
-      }
-
-      const recEl = document.getElementById('pos-amount-received');
       if(recEl && !recEl.dataset.manual && currentCart.length > 0) {
-        recEl.value = tot > 0 ? tot.toFixed(2) : '0.00';
+        if (hasCustomer) {
+          recEl.value = '';
+        } else {
+          recEl.value = tot > 0 ? tot.toFixed(2) : '0.00';
+        }
       } else if (recEl && currentCart.length === 0) {
         recEl.value = '';
       }
       
-      calculateChange();
+      calculateChange(false);
     }
 
     function handleCustomerSelect() {
@@ -1809,6 +1908,12 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       const credBal = document.getElementById('pos-customer-credit-balance');
       posCreditUsed = 0; 
       
+      const recEl = document.getElementById('pos-amount-received');
+      if (recEl) {
+        recEl.dataset.manual = "";
+        if (custId) recEl.value = '';
+      }
+
       if (c && (c.credit || 0) > 0) {
         if (credEl) credEl.classList.remove('hidden');
         if (credBal) credBal.textContent = formatCurrency(c.credit);
@@ -1842,15 +1947,21 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
         const a = b.dataset.method === m;
         b.className = `pay-method-btn py-1.5 rounded-xl text-xs font-semibold flex flex-col items-center gap-0.5 transition border ${a ? 'border-indigo-600 bg-indigo-50 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300' : 'border-slate-200 bg-white text-slate-600 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300'}`;
       });
-      syncReceivedWithTotal();
+      const cs = document.getElementById('pos-customer-select');
+      const recEl = document.getElementById('pos-amount-received');
+      if (!cs || !cs.value || (recEl && recEl.value !== '')) {
+        syncReceivedWithTotal();
+      }
     }
 
-    function calculateChange() {
+    function calculateChange(fromUserInput = false) {
       const recEl = document.getElementById('pos-amount-received');
       if(!recEl) return;
-      if(recEl.value !== '') recEl.dataset.manual = "true"; else recEl.dataset.manual = "";
+      if(fromUserInput) recEl.dataset.manual = "true";
 
-      const r = parseFloat(recEl.value) || 0;
+      const cs = document.getElementById('pos-customer-select');
+      const custId = cs ? cs.value : '';
+
       const sub = currentCart.reduce((a, b) => a + (b.salePrice * b.qty), 0);
       const discountEl = document.getElementById('pos-discount-input');
       const d = discountEl ? parseFloat(discountEl.value) || 0 : 0;
@@ -1859,10 +1970,15 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
 
       const tot = Math.max(0, sub - d - exchangeVal - posCreditUsed);
 
+      let r = 0;
+      if (recEl.value === '') {
+        r = custId ? 0 : tot;
+      } else {
+        r = parseFloat(recEl.value) || 0;
+      }
+
       const missEl = document.getElementById('pos-partial-payment-info');
       const overEl = document.getElementById('pos-overpayment-info');
-      const cs = document.getElementById('pos-customer-select');
-      const custId = cs ? cs.value : '';
 
       if (r < tot && r >= 0 && currentCart.length > 0) {
         if(missEl) missEl.classList.remove('hidden');
@@ -1903,13 +2019,20 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
 
       const tot = Math.max(0, sub - d - exchangeVal - posCreditUsed);
       
-      const recEl = document.getElementById('pos-amount-received');
-      let r = recEl ? parseFloat(recEl.value) || 0 : 0;
-      if (recEl && recEl.value === '' && tot > 0) r = tot; 
-
       const cs = document.getElementById('pos-customer-select');
       const custId = cs ? cs.value : '';
       const cust = customers.find(x => String(x.id) === String(custId));
+
+      const recEl = document.getElementById('pos-amount-received');
+      const isRecBlank = !recEl || recEl.value.trim() === '';
+      let r = 0;
+
+      // Se houver cliente selecionado e o campo de valor recebido estiver em branco, lança 100% no fiado (R$ 0 pago agora)
+      if (isRecBlank) {
+        r = custId ? 0 : tot;
+      } else {
+        r = parseFloat(recEl.value) || 0;
+      }
 
       let debtAmount = 0;
       let creditGenerated = 0;
@@ -1919,10 +2042,17 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       if (r < tot) {
         if (!custId) return showToast('Para vender pendente (fiado), selecione um cliente!', 'danger');
         const ddEl = document.getElementById('pos-due-date');
-        dueDate = ddEl ? ddEl.value : '';
-        if (!dueDate) return showToast('Informe o Vencimento para o valor restante!', 'warning');
+        dueDate = ddEl ? ddEl.value.trim() : '';
         const todayStr = getLocalDateStr();
-        if (dueDate < todayStr) return showToast('A data de vencimento não pode ser no passado!', 'warning');
+
+        // Se a data de vencimento for deixada em branco, define automaticamente para 30 dias
+        if (!dueDate) {
+          const defaultDue = new Date();
+          defaultDue.setDate(defaultDue.getDate() + 30);
+          dueDate = getLocalDateStr(defaultDue);
+        } else if (dueDate < todayStr) {
+          return showToast('A data de vencimento não pode ser no passado!', 'warning');
+        }
         debtAmount = tot - r;
         status = 'partial';
       } else if (r > tot) {
@@ -2103,7 +2233,10 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       const title = document.getElementById('product-modal-title');
       const form = document.getElementById('product-form');
       if (!modal) return;
-      form.reset(); document.getElementById('prod-id').value = '';
+      form.reset(); 
+      document.getElementById('prod-id').value = '';
+      document.getElementById('prod-cost').value = '0';
+      document.getElementById('prod-price').value = '0';
       if (id) {
         const p = products.find(x => String(x.id) === String(id));
         if (p) {
@@ -2112,8 +2245,8 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
           document.getElementById('prod-name').value = p.name;
           document.getElementById('prod-barcode').value = p.barcode || '';
           document.getElementById('prod-category').value = p.category;
-          document.getElementById('prod-cost').value = p.costPrice || '';
-          document.getElementById('prod-price').value = p.salePrice || '';
+          document.getElementById('prod-cost').value = p.costPrice != null ? p.costPrice : 0;
+          document.getElementById('prod-price').value = p.salePrice != null ? p.salePrice : 0;
           document.getElementById('prod-stock').value = p.stock || 0;
           document.getElementById('prod-min-stock').value = p.minStock || 0;
         }
@@ -2134,7 +2267,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       const stock = parseInt(document.getElementById('prod-stock').value) || 0;
       const minStock = parseInt(document.getElementById('prod-min-stock').value) || 0;
 
-      if (!name || !category || !salePrice) return showToast('Preencha os campos obrigatórios.', 'warning');
+      if (!name || !category || costPrice < 0 || salePrice < 0) return showToast('Preencha os campos obrigatórios.', 'warning');
 
       let savedObj = null;
       if (id) {
@@ -2279,19 +2412,139 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
     }
 
     function receiveDebt(saleId) {
-      showConfirmModal('Receber Pagamento (Fiado)', 'Confirmar o recebimento integral deste valor pendente?', () => {
-        const s = sales.find(x => String(x.id) === String(saleId));
-        if (s) {
-          if (s.customerId) {
-            const c = customers.find(x => String(x.id) === String(s.customerId));
-            if (c) { c.debt = Math.max(0, (c.debt || 0) - s.debtAmount); syncToSupabase('customers', c); }
-          }
-          s.status = 'paid';
-          s.debtAmount = 0;
-          showToast('Pagamento recebido e baixado com sucesso!', 'success');
-          refreshAllData(); syncToSupabase('sales', s);
+      const s = sales.find(x => String(x.id) === String(saleId));
+      if (!s || !(s.debtAmount > 0)) return showToast('Esta venda não possui saldo devedor pendente.', 'warning');
+
+      currentDebtSale = s;
+      document.getElementById('debt-sale-id').value = s.id;
+      document.getElementById('debt-customer-name').textContent = s.customerName || 'Cliente';
+      document.getElementById('debt-order-code').textContent = s.id;
+      document.getElementById('debt-current-amount').textContent = formatCurrency(s.debtAmount);
+
+      const payInput = document.getElementById('debt-pay-amount');
+      if (payInput) {
+        payInput.max = s.debtAmount.toFixed(2);
+        payInput.value = s.debtAmount.toFixed(2);
+      }
+
+      const dueInput = document.getElementById('debt-new-due-date');
+      if (dueInput) {
+        dueInput.value = s.dueDate || getLocalDateStr();
+        dueInput.min = getLocalDateStr();
+      }
+
+      setDebtPaymentMode('total');
+      document.getElementById('modal-receive-debt').classList.remove('hidden');
+    }
+
+    function setDebtPaymentMode(mode) {
+      if (!currentDebtSale) return;
+      const btnTotal = document.getElementById('btn-debt-type-total');
+      const btnPartial = document.getElementById('btn-debt-type-partial');
+      const payInput = document.getElementById('debt-pay-amount');
+
+      const activeClass = 'py-2 px-3 rounded-xl border border-emerald-600 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 text-xs font-bold flex items-center justify-center gap-1.5 transition';
+      const inactiveClass = 'py-2 px-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold flex items-center justify-center gap-1.5 transition';
+
+      if (mode === 'total') {
+        if (btnTotal) btnTotal.className = activeClass;
+        if (btnPartial) btnPartial.className = inactiveClass;
+        if (payInput) payInput.value = currentDebtSale.debtAmount.toFixed(2);
+      } else {
+        if (btnPartial) btnPartial.className = activeClass;
+        if (btnTotal) btnTotal.className = inactiveClass;
+        if (payInput) {
+          payInput.value = '';
+          setTimeout(() => payInput.focus(), 50);
         }
-      }, 'fa-hand-holding-dollar', false);
+      }
+      updateRemainingDebtPreview();
+    }
+
+    function updateRemainingDebtPreview() {
+      if (!currentDebtSale) return;
+      const payInput = document.getElementById('debt-pay-amount');
+      const previewBox = document.getElementById('debt-remaining-preview-box');
+      const previewVal = document.getElementById('debt-remaining-preview');
+      const btnTotal = document.getElementById('btn-debt-type-total');
+      const btnPartial = document.getElementById('btn-debt-type-partial');
+
+      let val = parseFloat(payInput?.value) || 0;
+      const maxDebt = Number(currentDebtSale.debtAmount || 0);
+
+      if (val > maxDebt) {
+        val = maxDebt;
+        if (payInput) payInput.value = maxDebt.toFixed(2);
+      }
+
+      const remaining = Math.max(0, Number((maxDebt - val).toFixed(2)));
+
+      const activeClass = 'py-2 px-3 rounded-xl border border-emerald-600 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 text-xs font-bold flex items-center justify-center gap-1.5 transition';
+      const inactiveClass = 'py-2 px-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold flex items-center justify-center gap-1.5 transition';
+
+      if (remaining > 0) {
+        if (previewBox) previewBox.classList.remove('hidden');
+        if (previewVal) previewVal.textContent = formatCurrency(remaining);
+        if (btnPartial) btnPartial.className = activeClass;
+        if (btnTotal) btnTotal.className = inactiveClass;
+      } else {
+        if (previewBox) previewBox.classList.add('hidden');
+        if (btnTotal) btnTotal.className = activeClass;
+        if (btnPartial) btnPartial.className = inactiveClass;
+      }
+    }
+
+    function closeReceiveDebtModal() {
+      const m = document.getElementById('modal-receive-debt');
+      if (m) m.classList.add('hidden');
+      currentDebtSale = null;
+    }
+
+    function confirmReceiveDebt(e) {
+      e.preventDefault();
+      if (!currentDebtSale) return;
+
+      const payInput = document.getElementById('debt-pay-amount');
+      const dueInput = document.getElementById('debt-new-due-date');
+      let payAmount = parseFloat(payInput?.value) || 0;
+      const currentDebt = Number(currentDebtSale.debtAmount || 0);
+
+      if (payAmount <= 0) {
+        return showToast('Informe um valor válido maior que zero!', 'warning');
+      }
+      if (payAmount > currentDebt + 0.009) {
+        return showToast('O valor informado é maior que a dívida atual!', 'danger');
+      }
+
+      if (payAmount > currentDebt) payAmount = currentDebt;
+      const remaining = Math.max(0, Number((currentDebt - payAmount).toFixed(2)));
+
+      if (currentDebtSale.customerId) {
+        const c = customers.find(x => String(x.id) === String(currentDebtSale.customerId));
+        if (c) {
+          c.debt = Math.max(0, Number(((c.debt || 0) - payAmount).toFixed(2)));
+          syncToSupabase('customers', c);
+        }
+      }
+
+      currentDebtSale.receivedAmount = Number(((currentDebtSale.receivedAmount || 0) + payAmount).toFixed(2));
+      currentDebtSale.debtAmount = remaining;
+
+      if (remaining <= 0) {
+        currentDebtSale.status = 'paid';
+        showToast('Dívida quitada integralmente com sucesso!', 'success');
+      } else {
+        currentDebtSale.status = 'partial';
+        if (dueInput && dueInput.value) {
+          currentDebtSale.dueDate = dueInput.value;
+        }
+        showToast(`Recebido ${formatCurrency(payAmount)}! Restam ${formatCurrency(remaining)}.`, 'success');
+      }
+
+      const updatedSale = currentDebtSale;
+      closeReceiveDebtModal();
+      refreshAllData();
+      syncToSupabase('sales', updatedSale);
     }
 
     function openEditDateModal(id) {
