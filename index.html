@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GestãoPro - Vendas & Estoque v3.3.8</title>
+  <title>GestãoPro - Vendas & Estoque v3.4.0</title>
   
   <!-- Tailwind CSS CDN com suporte a Dark Mode via classe -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -67,7 +67,7 @@
     <div class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-3xl shadow-2xl p-6 sm:p-8 max-w-md w-full border border-white/20 dark:border-slate-800 text-slate-800 dark:text-white">
       
       <div class="flex items-center justify-between mb-4">
-        <span class="text-[11px] font-bold tracking-wider uppercase px-2.5 py-1 bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 rounded-lg app-version-badge">v3.3.8</span>
+        <span class="text-[11px] font-bold tracking-wider uppercase px-2.5 py-1 bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 rounded-lg app-version-badge">v3.4.0</span>
         <button onclick="toggleTheme()" type="button" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:scale-105 transition" title="Alternar Tema">
           <i class="theme-icon fa-solid fa-moon"></i>
         </button>
@@ -158,7 +158,7 @@
       <div class="p-4 border-t border-slate-800 space-y-3">
         <div class="flex items-center justify-between">
           <span class="text-[10px] font-bold text-slate-500 tracking-wider">VERSÃO ATUAL</span>
-          <span class="text-[10px] font-bold bg-slate-800 px-2 py-0.5 rounded text-indigo-400 border border-slate-700 app-version-badge">v3.3.8</span>
+          <span class="text-[10px] font-bold bg-slate-800 px-2 py-0.5 rounded text-indigo-400 border border-slate-700 app-version-badge">v3.4.0</span>
         </div>
         <div class="flex items-center justify-between pt-1">
           <div class="flex items-center gap-2.5 truncate">
@@ -185,7 +185,7 @@
         </div>
         <div>
           <span class="font-bold text-sm leading-tight block">GestãoPro</span>
-          <span class="text-[9px] text-indigo-400 font-medium app-version-badge">v3.3.8</span>
+          <span class="text-[9px] text-indigo-400 font-medium app-version-badge">v3.4.0</span>
         </div>
       </div>
       <div class="flex items-center gap-2">
@@ -879,7 +879,7 @@
             <p class="text-xs text-slate-500 dark:text-slate-400">Gerencie contas, nuvem Supabase e backups locais</p>
           </div>
           <div class="flex items-center gap-2">
-            <span class="text-xs font-semibold px-2 py-0.5 bg-indigo-50 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 rounded-lg app-version-badge">v3.3.8</span>
+            <span class="text-xs font-semibold px-2 py-0.5 bg-indigo-50 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 rounded-lg app-version-badge">v3.4.0</span>
             <button onclick="forceBrowserReload()" type="button" class="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold shadow-xs transition flex items-center gap-1.5" title="Recarregar forçadamente limpando caches">
               <i class="fa-solid fa-arrows-rotate"></i><span>Forçar Atualização</span>
             </button>
@@ -1399,7 +1399,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
 
   <!-- ================= LÓGICA JAVASCRIPT PRINCIPAL ================= -->
   <script>
-    const APP_VERSION = 'v3.3.8';
+    const APP_VERSION = 'v3.4.0';
     
     const CATEGORIES = [
       'Alimentos & Bebidas', 'Mercearia & Limpeza', 'Higiene & Cosméticos',
@@ -2654,7 +2654,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       const s = { 
         id: 'V-' + Date.now(), 
         date: new Date().toISOString(), 
-        seller: currentUser ? (currentUser.role === 'vendedor' ? `Vendedor (${currentUser.username})` : `Admin (${currentUser.username})`) : 'Vendedor',
+        seller: currentUser ? (currentUser.role === 'vendedor' ? 'Vendedor' : 'Admin') : 'Vendedor',
         sellerUsername: currentUser?.username || 'vendedor',
         sellerRole: currentUser?.role || 'vendedor',
         customerId: custId || null,
@@ -2695,6 +2695,14 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       openReceiptModal(s);
     }
 
+    function getCleanSellerName(s) {
+      if (!s) return 'Balcão';
+      if (s.sellerRole === 'admin') return 'Admin';
+      if (s.sellerRole === 'vendedor') return 'Vendedor';
+      const raw = String(s.seller || 'Balcão').replace(/\s*\([^)]*\)/g, '').trim();
+      return raw || 'Balcão';
+    }
+
     function openReceiptModal(s) {
       currentLastSale = s;
       const m = document.getElementById('receipt-modal-content');
@@ -2722,8 +2730,9 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
 
       const isCancelled = s.status === 'cancelled';
       const cancelledHeader = isCancelled ? `<div class="py-1 px-2 bg-rose-100 text-rose-700 font-bold text-center rounded mb-2">*** VENDA CANCELADA / ESTORNADA ***</div>` : '';
+      const cleanSeller = getCleanSellerName(s);
 
-      m.innerHTML = `${cancelledHeader}<div class="text-center border-b border-dashed pb-2"><h2 class="font-bold text-sm">${escapeHtml(companySettings.name)}</h2><p class="text-[10px]">CUPOM NÃO FISCAL</p></div><div class="py-2 text-[11px] border-b border-dashed"><div>Cód: ${s.id}</div><div>Data: ${new Date(s.date).toLocaleString('pt-BR')}</div><div>Vendedor: ${escapeHtml(s.seller || 'Balcão')}</div><div>Cliente: ${escapeHtml(s.customerName)}</div></div><div class="py-2 border-b border-dashed"><table class="w-full text-[11px]"><tbody>${itemsHtml}</tbody></table></div><div class="py-2 text-[11px] flex flex-col gap-0.5"><div class="flex justify-between"><span>Subtotal:</span><span>${formatCurrency(s.subtotal)}</span></div>${extraHtml}<div class="flex justify-between font-bold text-sm mt-1 pt-1 border-t border-slate-300"><span>TOTAL A PAGAR:</span><span>${formatCurrency(s.total)}</span></div><div class="flex justify-between"><span>Pago Agora (${s.paymentMethod.toUpperCase()}):</span><span>${formatCurrency(s.receivedAmount)}</span></div></div><div class="pt-2 border-t border-dashed text-[10px] text-center text-slate-600 space-y-1"><p class="font-bold text-slate-800">Toda troca de produtos deve ser feita no prazo máximo de 20 dias a partir da entrega.</p><p>Obrigado pela preferência!</p></div>`;
+      m.innerHTML = `${cancelledHeader}<div class="text-center border-b border-dashed pb-2"><h2 class="font-bold text-sm">${escapeHtml(companySettings.name)}</h2><p class="text-[10px]">CUPOM NÃO FISCAL</p></div><div class="py-2 text-[11px] border-b border-dashed"><div>Cód: ${s.id}</div><div>Data: ${new Date(s.date).toLocaleString('pt-BR')}</div><div>Vendedor: ${escapeHtml(cleanSeller)}</div><div>Cliente: ${escapeHtml(s.customerName)}</div></div><div class="py-2 border-b border-dashed"><table class="w-full text-[11px]"><tbody>${itemsHtml}</tbody></table></div><div class="py-2 text-[11px] flex flex-col gap-0.5"><div class="flex justify-between"><span>Subtotal:</span><span>${formatCurrency(s.subtotal)}</span></div>${extraHtml}<div class="flex justify-between font-bold text-sm mt-1 pt-1 border-t border-slate-300"><span>TOTAL A PAGAR:</span><span>${formatCurrency(s.total)}</span></div><div class="flex justify-between"><span>Pago Agora (${s.paymentMethod.toUpperCase()}):</span><span>${formatCurrency(s.receivedAmount)}</span></div></div><div class="pt-2 border-t border-dashed text-[10px] text-center text-slate-600 space-y-1"><p class="font-bold text-slate-800">Toda troca de produtos deve ser feita no prazo máximo de 20 dias a partir da entrega.</p><p>Obrigado pela preferência!</p></div>`;
       const mr = document.getElementById('modal-receipt');
       if (mr) mr.classList.remove('hidden');
     }
@@ -2737,10 +2746,11 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       if (!currentLastSale) return;
       const s = currentLastSale;
       const pixInfo = companySettings.pixKey || 'Chave não informada';
+      const cleanSeller = getCleanSellerName(s);
       let text = `*${companySettings.name.toUpperCase()}*\n`;
       text += `Comprovante de Venda: *${s.id}*\n`;
       text += `Data: ${new Date(s.date).toLocaleString('pt-BR')}\n`;
-      text += `Vendedor: ${s.seller || 'Balcão'}\n`;
+      text += `Vendedor: ${cleanSeller}\n`;
       text += `Cliente: ${s.customerName || 'Consumidor Final'}\n\n`;
       text += `*ITENS DO PEDIDO:*\n`;
       (s.items || []).forEach(i => {
