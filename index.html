@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GestãoPro - Vendas & Estoque v3.2.6</title>
+  <title>GestãoPro - Vendas & Estoque v3.2.8</title>
   
   <!-- Tailwind CSS CDN com suporte a Dark Mode via classe -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -67,7 +67,7 @@
     <div class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-3xl shadow-2xl p-6 sm:p-8 max-w-md w-full border border-white/20 dark:border-slate-800 text-slate-800 dark:text-white">
       
       <div class="flex items-center justify-between mb-4">
-        <span class="text-[11px] font-bold tracking-wider uppercase px-2.5 py-1 bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 rounded-lg app-version-badge">v3.2.6</span>
+        <span class="text-[11px] font-bold tracking-wider uppercase px-2.5 py-1 bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 rounded-lg app-version-badge">v3.2.8</span>
         <button onclick="toggleTheme()" type="button" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:scale-105 transition" title="Alternar Tema">
           <i class="theme-icon fa-solid fa-moon"></i>
         </button>
@@ -143,6 +143,9 @@
           <button onclick="navigate('customers')" type="button" id="nav-customers" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800/80">
             <i class="fa-solid fa-users w-5 text-center"></i><span>Clientes & Créditos</span>
           </button>
+          <button onclick="navigate('payables')" type="button" id="nav-payables" class="nav-btn admin-only w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800/80">
+            <i class="fa-solid fa-file-invoice w-5 text-center text-amber-400"></i><span>Dívidas a Pagar</span>
+          </button>
           <button onclick="navigate('reports')" type="button" id="nav-reports" class="nav-btn admin-only w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800/80">
             <i class="fa-solid fa-file-invoice-dollar w-5 text-center"></i><span>Relatórios & Vendas</span>
           </button>
@@ -155,7 +158,7 @@
       <div class="p-4 border-t border-slate-800 space-y-3">
         <div class="flex items-center justify-between">
           <span class="text-[10px] font-bold text-slate-500 tracking-wider">VERSÃO ATUAL</span>
-          <span class="text-[10px] font-bold bg-slate-800 px-2 py-0.5 rounded text-indigo-400 border border-slate-700 app-version-badge">v3.2.6</span>
+          <span class="text-[10px] font-bold bg-slate-800 px-2 py-0.5 rounded text-indigo-400 border border-slate-700 app-version-badge">v3.2.8</span>
         </div>
         <div class="flex items-center justify-between pt-1">
           <div class="flex items-center gap-2.5 truncate">
@@ -182,7 +185,7 @@
         </div>
         <div>
           <span class="font-bold text-sm leading-tight block">GestãoPro</span>
-          <span class="text-[9px] text-indigo-400 font-medium app-version-badge">v3.2.6</span>
+          <span class="text-[9px] text-indigo-400 font-medium app-version-badge">v3.2.8</span>
         </div>
       </div>
       <div class="flex items-center gap-2">
@@ -212,6 +215,9 @@
       </button>
       <button onclick="navigate('customers')" type="button" class="mobile-nav-btn flex flex-col items-center gap-0.5 py-1 px-2 text-[11px] font-medium text-slate-500 dark:text-slate-400" data-view="customers">
         <i class="fa-solid fa-users text-sm"></i><span>Clientes</span>
+      </button>
+      <button onclick="navigate('payables')" type="button" class="mobile-nav-btn admin-only flex flex-col items-center gap-0.5 py-1 px-2 text-[11px] font-medium text-slate-500 dark:text-slate-400" data-view="payables">
+        <i class="fa-solid fa-file-invoice text-sm text-amber-500"></i><span>A Pagar</span>
       </button>
       <button onclick="navigate('reports')" type="button" class="mobile-nav-btn admin-only flex flex-col items-center gap-0.5 py-1 px-2 text-[11px] font-medium text-slate-500 dark:text-slate-400" data-view="reports">
         <i class="fa-solid fa-chart-line text-sm"></i><span>Vendas</span>
@@ -316,25 +322,28 @@
         <!-- 3 Tabelas Operacionais Compactas sem Scroll Horizontal -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
           
-          <!-- Tabela 1: Estoque Baixo -->
+          <!-- Tabela 1: Dívidas a Pagar (Admin) no lugar de Estoque Baixo/Zerado -->
           <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden flex flex-col">
             <div class="p-2.5 sm:p-3 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
               <div class="flex items-center gap-1.5 truncate">
                 <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
-                <h3 class="font-bold text-slate-900 dark:text-white text-xs truncate">Estoque Baixo/Zerado</h3>
+                <h3 class="font-bold text-slate-900 dark:text-white text-xs truncate">Dívidas a Pagar (Admin)</h3>
               </div>
-              <span id="dash-low-stock-count" class="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300">0</span>
+              <div class="flex items-center gap-1.5">
+                <span id="dash-payables-total-badge" class="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300">R$ 0,00</span>
+                <button onclick="openPayableModal()" type="button" title="Nova Dívida a Pagar" class="admin-only px-1.5 py-0.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-[10px] font-bold"><i class="fa-solid fa-plus"></i></button>
+              </div>
             </div>
             <div class="max-h-52 overflow-y-auto flex-1">
               <table class="w-full text-left text-xs text-slate-600 dark:text-slate-300 table-fixed">
                 <thead class="bg-slate-50 dark:bg-slate-800/60 text-[9px] font-semibold text-slate-500 uppercase border-b border-slate-100 dark:border-slate-800 sticky top-0">
                   <tr>
-                    <th class="py-1.5 px-2.5 w-[55%]">Produto</th>
-                    <th class="py-1.5 px-1 w-[20%] text-center">Qtd</th>
-                    <th class="py-1.5 px-2 w-[25%] text-right">Repor</th>
+                    <th class="py-1.5 px-2.5 w-[45%]">Conta / Venc.</th>
+                    <th class="py-1.5 px-1 w-[35%] text-right">Falta</th>
+                    <th class="py-1.5 px-1.5 w-[20%] text-center">Pagar</th>
                   </tr>
                 </thead>
-                <tbody id="dash-low-stock-table" class="divide-y divide-slate-100 dark:divide-slate-800/60"></tbody>
+                <tbody id="dash-payables-table" class="divide-y divide-slate-100 dark:divide-slate-800/60"></tbody>
               </table>
             </div>
           </div>
@@ -619,6 +628,69 @@
         </div>
       </section>
 
+      <!-- VIEW: DÍVIDAS A PAGAR (ADMIN) -->
+      <section id="view-payables" class="hidden max-w-7xl mx-auto space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
+          <div>
+            <h1 class="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white">Dívidas a Pagar (Admin)</h1>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Controle exclusivo de contas e compromissos (independente do faturamento de vendas)</p>
+          </div>
+          <button onclick="openPayableModal()" type="button" class="w-full sm:w-auto px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-xs flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-plus"></i><span>Nova Dívida / Conta</span>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div class="bg-white dark:bg-slate-900 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
+            <p class="text-[10px] font-bold text-slate-500 uppercase">Total Pendente a Pagar</p>
+            <h3 class="text-lg sm:text-xl font-black text-amber-600 dark:text-amber-400 mt-0.5" id="payables-summary-pending">R$ 0,00</h3>
+            <span class="text-[10px] text-slate-400" id="payables-summary-pending-count">0 contas em aberto</span>
+          </div>
+          <div class="bg-white dark:bg-slate-900 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
+            <p class="text-[10px] font-bold text-slate-500 uppercase">Vencidas / Em Atraso</p>
+            <h3 class="text-lg sm:text-xl font-black text-rose-600 dark:text-rose-400 mt-0.5" id="payables-summary-overdue">R$ 0,00</h3>
+            <span class="text-[10px] text-rose-500" id="payables-summary-overdue-count">0 contas vencidas</span>
+          </div>
+          <div class="bg-white dark:bg-slate-900 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
+            <p class="text-[10px] font-bold text-slate-500 uppercase">Total Já Pago</p>
+            <h3 class="text-lg sm:text-xl font-black text-emerald-600 dark:text-emerald-400 mt-0.5" id="payables-summary-paid">R$ 0,00</h3>
+            <span class="text-[10px] text-emerald-600 dark:text-emerald-400">Histórico quitado</span>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col sm:flex-row gap-2">
+          <div class="relative flex-1">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-magnifying-glass"></i></span>
+            <input type="text" id="payable-search" oninput="renderPayablesTable()" placeholder="Buscar por descrição, fornecedor ou categoria..." class="w-full pl-9 pr-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-xs sm:text-sm dark:text-white" />
+          </div>
+          <select id="payable-filter-status" onchange="renderPayablesTable()" class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-medium focus:ring-2 focus:ring-indigo-500 dark:text-white">
+            <option value="pending">Pendentes / Parciais</option>
+            <option value="all">Todas as Contas</option>
+            <option value="paid">Quitadas / Pagas</option>
+          </select>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+              <thead class="bg-slate-50 dark:bg-slate-800/60 text-[10px] font-semibold text-slate-500 uppercase border-b border-slate-200 dark:border-slate-800">
+                <tr>
+                  <th class="py-2.5 px-3">Descrição / Fornecedor</th>
+                  <th class="py-2.5 px-3 hidden sm:table-cell">Categoria</th>
+                  <th class="py-2.5 px-3">Vencimento</th>
+                  <th class="py-2.5 px-3 text-center">Status</th>
+                  <th class="py-2.5 px-3 text-right">Valor Total</th>
+                  <th class="py-2.5 px-3 text-right">Já Pago</th>
+                  <th class="py-2.5 px-3 text-right text-amber-600 dark:text-amber-400">Falta Pagar</th>
+                  <th class="py-2.5 px-3 text-right">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="payables-table-body" class="divide-y divide-slate-100 dark:divide-slate-800/60"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
       <!-- VIEW: RELATÓRIOS -->
       <section id="view-reports" class="hidden max-w-7xl mx-auto space-y-4">
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2.5">
@@ -737,7 +809,7 @@
             <p class="text-xs text-slate-500 dark:text-slate-400">Gerencie contas, nuvem Supabase e backups locais</p>
           </div>
           <div class="flex items-center gap-2">
-            <span class="text-xs font-semibold px-2 py-0.5 bg-indigo-50 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 rounded-lg app-version-badge">v3.2.6</span>
+            <span class="text-xs font-semibold px-2 py-0.5 bg-indigo-50 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 rounded-lg app-version-badge">v3.2.8</span>
             <button onclick="forceBrowserReload()" type="button" class="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold shadow-xs transition flex items-center gap-1.5" title="Recarregar forçadamente limpando caches">
               <i class="fa-solid fa-arrows-rotate"></i><span>Forçar Atualização</span>
             </button>
@@ -1018,6 +1090,143 @@
     </div>
   </div>
 
+  <!-- ================= MODAL CADASTRO/EDIÇÃO DE DÍVIDA A PAGAR (ADMIN) ================= -->
+  <div id="modal-payable" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl max-w-md w-full p-5 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-white max-h-[92vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-3 border-b border-slate-100 dark:border-slate-800 pb-2">
+        <h3 class="text-base font-bold flex items-center gap-2" id="payable-modal-title">
+          <i class="fa-solid fa-file-invoice text-amber-500"></i>
+          <span>Nova Dívida a Pagar</span>
+        </h3>
+        <button type="button" onclick="closePayableModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <form id="payable-form" onsubmit="savePayable(event)" class="space-y-2.5">
+        <input type="hidden" id="pay-id" />
+        <div>
+          <label class="block text-[11px] font-semibold mb-1">Descrição / Fornecedor *</label>
+          <input type="text" id="pay-title" required placeholder="Ex: Fornecedor Bebidas, Energia, Aluguel..." class="w-full px-2.5 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white" />
+        </div>
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-[11px] font-semibold mb-1">Categoria</label>
+            <select id="pay-category" class="w-full px-2.5 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white">
+              <option value="Fornecedores">Fornecedores</option>
+              <option value="Despesas Fixas">Despesas Fixas (Luz/Água/Aluguel)</option>
+              <option value="Impostos & Taxas">Impostos & Taxas</option>
+              <option value="Empréstimos / Cartão">Empréstimos / Cartão</option>
+              <option value="Outros">Outros</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold mb-1" id="pay-due-date-label">1º Vencimento *</label>
+            <input type="date" id="pay-due-date" required oninput="updatePayableInstallmentPreview()" class="w-full px-2.5 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white" />
+          </div>
+        </div>
+
+        <!-- Painel de Parcelamento e Soma Automática -->
+        <div id="pay-installments-box" class="p-3 bg-indigo-50/70 dark:bg-indigo-950/40 rounded-2xl border border-indigo-200 dark:border-indigo-900/60 space-y-2">
+          <div class="flex items-center justify-between text-xs font-bold text-indigo-900 dark:text-indigo-300">
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-layer-group text-indigo-600 dark:text-indigo-400"></i><span>Opção de Parcelamento</span></span>
+            <span id="pay-installments-sum-badge" class="text-[11px] font-black text-indigo-700 dark:text-indigo-300 bg-white dark:bg-slate-800 px-2 py-0.5 rounded-lg border border-indigo-200 dark:border-slate-700">Soma: R$ 0,00</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-[10px] font-semibold text-slate-600 dark:text-slate-300 mb-0.5">Qtd. de Parcelas *</label>
+              <input type="number" step="1" min="1" max="120" id="pay-installments-qty" value="1" oninput="handlePayableInstallmentInput('qty')" class="w-full px-2.5 py-1.5 bg-white dark:bg-slate-800 border border-indigo-200 dark:border-slate-700 rounded-xl text-xs font-bold text-center focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white" />
+            </div>
+            <div>
+              <label class="block text-[10px] font-semibold text-slate-600 dark:text-slate-300 mb-0.5">Valor de Cada Parcela (R$)</label>
+              <input type="number" step="0.01" min="0" id="pay-installment-value" placeholder="0.00" oninput="handlePayableInstallmentInput('inst')" class="w-full px-2.5 py-1.5 bg-white dark:bg-slate-800 border border-indigo-200 dark:border-slate-700 rounded-xl text-xs font-black text-indigo-600 dark:text-indigo-400 text-right focus:ring-2 focus:ring-indigo-500 outline-none" />
+            </div>
+          </div>
+          <!-- Lista de Prévia das Parcelas -->
+          <div id="pay-installments-preview-list" class="hidden max-h-28 overflow-y-auto pt-1.5 border-t border-indigo-200/60 dark:border-slate-700 space-y-1 text-[11px]"></div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-[11px] font-semibold mb-1">Soma / Valor Total (R$) *</label>
+            <input type="number" step="0.01" min="0.01" id="pay-amount" required placeholder="0.00" oninput="handlePayableInstallmentInput('total')" class="w-full px-2.5 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-black text-amber-600 dark:text-amber-400 focus:ring-2 focus:ring-indigo-500 outline-none" />
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold mb-1" id="pay-paid-amount-label">Valor Já Pago (R$)</label>
+            <input type="number" step="0.01" min="0" id="pay-paid-amount" value="0" class="w-full px-2.5 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-[11px] font-semibold mb-1">Observações</label>
+          <input type="text" id="pay-notes" placeholder="Opcional (Chave Pix, boleto, parcela...)" class="w-full px-2.5 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white" />
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closePayableModal()" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold rounded-xl text-xs">Cancelar</button>
+          <button type="submit" class="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-xs shadow-xs">Salvar Dívida</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL PAGAR DÍVIDA DO ADMIN (TOTAL OU PARCIAL) ================= -->
+  <div id="modal-settle-payable" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl max-w-sm w-full p-5 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-white">
+      <div class="flex justify-between items-center mb-3 border-b border-slate-100 dark:border-slate-800 pb-2">
+        <h3 class="text-sm font-bold flex items-center gap-2">
+          <i class="fa-solid fa-money-bill-transfer text-amber-500"></i>
+          <span>Dar Baixa em Dívida a Pagar</span>
+        </h3>
+        <button type="button" onclick="closeSettlePayableModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <form onsubmit="confirmSettlePayable(event)" class="space-y-3">
+        <input type="hidden" id="settle-payable-id" />
+
+        <div class="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700 space-y-1 text-xs">
+          <div class="flex justify-between">
+            <span class="text-slate-500">Conta:</span>
+            <span id="settle-payable-title" class="font-bold text-slate-800 dark:text-white truncate max-w-[180px]">-</span>
+          </div>
+          <div class="flex justify-between items-baseline pt-1 border-t border-slate-200 dark:border-slate-700">
+            <span class="font-semibold text-slate-700 dark:text-slate-300">Falta Pagar:</span>
+            <span id="settle-payable-current" class="text-base font-black text-amber-600 dark:text-amber-400">R$ 0,00</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <button type="button" id="btn-payable-mode-total" onclick="setPayableSettleMode('total')" class="py-2 px-3 rounded-xl border border-emerald-600 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 text-xs font-bold flex items-center justify-center gap-1.5 transition">
+            <i class="fa-solid fa-check-double"></i><span>Pagar Total</span>
+          </button>
+          <button type="button" id="btn-payable-mode-partial" onclick="setPayableSettleMode('partial')" class="py-2 px-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold flex items-center justify-center gap-1.5 transition">
+            <i class="fa-solid fa-coins"></i><span>Valor Parcial</span>
+          </button>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-600 dark:text-slate-300 mb-1">Valor Pago Agora (R$) *</label>
+          <input type="number" id="settle-payable-amount" step="0.01" min="0.01" required oninput="updateRemainingPayablePreview()" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-black text-emerald-600 dark:text-emerald-400 focus:ring-2 focus:ring-emerald-500 outline-none text-right" />
+        </div>
+
+        <div id="settle-payable-remaining-box" class="hidden p-2.5 bg-amber-50 dark:bg-amber-950/40 rounded-xl border border-amber-200 dark:border-amber-900/60 space-y-2 text-xs">
+          <div class="flex justify-between font-bold text-amber-800 dark:text-amber-300">
+            <span>Restante a Pagar:</span>
+            <span id="settle-payable-remaining-val">R$ 0,00</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] text-slate-600 dark:text-slate-400 font-semibold">Próx. Vencimento:</span>
+            <input type="date" id="settle-payable-due-date" class="px-2 py-0.5 bg-white dark:bg-slate-900 border border-amber-300 dark:border-slate-600 rounded text-xs outline-none dark:text-white" />
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeSettlePayableModal()" class="px-3 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold rounded-xl text-xs">Cancelar</button>
+          <button type="submit" class="flex-1 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow-md shadow-emerald-600/20 flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-circle-check"></i><span>Confirmar Pagamento</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- ================= MODAL SCRIPT SQL ================= -->
   <div id="modal-sql" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl max-w-2xl w-full p-5 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-white flex flex-col max-h-[90vh]">
@@ -1103,7 +1312,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
 
   <!-- ================= LÓGICA JAVASCRIPT PRINCIPAL ================= -->
   <script>
-    const APP_VERSION = 'v3.2.6';
+    const APP_VERSION = 'v3.2.8';
     
     const CATEGORIES = [
       'Alimentos & Bebidas', 'Mercearia & Limpeza', 'Higiene & Cosméticos',
@@ -1137,10 +1346,12 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
     let supabaseClient = null;
     let editSaleId = null;
     let currentDebtSale = null;
+    let currentSettlePayable = null;
 
     let products = [];
     let customers = [];
     let sales = [];
+    let adminPayables = [];
     let companySettings = {
       name: 'Mercadinho Express', doc: '12.345.678/0001-90', phone: '(11) 98765-4321', pixKey: '48999344103 -- JORGE L SILVEIRA --BANCO DO BRASIL'
     };
@@ -1168,10 +1379,12 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
         const rawP = JSON.parse(localStorage.getItem('gp_products'));
         const rawC = JSON.parse(localStorage.getItem('gp_customers'));
         const rawS = JSON.parse(localStorage.getItem('gp_sales'));
+        const rawPay = JSON.parse(localStorage.getItem('gp_payables'));
         
         products = Array.isArray(rawP) && rawP.length ? rawP.map(normalizeProduct) : SAMPLE_PRODUCTS.map(normalizeProduct);
         customers = Array.isArray(rawC) && rawC.length ? rawC.map(normalizeCustomer) : SAMPLE_CUSTOMERS.map(normalizeCustomer);
         sales = Array.isArray(rawS) ? rawS.map(normalizeSale) : [];
+        adminPayables = Array.isArray(rawPay) ? rawPay.map(normalizePayable) : [];
         
         const savedCompany = JSON.parse(localStorage.getItem('gp_company'));
         if (savedCompany) companySettings = Object.assign({}, companySettings, savedCompany);
@@ -1179,6 +1392,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
         products = SAMPLE_PRODUCTS.map(normalizeProduct);
         customers = SAMPLE_CUSTOMERS.map(normalizeCustomer);
         sales = [];
+        adminPayables = [];
       }
 
       try {
@@ -1260,6 +1474,23 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
         creditGenerated: Number(s.creditGenerated != null ? s.creditGenerated : (s.creditgenerated != null ? s.creditgenerated : 0)),
         dueDate: s.dueDate || s.duedate || null,
         status: s.status || 'paid'
+      };
+    }
+
+    function normalizePayable(p) {
+      const amount = Number(p.amount || 0);
+      const paidAmount = Number(p.paidAmount != null ? p.paidAmount : (p.paidamount != null ? p.paidamount : 0));
+      const remaining = Math.max(0, Number((amount - paidAmount).toFixed(2)));
+      return {
+        id: String(p.id || 'D-' + Date.now()),
+        title: p.title || 'Conta a Pagar',
+        category: p.category || 'Fornecedores',
+        amount: amount,
+        paidAmount: paidAmount,
+        dueDate: p.dueDate || p.duedate || getLocalDateStr(),
+        notes: p.notes || '',
+        status: remaining <= 0 ? 'paid' : (paidAmount > 0 ? 'partial' : 'pending'),
+        createdAt: p.createdAt || new Date().toISOString()
       };
     }
 
@@ -1398,6 +1629,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       localStorage.setItem('gp_products', JSON.stringify(products));
       localStorage.setItem('gp_customers', JSON.stringify(customers));
       localStorage.setItem('gp_sales', JSON.stringify(sales));
+      localStorage.setItem('gp_payables', JSON.stringify(adminPayables));
       localStorage.setItem('gp_company', JSON.stringify(companySettings));
     }
 
@@ -1407,13 +1639,14 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       if (currentView === 'dashboard') renderDashboard();
       if (currentView === 'inventory') renderInventoryTable();
       if (currentView === 'customers') renderCustomerTable();
+      if (currentView === 'payables') renderPayablesTable();
       if (currentView === 'pos') renderPosCatalogue();
       if (currentView === 'reports') renderReports();
     }
 
     function navigate(view) {
       currentView = view;
-      ['dashboard', 'pos', 'inventory', 'customers', 'reports', 'settings'].forEach(v => {
+      ['dashboard', 'pos', 'inventory', 'customers', 'payables', 'reports', 'settings'].forEach(v => {
         const el = document.getElementById('view-' + v);
         if (el) el.classList.toggle('hidden', v !== view);
       });
@@ -1428,6 +1661,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       if (view === 'pos') { renderPosCatalogue(); populatePosCustomerSelect(); setTimeout(() => document.getElementById('pos-search-input')?.focus(), 80); }
       if (view === 'inventory') renderInventoryTable();
       if (view === 'customers') renderCustomerTable();
+      if (view === 'payables') renderPayablesTable();
       if (view === 'reports') renderReports();
       if (view === 'settings') loadConfigInputs();
     }
@@ -1508,15 +1742,40 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       if(elExVal) elExVal.textContent = formatCurrency(exValMonth);
       if(elExQty) elExQty.textContent = exQtyMonth + ' peça' + (exQtyMonth === 1 ? '' : 's') + ' trocada' + (exQtyMonth === 1 ? '' : 's');
       
-      // Tabela Estoque Baixo
-      const tb = document.getElementById('dash-low-stock-table');
-      if (tb) {
-        tb.innerHTML = low.length === 0 ? '<tr><td colspan="3" class="py-4 text-center text-slate-400 text-xs">Estoque saudável!</td></tr>' : 
-          low.map(p => `<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
-            <td class="py-1.5 px-2.5 font-semibold dark:text-white truncate" title="${escapeHtml(p.name)}">${escapeHtml(p.name)}</td>
-            <td class="py-1.5 px-1 text-center"><span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${p.stock <= 0 ? 'bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-400' : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'}">${p.stock}</span></td>
-            <td class="py-1.5 px-2 text-right"><button onclick="quickStockAdd('${p.id}')" class="px-1.5 py-0.5 bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 rounded text-[10px] font-semibold hover:bg-indigo-100">+10</button></td>
-          </tr>`).join('');
+      // Tabela 1: Dívidas a Pagar (Admin) no lugar de Estoque Baixo
+      const pendingPayables = adminPayables
+        .map(normalizePayable)
+        .filter(p => p.status !== 'paid' && (p.amount - p.paidAmount) > 0);
+      pendingPayables.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+
+      const totalPayablesPending = pendingPayables.reduce((acc, p) => acc + Math.max(0, p.amount - p.paidAmount), 0);
+      const payBadgeEl = document.getElementById('dash-payables-total-badge');
+      if (payBadgeEl) payBadgeEl.textContent = formatCurrency(totalPayablesPending);
+
+      const payTb = document.getElementById('dash-payables-table');
+      if (payTb) {
+        if (pendingPayables.length === 0) {
+          payTb.innerHTML = '<tr><td colspan="3" class="py-4 text-center text-slate-400 text-xs">Nenhuma dívida a pagar!</td></tr>';
+        } else {
+          payTb.innerHTML = pendingPayables.map(p => {
+            const rem = Math.max(0, p.amount - p.paidAmount);
+            const isOverdue = p.dueDate && (p.dueDate < todayStr);
+            const dateBadge = isOverdue ? 'text-rose-600 font-bold' : 'text-slate-400';
+            const fDate = p.dueDate ? new Date(p.dueDate + 'T00:00:00').toLocaleDateString('pt-BR') : '-';
+            return `<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+              <td class="py-1.5 px-2.5">
+                <div class="font-semibold dark:text-white truncate" title="${escapeHtml(p.title)}">${escapeHtml(p.title)}</div>
+                <div class="text-[9px] ${dateBadge}">Venc: ${fDate}</div>
+              </td>
+              <td class="py-1.5 px-1 font-bold text-amber-600 dark:text-amber-400 text-right text-xs">${formatCurrency(rem)}</td>
+              <td class="py-1.5 px-1.5 text-center">
+                <button onclick="openSettlePayableModal('${p.id}')" title="Dar Baixa Total ou Parcial" class="px-2 py-1 bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 rounded-lg text-xs hover:bg-amber-100 font-bold">
+                  <i class="fa-solid fa-check"></i>
+                </button>
+              </td>
+            </tr>`;
+          }).join('');
+        }
       }
 
       // Tabela Fiados
@@ -2411,6 +2670,432 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       });
     }
 
+    // ================= GESTÃO DE DÍVIDAS A PAGAR DO ADMIN (INDEPENDENTE DAS VENDAS) =================
+    function syncPayablesCloud() {
+      syncToSupabase('settings', { id: 'payables', data: adminPayables });
+    }
+
+    function renderPayablesTable() {
+      const tbody = document.getElementById('payables-table-body');
+      const q = (document.getElementById('payable-search')?.value || '').toLowerCase();
+      const filterStatus = document.getElementById('payable-filter-status')?.value || 'pending';
+      const todayStr = getLocalDateStr();
+
+      adminPayables = adminPayables.map(normalizePayable);
+
+      let totalPending = 0, countPending = 0;
+      let totalOverdue = 0, countOverdue = 0;
+      let totalPaid = 0;
+
+      adminPayables.forEach(p => {
+        const rem = Math.max(0, p.amount - p.paidAmount);
+        totalPaid += Number(p.paidAmount || 0);
+        if (rem > 0) {
+          totalPending += rem;
+          countPending++;
+          if (p.dueDate && p.dueDate < todayStr) {
+            totalOverdue += rem;
+            countOverdue++;
+          }
+        }
+      });
+
+      const elPend = document.getElementById('payables-summary-pending');
+      const elPendCnt = document.getElementById('payables-summary-pending-count');
+      const elOver = document.getElementById('payables-summary-overdue');
+      const elOverCnt = document.getElementById('payables-summary-overdue-count');
+      const elPaid = document.getElementById('payables-summary-paid');
+
+      if (elPend) elPend.textContent = formatCurrency(totalPending);
+      if (elPendCnt) elPendCnt.textContent = countPending + (countPending === 1 ? ' conta em aberto' : ' contas em aberto');
+      if (elOver) elOver.textContent = formatCurrency(totalOverdue);
+      if (elOverCnt) elOverCnt.textContent = countOverdue + (countOverdue === 1 ? ' conta vencida' : ' contas vencidas');
+      if (elPaid) elPaid.textContent = formatCurrency(totalPaid);
+
+      if (!tbody) return;
+
+      const filtered = adminPayables.filter(p => {
+        const matchQ = p.title.toLowerCase().includes(q) || (p.category || '').toLowerCase().includes(q) || (p.notes || '').toLowerCase().includes(q);
+        let matchSt = true;
+        if (filterStatus === 'pending') matchSt = p.status !== 'paid';
+        else if (filterStatus === 'paid') matchSt = p.status === 'paid';
+        return matchQ && matchSt;
+      });
+
+      filtered.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" class="py-8 text-center text-slate-400 text-xs">Nenhuma dívida a pagar encontrada para este filtro.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(p => {
+        const rem = Math.max(0, p.amount - p.paidAmount);
+        const isOverdue = rem > 0 && p.dueDate && p.dueDate < todayStr;
+        const fDate = p.dueDate ? new Date(p.dueDate + 'T00:00:00').toLocaleDateString('pt-BR') : '-';
+
+        let stBadge = '';
+        if (rem <= 0) {
+          stBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">Quitada</span>';
+        } else if (isOverdue) {
+          stBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-400">Vencida</span>';
+        } else if (p.paidAmount > 0) {
+          stBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300">Parcial</span>';
+        } else {
+          stBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300">A Pagar</span>';
+        }
+
+        return `<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+          <td class="py-2.5 px-3">
+            <div class="font-bold text-slate-900 dark:text-white">${escapeHtml(p.title)}</div>
+            ${p.notes ? `<div class="text-[10px] text-slate-400">${escapeHtml(p.notes)}</div>` : ''}
+          </td>
+          <td class="py-2.5 px-3 hidden sm:table-cell text-xs">${escapeHtml(p.category)}</td>
+          <td class="py-2.5 px-3 text-xs ${isOverdue ? 'text-rose-600 font-bold' : ''}">${fDate}</td>
+          <td class="py-2.5 px-3 text-center">${stBadge}</td>
+          <td class="py-2.5 px-3 text-right font-semibold">${formatCurrency(p.amount)}</td>
+          <td class="py-2.5 px-3 text-right text-emerald-600 dark:text-emerald-400 font-medium">${formatCurrency(p.paidAmount)}</td>
+          <td class="py-2.5 px-3 text-right font-black text-amber-600 dark:text-amber-400">${formatCurrency(rem)}</td>
+          <td class="py-2.5 px-3 text-right space-x-1">
+            ${rem > 0 ? `<button onclick="openSettlePayableModal('${p.id}')" title="Dar Baixa / Pagar" class="px-2 py-1 bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 rounded text-xs font-bold"><i class="fa-solid fa-check"></i></button>` : ''}
+            <button onclick="openPayableModal('${p.id}')" title="Editar" class="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded text-xs"><i class="fa-solid fa-pen"></i></button>
+            <button onclick="deletePayable('${p.id}')" title="Excluir" class="px-2 py-1 bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400 rounded text-xs"><i class="fa-solid fa-trash"></i></button>
+          </td>
+        </tr>`;
+      }).join('');
+    }
+
+    function addMonthsToDateStr(dateStr, monthsToAdd) {
+      if (!dateStr) return getLocalDateStr();
+      const parts = dateStr.split('-');
+      const y = parseInt(parts[0], 10);
+      const m = parseInt(parts[1], 10) - 1;
+      const day = parseInt(parts[2], 10);
+      const targetDate = new Date(y, m + monthsToAdd, day);
+      if (targetDate.getDate() !== day) {
+        targetDate.setDate(0);
+      }
+      return getLocalDateStr(targetDate);
+    }
+
+    function handlePayableInstallmentInput(source) {
+      const qtyEl = document.getElementById('pay-installments-qty');
+      const instEl = document.getElementById('pay-installment-value');
+      const totEl = document.getElementById('pay-amount');
+      const sumBadge = document.getElementById('pay-installments-sum-badge');
+      const dueLabel = document.getElementById('pay-due-date-label');
+
+      let qty = parseInt(qtyEl?.value, 10) || 1;
+      if (qty < 1) qty = 1;
+      if (qty > 120) { qty = 120; if (qtyEl) qtyEl.value = 120; }
+
+      if (dueLabel) {
+        dueLabel.textContent = qty > 1 ? '1º Vencimento *' : 'Vencimento *';
+      }
+
+      const instVal = parseFloat(instEl?.value) || 0;
+      const totVal = parseFloat(totEl?.value) || 0;
+
+      if (source === 'inst') {
+        const newTotal = Number((qty * instVal).toFixed(2));
+        if (totEl) totEl.value = newTotal > 0 ? newTotal.toFixed(2) : '';
+      } else if (source === 'qty') {
+        if (instVal > 0) {
+          const newTotal = Number((qty * instVal).toFixed(2));
+          if (totEl) totEl.value = newTotal.toFixed(2);
+        } else if (totVal > 0) {
+          const newInst = Number((totVal / qty).toFixed(2));
+          if (instEl) instEl.value = newInst.toFixed(2);
+        }
+      } else if (source === 'total') {
+        const newInst = qty > 0 ? Number((totVal / qty).toFixed(2)) : totVal;
+        if (instEl) instEl.value = newInst > 0 ? newInst.toFixed(2) : '';
+      }
+
+      const finalTotal = parseFloat(totEl?.value) || 0;
+      if (sumBadge) {
+        const eachVal = parseFloat(instEl?.value) || 0;
+        sumBadge.textContent = qty > 1
+          ? `${qty}x de ${formatCurrency(eachVal)} = ${formatCurrency(finalTotal)}`
+          : `Soma: ${formatCurrency(finalTotal)}`;
+      }
+
+      updatePayableInstallmentPreview();
+    }
+
+    function updatePayableInstallmentPreview() {
+      const previewEl = document.getElementById('pay-installments-preview-list');
+      const qtyEl = document.getElementById('pay-installments-qty');
+      const instEl = document.getElementById('pay-installment-value');
+      const totEl = document.getElementById('pay-amount');
+      const dueEl = document.getElementById('pay-due-date');
+
+      if (!previewEl) return;
+      const qty = parseInt(qtyEl?.value, 10) || 1;
+      const total = parseFloat(totEl?.value) || 0;
+      const instVal = parseFloat(instEl?.value) || (qty > 0 ? total / qty : 0);
+      const baseDue = dueEl?.value || getLocalDateStr();
+
+      if (qty <= 1 || total <= 0) {
+        previewEl.classList.add('hidden');
+        previewEl.innerHTML = '';
+        return;
+      }
+
+      previewEl.classList.remove('hidden');
+      let rows = [];
+      let accumulated = 0;
+
+      for (let i = 1; i <= qty; i++) {
+        const isLast = i === qty;
+        const val = isLast ? Math.max(0, Number((total - accumulated).toFixed(2))) : Number(instVal.toFixed(2));
+        accumulated = Number((accumulated + val).toFixed(2));
+        const dStr = addMonthsToDateStr(baseDue, i - 1);
+        const fDate = new Date(dStr + 'T00:00:00').toLocaleDateString('pt-BR');
+        rows.push(`<div class="flex justify-between items-center py-0.5 px-1.5 rounded bg-white/70 dark:bg-slate-900/50">
+          <span class="font-semibold text-slate-700 dark:text-slate-300">Parcela ${i}/${qty} <span class="text-slate-400 font-normal">(${fDate})</span></span>
+          <span class="font-bold text-indigo-600 dark:text-indigo-400">${formatCurrency(val)}</span>
+        </div>`);
+      }
+
+      rows.push(`<div class="flex justify-between items-center pt-1 px-1.5 border-t border-indigo-200 dark:border-slate-700 font-black text-indigo-800 dark:text-indigo-300">
+        <span>Soma Total (${qty} parcelas):</span>
+        <span>${formatCurrency(total)}</span>
+      </div>`);
+
+      previewEl.innerHTML = rows.join('');
+    }
+
+    function openPayableModal(id = null) {
+      const modal = document.getElementById('modal-payable');
+      const form = document.getElementById('payable-form');
+      const titleEl = document.getElementById('payable-modal-title');
+      const instBox = document.getElementById('pay-installments-box');
+      const previewList = document.getElementById('pay-installments-preview-list');
+      if (!modal || !form) return;
+
+      form.reset();
+      document.getElementById('pay-id').value = '';
+      document.getElementById('pay-due-date').value = getLocalDateStr();
+      document.getElementById('pay-paid-amount').value = '0';
+      document.getElementById('pay-installments-qty').value = '1';
+      document.getElementById('pay-installment-value').value = '';
+      if (previewList) { previewList.classList.add('hidden'); previewList.innerHTML = ''; }
+
+      if (id) {
+        const p = adminPayables.find(x => String(x.id) === String(id));
+        if (p) {
+          titleEl.innerHTML = '<i class="fa-solid fa-file-invoice text-amber-500"></i><span>Editar Dívida a Pagar</span>';
+          document.getElementById('pay-id').value = p.id;
+          document.getElementById('pay-title').value = p.title;
+          document.getElementById('pay-category').value = p.category || 'Fornecedores';
+          document.getElementById('pay-due-date').value = p.dueDate || getLocalDateStr();
+          document.getElementById('pay-amount').value = p.amount;
+          document.getElementById('pay-installment-value').value = p.amount;
+          document.getElementById('pay-paid-amount').value = p.paidAmount || 0;
+          document.getElementById('pay-notes').value = p.notes || '';
+          if (instBox) instBox.classList.add('hidden');
+        }
+      } else {
+        titleEl.innerHTML = '<i class="fa-solid fa-file-invoice text-amber-500"></i><span>Nova Dívida a Pagar</span>';
+        if (instBox) instBox.classList.remove('hidden');
+        handlePayableInstallmentInput('qty');
+      }
+      modal.classList.remove('hidden');
+    }
+
+    function closePayableModal() {
+      const m = document.getElementById('modal-payable');
+      if (m) m.classList.add('hidden');
+    }
+
+    function savePayable(e) {
+      e.preventDefault();
+      const id = document.getElementById('pay-id').value;
+      const title = document.getElementById('pay-title').value.trim();
+      const category = document.getElementById('pay-category').value;
+      const dueDate = document.getElementById('pay-due-date').value;
+      const amount = parseFloat(document.getElementById('pay-amount').value) || 0;
+      const paidAmount = Math.min(amount, parseFloat(document.getElementById('pay-paid-amount').value) || 0);
+      const notes = document.getElementById('pay-notes').value.trim();
+      const installmentsQty = Math.max(1, parseInt(document.getElementById('pay-installments-qty')?.value, 10) || 1);
+      const installmentValInput = parseFloat(document.getElementById('pay-installment-value')?.value) || 0;
+
+      if (!title || amount <= 0 || !dueDate) {
+        return showToast('Preencha a descrição, vencimento e valor válido!', 'warning');
+      }
+
+      if (id) {
+        const idx = adminPayables.findIndex(x => String(x.id) === String(id));
+        if (idx !== -1) {
+          adminPayables[idx] = normalizePayable({
+            ...adminPayables[idx],
+            title, category, dueDate, amount, paidAmount, notes
+          });
+          showToast('Dívida atualizada com sucesso!', 'success');
+        }
+      } else if (installmentsQty > 1) {
+        const baseInstVal = installmentValInput > 0 ? installmentValInput : Number((amount / installmentsQty).toFixed(2));
+        let accumulated = 0;
+        let remainingInitialPaid = paidAmount;
+        const baseTimestamp = Date.now();
+
+        for (let i = 1; i <= installmentsQty; i++) {
+          const isLast = i === installmentsQty;
+          const currentInstAmount = isLast
+            ? Math.max(0.01, Number((amount - accumulated).toFixed(2)))
+            : Number(baseInstVal.toFixed(2));
+          accumulated = Number((accumulated + currentInstAmount).toFixed(2));
+
+          const paidForThis = Math.min(currentInstAmount, remainingInitialPaid);
+          remainingInitialPaid = Math.max(0, Number((remainingInitialPaid - paidForThis).toFixed(2)));
+
+          const instDueDate = addMonthsToDateStr(dueDate, i - 1);
+          const newPay = normalizePayable({
+            id: `D-${baseTimestamp}-${i}`,
+            title: `${title} (Parcela ${i}/${installmentsQty})`,
+            category,
+            dueDate: instDueDate,
+            amount: currentInstAmount,
+            paidAmount: paidForThis,
+            notes: notes ? `${notes} | Total: ${formatCurrency(amount)}` : `Parcela ${i}/${installmentsQty} (Soma Total: ${formatCurrency(amount)})`,
+            createdAt: new Date().toISOString()
+          });
+          adminPayables.push(newPay);
+        }
+        showToast(`${installmentsQty} parcelas registradas! Soma Total: ${formatCurrency(amount)}`, 'success');
+      } else {
+        const newPay = normalizePayable({
+          id: 'D-' + Date.now(),
+          title, category, dueDate, amount, paidAmount, notes,
+          createdAt: new Date().toISOString()
+        });
+        adminPayables.push(newPay);
+        showToast('Dívida a pagar registrada!', 'success');
+      }
+
+      closePayableModal();
+      refreshAllData();
+      syncPayablesCloud();
+    }
+
+    function deletePayable(id) {
+      showConfirmModal('Excluir Dívida a Pagar', 'Deseja realmente remover este compromisso da lista?', () => {
+        adminPayables = adminPayables.filter(x => String(x.id) !== String(id));
+        refreshAllData();
+        syncPayablesCloud();
+        showToast('Registro removido!', 'success');
+      });
+    }
+
+    function openSettlePayableModal(id) {
+      const p = adminPayables.find(x => String(x.id) === String(id));
+      if (!p) return;
+      const rem = Math.max(0, Number((p.amount - p.paidAmount).toFixed(2)));
+      if (rem <= 0) return showToast('Esta conta já está quitada!', 'info');
+
+      currentSettlePayable = p;
+      document.getElementById('settle-payable-id').value = p.id;
+      document.getElementById('settle-payable-title').textContent = p.title;
+      document.getElementById('settle-payable-current').textContent = formatCurrency(rem);
+
+      const amtInput = document.getElementById('settle-payable-amount');
+      if (amtInput) {
+        amtInput.max = rem.toFixed(2);
+        amtInput.value = rem.toFixed(2);
+      }
+
+      const dueInput = document.getElementById('settle-payable-due-date');
+      if (dueInput) {
+        dueInput.value = p.dueDate || getLocalDateStr();
+      }
+
+      setPayableSettleMode('total');
+      document.getElementById('modal-settle-payable').classList.remove('hidden');
+    }
+
+    function setPayableSettleMode(mode) {
+      if (!currentSettlePayable) return;
+      const rem = Math.max(0, Number((currentSettlePayable.amount - currentSettlePayable.paidAmount).toFixed(2)));
+      const btnTotal = document.getElementById('btn-payable-mode-total');
+      const btnPartial = document.getElementById('btn-payable-mode-partial');
+      const amtInput = document.getElementById('settle-payable-amount');
+
+      const activeClass = 'py-2 px-3 rounded-xl border border-emerald-600 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 text-xs font-bold flex items-center justify-center gap-1.5 transition';
+      const inactiveClass = 'py-2 px-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold flex items-center justify-center gap-1.5 transition';
+
+      if (mode === 'total') {
+        if (btnTotal) btnTotal.className = activeClass;
+        if (btnPartial) btnPartial.className = inactiveClass;
+        if (amtInput) amtInput.value = rem.toFixed(2);
+      } else {
+        if (btnPartial) btnPartial.className = activeClass;
+        if (btnTotal) btnTotal.className = inactiveClass;
+        if (amtInput) {
+          amtInput.value = '';
+          setTimeout(() => amtInput.focus(), 50);
+        }
+      }
+      updateRemainingPayablePreview();
+    }
+
+    function updateRemainingPayablePreview() {
+      if (!currentSettlePayable) return;
+      const maxRem = Math.max(0, Number((currentSettlePayable.amount - currentSettlePayable.paidAmount).toFixed(2)));
+      const amtInput = document.getElementById('settle-payable-amount');
+      const remBox = document.getElementById('settle-payable-remaining-box');
+      const remVal = document.getElementById('settle-payable-remaining-val');
+
+      let val = parseFloat(amtInput?.value) || 0;
+      if (val > maxRem) {
+        val = maxRem;
+        if (amtInput) amtInput.value = maxRem.toFixed(2);
+      }
+
+      const left = Math.max(0, Number((maxRem - val).toFixed(2)));
+      if (left > 0) {
+        if (remBox) remBox.classList.remove('hidden');
+        if (remVal) remVal.textContent = formatCurrency(left);
+      } else {
+        if (remBox) remBox.classList.add('hidden');
+      }
+    }
+
+    function closeSettlePayableModal() {
+      const m = document.getElementById('modal-settle-payable');
+      if (m) m.classList.add('hidden');
+      currentSettlePayable = null;
+    }
+
+    function confirmSettlePayable(e) {
+      e.preventDefault();
+      if (!currentSettlePayable) return;
+
+      const amtInput = document.getElementById('settle-payable-amount');
+      const dueInput = document.getElementById('settle-payable-due-date');
+      const maxRem = Math.max(0, Number((currentSettlePayable.amount - currentSettlePayable.paidAmount).toFixed(2)));
+      let payNow = parseFloat(amtInput?.value) || 0;
+
+      if (payNow <= 0) return showToast('Informe um valor válido!', 'warning');
+      if (payNow > maxRem) payNow = maxRem;
+
+      currentSettlePayable.paidAmount = Number((currentSettlePayable.paidAmount + payNow).toFixed(2));
+      const newRem = Math.max(0, Number((currentSettlePayable.amount - currentSettlePayable.paidAmount).toFixed(2)));
+
+      if (newRem <= 0) {
+        currentSettlePayable.status = 'paid';
+        showToast('Dívida quitada integralmente!', 'success');
+      } else {
+        currentSettlePayable.status = 'partial';
+        if (dueInput && dueInput.value) currentSettlePayable.dueDate = dueInput.value;
+        showToast(`Pago ${formatCurrency(payNow)}! Restam ${formatCurrency(newRem)}.`, 'success');
+      }
+
+      closeSettlePayableModal();
+      refreshAllData();
+      syncPayablesCloud();
+    }
+
     function receiveDebt(saleId) {
       const s = sales.find(x => String(x.id) === String(saleId));
       if (!s || !(s.debtAmount > 0)) return showToast('Esta venda não possui saldo devedor pendente.', 'warning');
@@ -2918,7 +3603,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
     }
 
     function exportSystemBackup() {
-      const data = { version: APP_VERSION, products, customers, sales, companySettings, usersSettings: appUsers };
+      const data = { version: APP_VERSION, products, customers, sales, adminPayables, companySettings, usersSettings: appUsers };
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a'); a.href = url; a.download = 'gestaopro-backup-' + getLocalDateStr() + '.json'; a.click();
@@ -2934,6 +3619,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
           if (Array.isArray(data.products)) products = data.products.map(normalizeProduct);
           if (Array.isArray(data.customers)) customers = data.customers.map(normalizeCustomer);
           if (Array.isArray(data.sales)) sales = data.sales.map(normalizeSale);
+          if (Array.isArray(data.adminPayables)) adminPayables = data.adminPayables.map(normalizePayable);
           if (data.companySettings) companySettings = data.companySettings;
           if (data.usersSettings) appUsers = data.usersSettings;
           refreshAllData(); loadConfigInputs();
@@ -2948,6 +3634,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
         products = SAMPLE_PRODUCTS.map(normalizeProduct);
         customers = SAMPLE_CUSTOMERS.map(normalizeCustomer);
         sales = [];
+        adminPayables = [];
         appUsers = { admin: { user: 'admin', pass: '123' }, vendedor: { user: 'vendedor', pass: '123' } };
         localStorage.setItem('gp_users', JSON.stringify(appUsers));
         refreshAllData(); loadConfigInputs();
@@ -3069,6 +3756,10 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
           if (comp) companySettings = comp.data;
           const usr = stRes.data.find(x => x.id === 'users');
           if (usr) { appUsers = usr.data; localStorage.setItem('gp_users', JSON.stringify(appUsers)); }
+          const payCloud = stRes.data.find(x => x.id === 'payables');
+          if (payCloud && Array.isArray(payCloud.data)) {
+            adminPayables = payCloud.data.map(normalizePayable);
+          }
         }
 
         saveData(); refreshAllData(); loadConfigInputs();
@@ -3097,7 +3788,8 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
           if (sales.length) await syncToSupabase('sales', sales);
           await syncToSupabase('settings', [
             { id: 'company', data: companySettings },
-            { id: 'users', data: appUsers }
+            { id: 'users', data: appUsers },
+            { id: 'payables', data: adminPayables }
           ]);
           showToast('Todos os dados enviados com sucesso!', 'success');
         } catch (err) {
