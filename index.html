@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GestãoPro - Vendas & Estoque v3.2.8</title>
+  <title>GestãoPro - Vendas & Estoque v3.3.2</title>
   
   <!-- Tailwind CSS CDN com suporte a Dark Mode via classe -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -67,7 +67,7 @@
     <div class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-3xl shadow-2xl p-6 sm:p-8 max-w-md w-full border border-white/20 dark:border-slate-800 text-slate-800 dark:text-white">
       
       <div class="flex items-center justify-between mb-4">
-        <span class="text-[11px] font-bold tracking-wider uppercase px-2.5 py-1 bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 rounded-lg app-version-badge">v3.2.8</span>
+        <span class="text-[11px] font-bold tracking-wider uppercase px-2.5 py-1 bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 rounded-lg app-version-badge">v3.3.2</span>
         <button onclick="toggleTheme()" type="button" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:scale-105 transition" title="Alternar Tema">
           <i class="theme-icon fa-solid fa-moon"></i>
         </button>
@@ -158,7 +158,7 @@
       <div class="p-4 border-t border-slate-800 space-y-3">
         <div class="flex items-center justify-between">
           <span class="text-[10px] font-bold text-slate-500 tracking-wider">VERSÃO ATUAL</span>
-          <span class="text-[10px] font-bold bg-slate-800 px-2 py-0.5 rounded text-indigo-400 border border-slate-700 app-version-badge">v3.2.8</span>
+          <span class="text-[10px] font-bold bg-slate-800 px-2 py-0.5 rounded text-indigo-400 border border-slate-700 app-version-badge">v3.3.2</span>
         </div>
         <div class="flex items-center justify-between pt-1">
           <div class="flex items-center gap-2.5 truncate">
@@ -185,7 +185,7 @@
         </div>
         <div>
           <span class="font-bold text-sm leading-tight block">GestãoPro</span>
-          <span class="text-[9px] text-indigo-400 font-medium app-version-badge">v3.2.8</span>
+          <span class="text-[9px] text-indigo-400 font-medium app-version-badge">v3.3.2</span>
         </div>
       </div>
       <div class="flex items-center gap-2">
@@ -237,23 +237,39 @@
             <h1 class="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white">Visão Geral</h1>
             <p class="text-xs text-slate-500 dark:text-slate-400">Resumo operacional do seu negócio em tempo real</p>
           </div>
-          <button onclick="navigate('pos')" type="button" class="w-full sm:w-auto px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 transition">
-            <i class="fa-solid fa-cart-shopping"></i><span>Abrir Frente de Caixa</span>
-          </button>
+          <div class="flex flex-wrap items-center gap-2">
+            <!-- Faixa de Monitoramento do Vendedor (Exclusivo Admin) -->
+            <div class="admin-only flex items-center gap-2.5 bg-white dark:bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs text-xs">
+              <div class="w-7 h-7 rounded-lg bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold">
+                <i class="fa-solid fa-user-clock"></i>
+              </div>
+              <div>
+                <span class="block text-[9px] font-bold text-slate-400 uppercase leading-none">Último Login Vendedor</span>
+                <span id="dash-seller-last-login" class="font-bold text-slate-800 dark:text-slate-200 text-[11px]">Nunca acessou</span>
+              </div>
+              <div class="pl-2.5 border-l border-slate-200 dark:border-slate-700">
+                <span class="block text-[9px] font-bold text-slate-400 uppercase leading-none">Vendas do Vendedor</span>
+                <span id="dash-seller-sales-summary" class="font-bold text-emerald-600 dark:text-emerald-400 text-[11px]">0 vendas (R$ 0,00)</span>
+              </div>
+            </div>
+            <button onclick="navigate('pos')" type="button" class="w-full sm:w-auto px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 transition">
+              <i class="fa-solid fa-cart-shopping"></i><span>Abrir Frente de Caixa</span>
+            </button>
+          </div>
         </div>
 
         <!-- Grade Compacta de Indicadores -->
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
           <div class="bg-white dark:bg-slate-900 p-3 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col justify-between relative">
             <div>
-              <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Vendas Hoje</p>
+              <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider" id="dash-sales-today-label">Vendas Hoje</p>
               <h3 class="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white mt-0.5" id="dash-sales-today">R$ 0,00</h3>
               <p class="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium" id="dash-orders-count">0 pedidos</p>
             </div>
             <div class="absolute top-3 right-3 w-7 h-7 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xs font-bold"><i class="fa-solid fa-coins"></i></div>
           </div>
           
-          <div class="bg-white dark:bg-slate-900 p-3 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col justify-between relative">
+          <div class="bg-white dark:bg-slate-900 p-3 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col justify-between relative admin-only">
             <div>
               <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Mês Atual</p>
               <h3 class="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white mt-0.5" id="dash-sales-month">R$ 0,00</h3>
@@ -322,8 +338,8 @@
         <!-- 3 Tabelas Operacionais Compactas sem Scroll Horizontal -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
           
-          <!-- Tabela 1: Dívidas a Pagar (Admin) no lugar de Estoque Baixo/Zerado -->
-          <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden flex flex-col">
+          <!-- Tabela 1: Dívidas a Pagar (Exclusivo Admin) -->
+          <div class="admin-only bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden flex flex-col">
             <div class="p-2.5 sm:p-3 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
               <div class="flex items-center gap-1.5 truncate">
                 <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
@@ -344,6 +360,28 @@
                   </tr>
                 </thead>
                 <tbody id="dash-payables-table" class="divide-y divide-slate-100 dark:divide-slate-800/60"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Tabela 1 Alternativa (Exclusivo Vendedor): Reposição / Estoque Baixo -->
+          <div class="vendedor-only hidden bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden flex flex-col">
+            <div class="p-2.5 sm:p-3 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+              <div class="flex items-center gap-1.5 truncate">
+                <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                <h3 class="font-bold text-slate-900 dark:text-white text-xs truncate">Alerta de Estoque Baixo</h3>
+              </div>
+              <span id="dash-vendedor-low-stock-badge" class="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300">0</span>
+            </div>
+            <div class="max-h-52 overflow-y-auto flex-1">
+              <table class="w-full text-left text-xs text-slate-600 dark:text-slate-300 table-fixed">
+                <thead class="bg-slate-50 dark:bg-slate-800/60 text-[9px] font-semibold text-slate-500 uppercase border-b border-slate-100 dark:border-slate-800 sticky top-0">
+                  <tr>
+                    <th class="py-1.5 px-2.5 w-[70%]">Produto</th>
+                    <th class="py-1.5 px-1.5 w-[30%] text-center">Qtd.</th>
+                  </tr>
+                </thead>
+                <tbody id="dash-vendedor-low-stock-table" class="divide-y divide-slate-100 dark:divide-slate-800/60"></tbody>
               </table>
             </div>
           </div>
@@ -552,7 +590,7 @@
             <button onclick="openStockEntryModal()" type="button" class="flex-1 sm:flex-none px-3 py-2 bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-xs flex items-center justify-center gap-1.5">
               <i class="fa-solid fa-dolly"></i><span>Entrada Rápida</span>
             </button>
-            <button onclick="openProductModal()" type="button" class="flex-1 sm:flex-none px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-xs flex items-center justify-center gap-1.5">
+            <button onclick="openProductModal()" type="button" class="admin-only flex-1 sm:flex-none px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-xs flex items-center justify-center gap-1.5">
               <i class="fa-solid fa-plus"></i><span>Novo Produto</span>
             </button>
           </div>
@@ -580,7 +618,7 @@
                   <th class="py-2.5 px-3 admin-only hidden lg:table-cell">Custo</th>
                   <th class="py-2.5 px-3">Venda</th>
                   <th class="py-2.5 px-3 text-center">Estoque</th>
-                  <th class="py-2.5 px-3 text-right">Ações</th>
+                  <th class="py-2.5 px-3 text-right admin-only">Ações</th>
                 </tr>
               </thead>
               <tbody id="inventory-table-body" class="divide-y divide-slate-100 dark:divide-slate-800/60"></tbody>
@@ -789,6 +827,7 @@
                   <th class="py-2.5 px-3">Cód.</th>
                   <th class="py-2.5 px-3">Data/Hora</th>
                   <th class="py-2.5 px-3">Cliente</th>
+                  <th class="py-2.5 px-3">Vendedor</th>
                   <th class="py-2.5 px-3 hidden sm:table-cell">Status</th>
                   <th class="py-2.5 px-3 text-right">Total</th>
                   <th class="py-2.5 px-3 text-center">Ações</th>
@@ -809,7 +848,7 @@
             <p class="text-xs text-slate-500 dark:text-slate-400">Gerencie contas, nuvem Supabase e backups locais</p>
           </div>
           <div class="flex items-center gap-2">
-            <span class="text-xs font-semibold px-2 py-0.5 bg-indigo-50 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 rounded-lg app-version-badge">v3.2.8</span>
+            <span class="text-xs font-semibold px-2 py-0.5 bg-indigo-50 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 rounded-lg app-version-badge">v3.3.2</span>
             <button onclick="forceBrowserReload()" type="button" class="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold shadow-xs transition flex items-center gap-1.5" title="Recarregar forçadamente limpando caches">
               <i class="fa-solid fa-arrows-rotate"></i><span>Forçar Atualização</span>
             </button>
@@ -837,6 +876,10 @@
               <div><label class="block text-[11px] font-semibold text-slate-600 dark:text-slate-300 mb-1">Senha Admin</label><input type="password" id="cfg-admin-pass" class="w-full px-2.5 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-medium dark:text-white" /></div>
               <div><label class="block text-[11px] font-semibold text-slate-600 dark:text-slate-300 mb-1">Login Vendedor</label><input type="text" id="cfg-vend-user" class="w-full px-2.5 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-medium dark:text-white" /></div>
               <div><label class="block text-[11px] font-semibold text-slate-600 dark:text-slate-300 mb-1">Senha Vendedor</label><input type="password" id="cfg-vend-pass" class="w-full px-2.5 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-medium dark:text-white" /></div>
+            </div>
+            <div class="p-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center justify-between text-xs">
+              <span class="text-slate-500 dark:text-slate-400 font-medium"><i class="fa-solid fa-clock-rotate-left mr-1.5 text-indigo-500"></i>Último login do Vendedor:</span>
+              <span id="cfg-vend-last-login" class="font-bold text-slate-800 dark:text-slate-200">Nunca acessou</span>
             </div>
             <button onclick="saveUsers()" type="button" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold shadow-xs">Salvar Utilizadores</button>
           </div>
@@ -919,7 +962,7 @@
             <label class="block text-[11px] font-semibold mb-1">Categoria *</label>
             <select id="prod-category" required class="w-full px-2.5 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white"></select>
           </div>
-          <div>
+          <div class="admin-only">
             <label class="block text-[11px] font-semibold mb-1">Custo (R$)</label>
             <input type="number" step="0.01" min="0" id="prod-cost" value="0" class="w-full px-2.5 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 outline-none dark:text-white" />
           </div>
@@ -1312,7 +1355,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
 
   <!-- ================= LÓGICA JAVASCRIPT PRINCIPAL ================= -->
   <script>
-    const APP_VERSION = 'v3.2.8';
+    const APP_VERSION = 'v3.3.2';
     
     const CATEGORIES = [
       'Alimentos & Bebidas', 'Mercearia & Limpeza', 'Higiene & Cosméticos',
@@ -1330,8 +1373,8 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
     ];
 
     let appUsers = {
-      admin: { user: 'admin', pass: '123' },
-      vendedor: { user: 'vendedor', pass: '123' }
+      admin: { user: 'admin', pass: '123', lastLogin: null },
+      vendedor: { user: 'vendedor', pass: '123', lastLogin: null }
     };
 
     let currentUser = null;
@@ -1456,6 +1499,8 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
         id: String(s.id || 'V-' + Date.now()),
         date: s.date || new Date().toISOString(),
         seller: s.seller || 'Vendedor',
+        sellerUsername: s.sellerUsername || s.sellerusername || null,
+        sellerRole: s.sellerRole || s.sellerrole || null,
         customerId: s.customerId || s.customerid || null,
         customerName: s.customerName || s.customername || 'Consumidor Final',
         customerPhone: s.customerPhone || s.customerphone || '',
@@ -1575,20 +1620,50 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
 
       const u = uInput.value.trim().toLowerCase();
       const p = pInput.value.trim();
+      const nowIso = new Date().toISOString();
       
-      if (u === appUsers.admin.user && p === appUsers.admin.pass) {
-        currentUser = { username: appUsers.admin.user, name: 'Administrador', role: 'admin' };
+      if (u === appUsers.admin.user.toLowerCase() && p === appUsers.admin.pass) {
+        appUsers.admin.lastLogin = nowIso;
+        currentUser = { username: appUsers.admin.user, name: 'Administrador', role: 'admin', loginTime: nowIso };
       }
-      else if (u === appUsers.vendedor.user && p === appUsers.vendedor.pass) {
-        currentUser = { username: appUsers.vendedor.user, name: 'Vendedor Balcão', role: 'vendedor' };
+      else if (u === appUsers.vendedor.user.toLowerCase() && p === appUsers.vendedor.pass) {
+        appUsers.vendedor.lastLogin = nowIso;
+        currentUser = { username: appUsers.vendedor.user, name: 'Vendedor (' + appUsers.vendedor.user + ')', role: 'vendedor', loginTime: nowIso };
       }
       else {
         return showToast('Usuário ou senha incorretos!', 'danger');
       }
       
+      localStorage.setItem('gp_users', JSON.stringify(appUsers));
+      syncToSupabase('settings', { id: 'users', data: appUsers });
       sessionStorage.setItem('gp_session_user', JSON.stringify(currentUser));
       initApp();
       showToast('Bem-vindo, ' + currentUser.name + '!', 'success');
+    }
+
+    function initApp() {
+      const ls = document.getElementById('login-screen');
+      const aw = document.getElementById('app-wrapper');
+      if (ls) ls.classList.add('hidden');
+      if (aw) aw.classList.remove('hidden');
+
+      updateVersionDisplay();
+
+      const isAdmin = isAdminUser();
+      document.querySelectorAll('.admin-only').forEach(el => el.classList.toggle('hidden', !isAdmin));
+      document.querySelectorAll('.vendedor-only').forEach(el => el.classList.toggle('hidden', isAdmin));
+
+      const nameEl = document.getElementById('current-user-name');
+      const roleEl = document.getElementById('current-user-role');
+      const sideBadge = document.getElementById('sidebar-role-badge');
+      const mobBadge = document.getElementById('mobile-user-badge');
+
+      if (nameEl && currentUser) nameEl.textContent = currentUser.name;
+      if (roleEl && currentUser) roleEl.textContent = currentUser.role;
+      if (sideBadge && currentUser) sideBadge.textContent = isAdmin ? 'Administrador' : 'Vendedor';
+      if (mobBadge && currentUser) mobBadge.textContent = currentUser.name;
+
+      navigate(isAdmin ? 'dashboard' : 'pos');
     }
 
     function logout() {
@@ -1596,33 +1671,35 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       currentUser = null;
       const ls = document.getElementById('login-screen');
       const aw = document.getElementById('app-wrapper');
-      if(ls) { ls.classList.remove('hidden'); document.getElementById('login-password').value = ''; }
-      if(aw) aw.classList.add('hidden');
+      if (aw) aw.classList.add('hidden');
+      if (ls) ls.classList.remove('hidden');
+      const passInput = document.getElementById('login-password');
+      if (passInput) passInput.value = '';
     }
 
-    function initApp() {
-      const loginScreen = document.getElementById('login-screen');
-      const appWrapper = document.getElementById('app-wrapper');
-      
-      if (loginScreen) loginScreen.classList.add('hidden');
-      if (appWrapper) appWrapper.classList.remove('hidden');
-      
-      const isAdmin = currentUser && currentUser.role === 'admin';
-      
-      const nameEl = document.getElementById('current-user-name');
-      const roleEl = document.getElementById('current-user-role');
-      const sideBadge = document.getElementById('sidebar-role-badge');
-      const mobBadge = document.getElementById('mobile-user-badge');
+    function isAdminUser() {
+      return Boolean(currentUser && currentUser.role === 'admin');
+    }
 
-      if (nameEl) nameEl.textContent = currentUser ? currentUser.name : '';
-      if (roleEl) roleEl.textContent = currentUser ? currentUser.role : '';
-      if (sideBadge) sideBadge.textContent = isAdmin ? 'Acesso Total' : 'Frente de Caixa';
-      if (mobBadge) mobBadge.textContent = isAdmin ? 'Admin' : 'Vendedor';
+    function isSaleBySeller(s) {
+      if (!s) return false;
+      if (s.sellerRole === 'vendedor') return true;
+      const vendUser = (appUsers?.vendedor?.user || 'vendedor').toLowerCase();
+      if (s.sellerUsername && s.sellerUsername.toLowerCase() === vendUser) return true;
+      const sSeller = (s.seller || '').toLowerCase();
+      return sSeller.includes('vendedor') || sSeller === vendUser;
+    }
 
-      document.querySelectorAll('.admin-only').forEach(el => el.classList.toggle('hidden', !isAdmin));
-      updateVersionDisplay();
-      navigate('dashboard');
-      refreshAllData();
+    function getAccessibleSales() {
+      if (isAdminUser()) return sales;
+      const myUser = (currentUser?.username || appUsers?.vendedor?.user || 'vendedor').toLowerCase();
+      const myName = (currentUser?.name || 'Vendedor Balcão').toLowerCase();
+      return sales.filter(s => {
+        if (s.sellerRole === 'vendedor') return true;
+        if (s.sellerUsername && s.sellerUsername.toLowerCase() === myUser) return true;
+        const sSeller = (s.seller || '').toLowerCase();
+        return sSeller === myName || sSeller === myUser || sSeller.includes('vendedor');
+      });
     }
 
     function saveData() {
@@ -1645,6 +1722,12 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
     }
 
     function navigate(view) {
+      const adminRestrictedViews = ['payables', 'reports', 'settings'];
+      if (!isAdminUser() && adminRestrictedViews.includes(view)) {
+        showToast('Acesso restrito ao Administrador!', 'danger');
+        view = 'pos';
+      }
+
       currentView = view;
       ['dashboard', 'pos', 'inventory', 'customers', 'payables', 'reports', 'settings'].forEach(v => {
         const el = document.getElementById('view-' + v);
@@ -1666,46 +1749,21 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       if (view === 'settings') loadConfigInputs();
     }
 
-    function showConfirmModal(title, message, callback, icon = 'fa-trash-can', isDanger = true) {
-      const tEl = document.getElementById('confirm-modal-title');
-      const dEl = document.getElementById('confirm-modal-desc');
-      const icEl = document.getElementById('confirm-modal-icon');
-      const ctn = document.getElementById('confirm-modal-icon-container');
-      const btn = document.getElementById('confirm-modal-action-btn');
-
-      if(tEl) tEl.textContent = title;
-      if(dEl) dEl.innerHTML = message;
-      if(icEl) icEl.className = 'fa-solid ' + icon;
-      if(btn) {
-        btn.className = isDanger ? 'flex-1 py-2 bg-rose-600 hover:bg-rose-700 text-white font-semibold rounded-xl text-xs shadow-xs transition' : 'flex-1 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-xs shadow-xs transition';
-      }
-      if(ctn) {
-        ctn.className = isDanger ? 'w-12 h-12 bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 rounded-2xl flex items-center justify-center text-xl mx-auto' : 'w-12 h-12 bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 rounded-2xl flex items-center justify-center text-xl mx-auto';
-      }
-
-      confirmCallback = callback;
-      const m = document.getElementById('modal-confirm');
-      if(m) m.classList.remove('hidden');
-    }
-    
-    function closeConfirmModal() {
-      const m = document.getElementById('modal-confirm');
-      if(m) m.classList.add('hidden');
-      confirmCallback = null;
-    }
-    
-    function executeConfirmAction() {
-      if (typeof confirmCallback === 'function') confirmCallback();
-      closeConfirmModal();
-    }
-
     function renderDashboard() {
+      const isAdmin = isAdminUser();
+      document.querySelectorAll('.admin-only').forEach(el => el.classList.toggle('hidden', !isAdmin));
+      document.querySelectorAll('.vendedor-only').forEach(el => el.classList.toggle('hidden', isAdmin));
+
       const todayStr = getLocalDateStr();
       const monthStr = getLocalMonthStr();
       let sToday = 0, cToday = 0, sMonth = 0, pMonth = 0;
       let exQtyMonth = 0, exValMonth = 0;
       
-      sales.forEach(s => {
+      const visibleSales = getAccessibleSales();
+      const salesTodayLbl = document.getElementById('dash-sales-today-label');
+      if (salesTodayLbl) salesTodayLbl.textContent = isAdmin ? 'Vendas Hoje' : 'Minhas Vendas Hoje';
+
+      visibleSales.forEach(s => {
         if (s.status === 'cancelled') return;
         const sDay = getLocalDateStr(s.date);
         const sMon = getLocalMonthStr(s.date);
@@ -1734,47 +1792,77 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       
       if(elst) elst.textContent = formatCurrency(sToday);
       if(eloc) eloc.textContent = cToday + ' pedido' + (cToday === 1 ? '' : 's') + ' hoje';
-      if(elsm) elsm.textContent = formatCurrency(sMonth);
-      if(elpm) elpm.textContent = formatCurrency(pMonth);
+      if(elsm) elsm.textContent = isAdmin ? formatCurrency(sMonth) : '---';
+      if(elpm) elpm.textContent = isAdmin ? formatCurrency(pMonth) : '---';
       if(elsc) elsc.textContent = low.length;
-      if(elti) elti.textContent = formatCurrency(totalInvested);
+      if(elti) elti.textContent = isAdmin ? formatCurrency(totalInvested) : '---';
       if(eltc) eltc.textContent = totalItems + ' itens físicos';
       if(elExVal) elExVal.textContent = formatCurrency(exValMonth);
       if(elExQty) elExQty.textContent = exQtyMonth + ' peça' + (exQtyMonth === 1 ? '' : 's') + ' trocada' + (exQtyMonth === 1 ? '' : 's');
+
+      // Atualiza informações do Vendedor no topo do Dashboard (Exclusivo Admin)
+      if (isAdmin) {
+        const lastLoginEl = document.getElementById('dash-seller-last-login');
+        const sellerSummaryEl = document.getElementById('dash-seller-sales-summary');
+        const vLast = appUsers?.vendedor?.lastLogin;
+        if (lastLoginEl) {
+          lastLoginEl.textContent = vLast ? new Date(vLast).toLocaleString('pt-BR') : 'Nunca acessou';
+        }
+        if (sellerSummaryEl) {
+          const sellerActiveSales = sales.filter(s => s.status !== 'cancelled' && isSaleBySeller(s));
+          const sellerTotalVal = sellerActiveSales.reduce((acc, s) => acc + Number(s.total || 0), 0);
+          sellerSummaryEl.textContent = `${sellerActiveSales.length} venda${sellerActiveSales.length === 1 ? '' : 's'} (${formatCurrency(sellerTotalVal)})`;
+        }
+      }
       
-      // Tabela 1: Dívidas a Pagar (Admin) no lugar de Estoque Baixo
-      const pendingPayables = adminPayables
-        .map(normalizePayable)
-        .filter(p => p.status !== 'paid' && (p.amount - p.paidAmount) > 0);
-      pendingPayables.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+      // Tabela 1 (Admin): Dívidas a Pagar
+      if (isAdmin) {
+        const pendingPayables = adminPayables
+          .map(normalizePayable)
+          .filter(p => p.status !== 'paid' && (p.amount - p.paidAmount) > 0);
+        pendingPayables.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
 
-      const totalPayablesPending = pendingPayables.reduce((acc, p) => acc + Math.max(0, p.amount - p.paidAmount), 0);
-      const payBadgeEl = document.getElementById('dash-payables-total-badge');
-      if (payBadgeEl) payBadgeEl.textContent = formatCurrency(totalPayablesPending);
+        const totalPayablesPending = pendingPayables.reduce((acc, p) => acc + Math.max(0, p.amount - p.paidAmount), 0);
+        const payBadgeEl = document.getElementById('dash-payables-total-badge');
+        if (payBadgeEl) payBadgeEl.textContent = formatCurrency(totalPayablesPending);
 
-      const payTb = document.getElementById('dash-payables-table');
-      if (payTb) {
-        if (pendingPayables.length === 0) {
-          payTb.innerHTML = '<tr><td colspan="3" class="py-4 text-center text-slate-400 text-xs">Nenhuma dívida a pagar!</td></tr>';
-        } else {
-          payTb.innerHTML = pendingPayables.map(p => {
-            const rem = Math.max(0, p.amount - p.paidAmount);
-            const isOverdue = p.dueDate && (p.dueDate < todayStr);
-            const dateBadge = isOverdue ? 'text-rose-600 font-bold' : 'text-slate-400';
-            const fDate = p.dueDate ? new Date(p.dueDate + 'T00:00:00').toLocaleDateString('pt-BR') : '-';
-            return `<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
-              <td class="py-1.5 px-2.5">
-                <div class="font-semibold dark:text-white truncate" title="${escapeHtml(p.title)}">${escapeHtml(p.title)}</div>
-                <div class="text-[9px] ${dateBadge}">Venc: ${fDate}</div>
-              </td>
-              <td class="py-1.5 px-1 font-bold text-amber-600 dark:text-amber-400 text-right text-xs">${formatCurrency(rem)}</td>
-              <td class="py-1.5 px-1.5 text-center">
-                <button onclick="openSettlePayableModal('${p.id}')" title="Dar Baixa Total ou Parcial" class="px-2 py-1 bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 rounded-lg text-xs hover:bg-amber-100 font-bold">
-                  <i class="fa-solid fa-check"></i>
-                </button>
-              </td>
-            </tr>`;
-          }).join('');
+        const payTb = document.getElementById('dash-payables-table');
+        if (payTb) {
+          if (pendingPayables.length === 0) {
+            payTb.innerHTML = '<tr><td colspan="3" class="py-4 text-center text-slate-400 text-xs">Nenhuma dívida a pagar!</td></tr>';
+          } else {
+            payTb.innerHTML = pendingPayables.map(p => {
+              const rem = Math.max(0, p.amount - p.paidAmount);
+              const isOverdue = p.dueDate && (p.dueDate < todayStr);
+              const dateBadge = isOverdue ? 'text-rose-600 font-bold' : 'text-slate-400';
+              const fDate = p.dueDate ? new Date(p.dueDate + 'T00:00:00').toLocaleDateString('pt-BR') : '-';
+              return `<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                <td class="py-1.5 px-2.5">
+                  <div class="font-semibold dark:text-white truncate" title="${escapeHtml(p.title)}">${escapeHtml(p.title)}</div>
+                  <div class="text-[9px] ${dateBadge}">Venc: ${fDate}</div>
+                </td>
+                <td class="py-1.5 px-1 font-bold text-amber-600 dark:text-amber-400 text-right text-xs">${formatCurrency(rem)}</td>
+                <td class="py-1.5 px-1.5 text-center">
+                  <button onclick="openSettlePayableModal('${p.id}')" title="Dar Baixa Total ou Parcial" class="px-2 py-1 bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 rounded-lg text-xs hover:bg-amber-100 font-bold">
+                    <i class="fa-solid fa-check"></i>
+                  </button>
+                </td>
+              </tr>`;
+            }).join('');
+          }
+        }
+      } else {
+        // Tabela 1 (Vendedor): Alerta de Estoque Baixo (sem expor dívidas do Admin)
+        const vBadge = document.getElementById('dash-vendedor-low-stock-badge');
+        if (vBadge) vBadge.textContent = low.length;
+        const vTb = document.getElementById('dash-vendedor-low-stock-table');
+        if (vTb) {
+          vTb.innerHTML = low.length ? low.map(p => `
+            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+              <td class="py-1.5 px-2.5 font-semibold dark:text-white truncate" title="${escapeHtml(p.name)}">${escapeHtml(p.name)}</td>
+              <td class="py-1.5 px-1.5 text-center"><span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${p.stock === 0 ? 'bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-400' : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'}">${p.stock} un.</span></td>
+            </tr>
+          `).join('') : '<tr><td colspan="2" class="py-4 text-center text-slate-400 text-xs">Estoque em dia!</td></tr>';
         }
       }
 
@@ -1863,7 +1951,8 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
 
     function renderTopProducts() {
       const map = {};
-      sales.forEach(s => {
+      const visibleSales = getAccessibleSales();
+      visibleSales.forEach(s => {
         if (s.status === 'cancelled') return;
         (s.items || []).forEach(i => map[i.name] = (map[i.name] || 0) + (i.qty || 1));
       });
@@ -1877,13 +1966,14 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
     function renderWeeklyChart() {
       const ctx = document.getElementById('chart-sales-weekly');
       if (!ctx) return;
+      const visibleSales = getAccessibleSales();
       const lbls = [], dta = [];
       for(let i = 6; i >= 0; i--){
         const d = new Date(); 
         d.setDate(d.getDate() - i);
         const dayStr = getLocalDateStr(d);
         lbls.push(d.toLocaleDateString('pt-BR', { weekday: 'short' }));
-        const sumDay = sales
+        const sumDay = visibleSales
           .filter(s => s.status !== 'cancelled' && getLocalDateStr(s.date) === dayStr)
           .reduce((a,s) => a + s.total, 0);
         dta.push(sumDay);
@@ -2340,7 +2430,9 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       const s = { 
         id: 'V-' + Date.now(), 
         date: new Date().toISOString(), 
-        seller: currentUser?.name || 'Vendedor', 
+        seller: currentUser ? (currentUser.role === 'vendedor' ? `Vendedor (${currentUser.username})` : `Admin (${currentUser.username})`) : 'Vendedor',
+        sellerUsername: currentUser?.username || 'vendedor',
+        sellerRole: currentUser?.role || 'vendedor',
         customerId: custId || null,
         customerName: cust?.name || 'Consumidor Final', 
         customerPhone: cust?.phone || '', 
@@ -2391,31 +2483,29 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       const isCancelled = s.status === 'cancelled';
       const cancelledHeader = isCancelled ? `<div class="py-1 px-2 bg-rose-100 text-rose-700 font-bold text-center rounded mb-2">*** VENDA CANCELADA / ESTORNADA ***</div>` : '';
 
-      m.innerHTML = `${cancelledHeader}<div class="text-center border-b border-dashed pb-2"><h2 class="font-bold text-sm">${escapeHtml(companySettings.name)}</h2><p class="text-[10px]">CUPOM NÃO FISCAL</p></div><div class="py-2 text-[11px] border-b border-dashed"><div>Cód: ${s.id}</div><div>Data: ${new Date(s.date).toLocaleString('pt-BR')}</div><div>Cliente: ${escapeHtml(s.customerName)}</div></div><div class="py-2 border-b border-dashed"><table class="w-full text-[11px]"><tbody>${itemsHtml}</tbody></table></div><div class="py-2 text-[11px] flex flex-col gap-0.5"><div class="flex justify-between"><span>Subtotal:</span><span>${formatCurrency(s.subtotal)}</span></div>${extraHtml}<div class="flex justify-between font-bold text-sm mt-1 pt-1 border-t border-slate-300"><span>TOTAL A PAGAR:</span><span>${formatCurrency(s.total)}</span></div><div class="flex justify-between"><span>Pago (${s.paymentMethod.toUpperCase()}):</span><span>${formatCurrency(s.receivedAmount)}</span></div></div><div class="pt-2 border-t border-dashed text-[10px] text-center text-slate-600 space-y-1"><p class="font-bold text-slate-800">Toda troca de produtos deve ser feita no prazo máximo de 20 dias a partir da entrega.</p><p>Obrigado pela preferência!</p></div>`;
+      m.innerHTML = `${cancelledHeader}<div class="text-center border-b border-dashed pb-2"><h2 class="font-bold text-sm">${escapeHtml(companySettings.name)}</h2><p class="text-[10px]">CUPOM NÃO FISCAL</p></div><div class="py-2 text-[11px] border-b border-dashed"><div>Cód: ${s.id}</div><div>Data: ${new Date(s.date).toLocaleString('pt-BR')}</div><div>Vendedor: ${escapeHtml(s.seller || 'Balcão')}</div><div>Cliente: ${escapeHtml(s.customerName)}</div></div><div class="py-2 border-b border-dashed"><table class="w-full text-[11px]"><tbody>${itemsHtml}</tbody></table></div><div class="py-2 text-[11px] flex flex-col gap-0.5"><div class="flex justify-between"><span>Subtotal:</span><span>${formatCurrency(s.subtotal)}</span></div>${extraHtml}<div class="flex justify-between font-bold text-sm mt-1 pt-1 border-t border-slate-300"><span>TOTAL A PAGAR:</span><span>${formatCurrency(s.total)}</span></div><div class="flex justify-between"><span>Pago (${s.paymentMethod.toUpperCase()}):</span><span>${formatCurrency(s.receivedAmount)}</span></div></div><div class="pt-2 border-t border-dashed text-[10px] text-center text-slate-600 space-y-1"><p class="font-bold text-slate-800">Toda troca de produtos deve ser feita no prazo máximo de 20 dias a partir da entrega.</p><p>Obrigado pela preferência!</p></div>`;
       const mr = document.getElementById('modal-receipt');
       if (mr) mr.classList.remove('hidden');
     }
-    
-    function closeReceiptModal() { 
+
+    function closeReceiptModal() {
       const mr = document.getElementById('modal-receipt');
-      if (mr) mr.classList.add('hidden'); 
+      if (mr) mr.classList.add('hidden');
     }
-    
+
     function shareReceiptWhatsApp() {
       if (!currentLastSale) return;
       const s = currentLastSale;
-      const pixInfo = companySettings.pixKey ? companySettings.pixKey : '48999344103 -- JORGE L SILVEIRA --BANCO DO BRASIL';
-      
-      let text = `*COMPROVANTE DE COMPRA -  ${companySettings.name || 'GestãoPro'}*\n`;
-      text += `Cód: ${s.id}\n`;
+      const pixInfo = companySettings.pixKey || 'Chave não informada';
+      let text = `*${companySettings.name.toUpperCase()}*\n`;
+      text += `Comprovante de Venda: *${s.id}*\n`;
       text += `Data: ${new Date(s.date).toLocaleString('pt-BR')}\n`;
-      text += `Cliente: ${s.customerName || 'Consumidor'}\n\n`;
-      
-      text += `*Itens:*\n`;
+      text += `Vendedor: ${s.seller || 'Balcão'}\n`;
+      text += `Cliente: ${s.customerName || 'Consumidor Final'}\n\n`;
+      text += `*ITENS DO PEDIDO:*\n`;
       (s.items || []).forEach(i => {
-        text += `- ${i.qty}x ${i.name} (${formatCurrency(i.salePrice)})\n`;
+        text += `• ${i.qty}x ${i.name} - ${formatCurrency(i.salePrice * i.qty)}\n`;
       });
-      
       text += `\n*Subtotal:* ${formatCurrency(s.subtotal)}\n`;
       if (s.discount > 0) text += `*Desconto:* -${formatCurrency(s.discount)}\n`;
       if (s.exchangeValue > 0) text += `*Abatimento de Troca (${s.exchangeQty || 0} un.):* -${formatCurrency(s.exchangeValue)}\n`;
@@ -2455,6 +2545,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
     function renderInventoryTable() {
       const tbody = document.getElementById('inventory-table-body');
       if (!tbody) return;
+      const isAdmin = isAdminUser();
       const q = (document.getElementById('inventory-search')?.value || '').toLowerCase();
       const cat = document.getElementById('inventory-filter-category')?.value || '';
       const st = document.getElementById('inventory-filter-status')?.value || '';
@@ -2476,18 +2567,19 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
           <td class="py-2.5 px-3 font-semibold dark:text-white">${escapeHtml(p.name)}</td>
           <td class="py-2.5 px-3 hidden md:table-cell font-mono text-xs">${escapeHtml(p.barcode || '-')}</td>
           <td class="py-2.5 px-3 hidden sm:table-cell text-xs">${escapeHtml(p.category)}</td>
-          <td class="py-2.5 px-3 admin-only hidden lg:table-cell">${formatCurrency(p.costPrice)}</td>
+          ${isAdmin ? `<td class="py-2.5 px-3 hidden lg:table-cell">${formatCurrency(p.costPrice)}</td>` : ''}
           <td class="py-2.5 px-3 font-bold text-indigo-600 dark:text-indigo-400">${formatCurrency(p.salePrice)}</td>
           <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 rounded-full text-xs font-bold ${stockBadge}">${p.stock} un.</span></td>
-          <td class="py-2.5 px-3 text-right space-x-1">
+          ${isAdmin ? `<td class="py-2.5 px-3 text-right space-x-1">
             <button onclick="editProduct('${p.id}')" class="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded text-xs"><i class="fa-solid fa-pen"></i></button>
             <button onclick="deleteProduct('${p.id}')" class="px-2 py-1 bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400 rounded text-xs"><i class="fa-solid fa-trash"></i></button>
-          </td>
+          </td>` : ''}
         </tr>`;
       }).join('') : '<tr><td colspan="7" class="py-8 text-center text-slate-400 text-xs">Nenhum produto encontrado.</td></tr>';
     }
 
     function openProductModal(id = null) {
+      if (!isAdminUser()) return showToast('Acesso restrito ao Administrador!', 'danger');
       const modal = document.getElementById('modal-product');
       const title = document.getElementById('product-modal-title');
       const form = document.getElementById('product-form');
@@ -2542,17 +2634,61 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
         products.push(savedObj);
         showToast('Produto cadastrado com sucesso!', 'success');
       }
-      closeProductModal(); refreshAllData();
-      if(savedObj) syncToSupabase('products', savedObj);
+      closeProductModal();
+      refreshAllData();
+      if (savedObj) syncToSupabase('products', savedObj);
     }
 
-    function editProduct(id) { openProductModal(id); }
+    function editProduct(id) {
+      if (!isAdminUser()) return showToast('Acesso restrito ao Administrador!', 'danger');
+      openProductModal(id);
+    }
     function deleteProduct(id) {
+      if (!isAdminUser()) return showToast('Acesso restrito ao Administrador!', 'danger');
       showConfirmModal('Excluir Produto', 'Deseja realmente remover este produto do catálogo?', () => {
         products = products.filter(p => String(p.id) !== String(id));
         refreshAllData(); deleteFromSupabase('products', id);
         showToast('Produto removido!', 'success');
       });
+    }
+
+    function showConfirmModal(title, desc, callback, icon = 'fa-trash-can', isDanger = true) {
+      confirmCallback = callback;
+      const modal = document.getElementById('modal-confirm');
+      const titleEl = document.getElementById('confirm-modal-title');
+      const descEl = document.getElementById('confirm-modal-desc');
+      const iconEl = document.getElementById('confirm-modal-icon');
+      const iconContainer = document.getElementById('confirm-modal-icon-container');
+      const actionBtn = document.getElementById('confirm-modal-action-btn');
+
+      if (titleEl) titleEl.textContent = title;
+      if (descEl) descEl.innerHTML = desc;
+      if (iconEl) iconEl.className = 'fa-solid ' + icon;
+
+      if (iconContainer) {
+        iconContainer.className = isDanger
+          ? 'w-12 h-12 bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 rounded-2xl flex items-center justify-center text-xl mx-auto'
+          : 'w-12 h-12 bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 rounded-2xl flex items-center justify-center text-xl mx-auto';
+      }
+      if (actionBtn) {
+        actionBtn.className = isDanger
+          ? 'flex-1 py-2 bg-rose-600 hover:bg-rose-700 text-white font-semibold rounded-xl text-xs shadow-xs transition'
+          : 'flex-1 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-xs shadow-xs transition';
+      }
+
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeConfirmModal() {
+      const modal = document.getElementById('modal-confirm');
+      if (modal) modal.classList.add('hidden');
+      confirmCallback = null;
+    }
+
+    function executeConfirmAction() {
+      const cb = confirmCallback;
+      closeConfirmModal();
+      if (typeof cb === 'function') cb();
     }
 
     function openStockEntryModal() {
@@ -2590,6 +2726,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
     function renderCustomerTable() {
       const tbody = document.getElementById('customers-table-body');
       if (!tbody) return;
+      const isAdmin = isAdminUser();
       const q = (document.getElementById('customer-search')?.value || '').toLowerCase();
       const filt = customers.filter(c => c.name.toLowerCase().includes(q) || (c.phone || '').toLowerCase().includes(q));
 
@@ -2607,7 +2744,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
           <td class="py-2.5 px-3 text-right font-bold text-rose-600 dark:text-rose-400">${formatCurrency(c.debt)}</td>
           <td class="py-2.5 px-3 text-right space-x-1">
             <button onclick="editCustomer('${c.id}')" class="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded text-xs"><i class="fa-solid fa-pen"></i></button>
-            <button onclick="deleteCustomer('${c.id}')" class="px-2 py-1 bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400 rounded text-xs"><i class="fa-solid fa-trash"></i></button>
+            ${isAdmin ? `<button onclick="deleteCustomer('${c.id}')" class="px-2 py-1 bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400 rounded text-xs"><i class="fa-solid fa-trash"></i></button>` : ''}
           </td>
         </tr>`;
       }).join('') : '<tr><td colspan="7" class="py-8 text-center text-slate-400 text-xs">Nenhum cliente encontrado.</td></tr>';
@@ -2663,6 +2800,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
 
     function editCustomer(id) { openCustomerModal(id); }
     function deleteCustomer(id) {
+      if (!isAdminUser()) return showToast('Apenas o Administrador pode excluir clientes!', 'danger');
       showConfirmModal('Excluir Cliente', 'Deseja realmente remover este cliente?', () => {
         customers = customers.filter(c => String(c.id) !== String(id));
         refreshAllData(); deleteFromSupabase('customers', id);
@@ -2867,6 +3005,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
     }
 
     function openPayableModal(id = null) {
+      if (!isAdminUser()) return showToast('Acesso restrito ao Administrador!', 'danger');
       const modal = document.getElementById('modal-payable');
       const form = document.getElementById('payable-form');
       const titleEl = document.getElementById('payable-modal-title');
@@ -2980,6 +3119,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
     }
 
     function deletePayable(id) {
+      if (!isAdminUser()) return showToast('Acesso restrito ao Administrador!', 'danger');
       showConfirmModal('Excluir Dívida a Pagar', 'Deseja realmente remover este compromisso da lista?', () => {
         adminPayables = adminPayables.filter(x => String(x.id) !== String(id));
         refreshAllData();
@@ -2989,6 +3129,7 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
     }
 
     function openSettlePayableModal(id) {
+      if (!isAdminUser()) return showToast('Acesso restrito ao Administrador!', 'danger');
       const p = adminPayables.find(x => String(x.id) === String(id));
       if (!p) return;
       const rem = Math.max(0, Number((p.amount - p.paidAmount).toFixed(2)));
@@ -3408,11 +3549,16 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
           const statusBadge = s.status === 'partial' ? 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300' : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300';
           const statusText = s.status === 'partial' ? 'Fiado Parcial' : 'Pago';
           const exchangeBadge = (s.exchangeQty > 0 || s.exchangeValue > 0) ? `<span class="ml-1 px-1.5 py-0.5 rounded text-[9px] font-bold bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400" title="Troca de ${s.exchangeQty||0} un."><i class="fa-solid fa-arrows-rotate mr-0.5"></i>-${formatCurrency(s.exchangeValue||0)}</span>` : '';
+          const isVend = isSaleBySeller(s);
+          const sellerBadge = isVend
+            ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300"><i class="fa-solid fa-user-tag mr-1"></i>${escapeHtml(s.seller || 'Vendedor')}</span>`
+            : `<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">${escapeHtml(s.seller || 'Admin')}</span>`;
 
           return `<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
             <td class="py-2.5 px-3 font-mono text-xs font-semibold">${s.id}</td>
             <td class="py-2.5 px-3 text-xs">${new Date(s.date).toLocaleString('pt-BR')}</td>
             <td class="py-2.5 px-3 font-medium dark:text-white">${escapeHtml(s.customerName)}</td>
+            <td class="py-2.5 px-3 text-xs">${sellerBadge}</td>
             <td class="py-2.5 px-3 hidden sm:table-cell"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${statusBadge}">${statusText}</span>${exchangeBadge}</td>
             <td class="py-2.5 px-3 text-right font-bold text-indigo-600 dark:text-indigo-400">${formatCurrency(s.total)}</td>
             <td class="py-2.5 px-3 text-center space-x-1">
@@ -3422,14 +3568,14 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
               <button onclick="cancelSale('${s.id}')" class="admin-only px-2 py-1 bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400 rounded text-xs" title="Cancelar Venda e Estornar"><i class="fa-solid fa-ban"></i></button>
             </td>
           </tr>`;
-        }).join('') : '<tr><td colspan="6" class="py-8 text-center text-slate-400 text-xs">Nenhuma venda ativa encontrada no período.</td></tr>';
+        }).join('') : '<tr><td colspan="7" class="py-8 text-center text-slate-400 text-xs">Nenhuma venda ativa encontrada no período.</td></tr>';
       }
 
       // Rodapé com a Soma Total de Vendas
       const tfoot = document.getElementById('sales-history-tfoot');
       if (tfoot) {
         tfoot.innerHTML = `<tr>
-          <td colspan="4" class="py-2.5 px-3 uppercase text-slate-700 dark:text-slate-200">Soma Total das Vendas (${filteredSales.length} pedidos)</td>
+          <td colspan="5" class="py-2.5 px-3 uppercase text-slate-700 dark:text-slate-200">Soma Total das Vendas (${filteredSales.length} pedidos)</td>
           <td class="py-2.5 px-3 text-right font-black text-indigo-600 dark:text-indigo-400 text-sm">${formatCurrency(totalRev)}</td>
           <td></td>
         </tr>`;
@@ -3525,17 +3671,18 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       else if (period === '7days') { const d = new Date(); d.setDate(d.getDate() - 7); filteredSales = filteredSales.filter(s => getLocalDateStr(s.date) >= getLocalDateStr(d)); } 
       else if (period === '30days') { const d = new Date(); d.setDate(d.getDate() - 30); filteredSales = filteredSales.filter(s => getLocalDateStr(s.date) >= getLocalDateStr(d)); }
 
-      let csv = '\uFEFFCódigo;Data;Cliente;Status;Forma Pagamento;Desconto;Qtd Troca;Valor Troca;Crédito Usado;Dívida (Fiado);Custo Prod.;Total Pago\n';
+      let csv = '\uFEFFCódigo;Data;Vendedor;Cliente;Status;Forma Pagamento;Desconto;Qtd Troca;Valor Troca;Crédito Usado;Dívida (Fiado);Custo Prod.;Total Pago\n';
       
       filteredSales.forEach(s => {
         const id = s.id;
         const date = new Date(s.date).toLocaleString('pt-BR');
+        const sellerName = s.seller || 'Vendedor';
         const client = s.customerName || 'Consumidor';
         const status = s.status === 'partial' ? 'Fiado Parcial' : 'Pago';
         const payment = s.paymentMethod;
         const formatDec = val => (val || 0).toFixed(2).replace('.', ',');
         
-        csv += `${id};${date};${client};${status};${payment};${formatDec(s.discount)};${s.exchangeQty || 0};${formatDec(s.exchangeValue)};${formatDec(s.creditUsed)};${formatDec(s.debtAmount)};${formatDec(s.totalCost)};${formatDec(s.total)}\n`;
+        csv += `${id};${date};${sellerName};${client};${status};${payment};${formatDec(s.discount)};${s.exchangeQty || 0};${formatDec(s.exchangeValue)};${formatDec(s.creditUsed)};${formatDec(s.debtAmount)};${formatDec(s.totalCost)};${formatDec(s.total)}\n`;
       });
 
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -3561,27 +3708,27 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       const adP = document.getElementById('cfg-admin-pass');
       const vdU = document.getElementById('cfg-vend-user');
       const vdP = document.getElementById('cfg-vend-pass');
+      const vdLast = document.getElementById('cfg-vend-last-login');
       
       if(adU) adU.value = appUsers.admin.user;
       if(adP) adP.value = appUsers.admin.pass;
       if(vdU) vdU.value = appUsers.vendedor.user;
       if(vdP) vdP.value = appUsers.vendedor.pass;
+      if(vdLast) {
+        vdLast.textContent = appUsers.vendedor.lastLogin
+          ? new Date(appUsers.vendedor.lastLogin).toLocaleString('pt-BR')
+          : 'Nunca acessou';
+      }
     }
 
     function saveCompanySettings() {
-      const n = document.getElementById('cfg-company-name');
-      const d = document.getElementById('cfg-company-doc');
-      const p = document.getElementById('cfg-company-phone');
-      const pk = document.getElementById('cfg-pix-key');
-      companySettings = { 
-        name: n ? n.value : '', 
-        doc: d ? d.value : '', 
-        phone: p ? p.value : '', 
-        pixKey: pk ? pk.value : '' 
-      };
+      companySettings.name = document.getElementById('cfg-company-name')?.value.trim() || 'Minha Loja';
+      companySettings.doc = document.getElementById('cfg-company-doc')?.value.trim() || '';
+      companySettings.phone = document.getElementById('cfg-company-phone')?.value.trim() || '';
+      companySettings.pixKey = document.getElementById('cfg-pix-key')?.value.trim() || '';
       saveData();
       syncToSupabase('settings', { id: 'company', data: companySettings });
-      showToast('Dados da empresa salvos com sucesso!', 'success');
+      showToast('Dados da empresa salvos!', 'success');
     }
 
     function saveUsers() {
@@ -3593,97 +3740,13 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       if (!adU || !adP || !vdU || !vdP) return showToast('Preencha todas as credenciais!', 'warning');
       
       appUsers = {
-        admin: { user: adU, pass: adP },
-        vendedor: { user: vdU, pass: vdP }
+        admin: { user: adU, pass: adP, lastLogin: appUsers?.admin?.lastLogin || null },
+        vendedor: { user: vdU, pass: vdP, lastLogin: appUsers?.vendedor?.lastLogin || null }
       };
       
       localStorage.setItem('gp_users', JSON.stringify(appUsers));
       syncToSupabase('settings', { id: 'users', data: appUsers });
       showToast('Credenciais atualizadas com sucesso!', 'success');
-    }
-
-    function exportSystemBackup() {
-      const data = { version: APP_VERSION, products, customers, sales, adminPayables, companySettings, usersSettings: appUsers };
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download = 'gestaopro-backup-' + getLocalDateStr() + '.json'; a.click();
-      showToast('Backup exportado com sucesso!', 'success');
-    }
-
-    function handleBackupFileSelect(e) {
-      const file = e.target.files[0]; if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (evt) => {
-        try {
-          const data = JSON.parse(evt.target.result);
-          if (Array.isArray(data.products)) products = data.products.map(normalizeProduct);
-          if (Array.isArray(data.customers)) customers = data.customers.map(normalizeCustomer);
-          if (Array.isArray(data.sales)) sales = data.sales.map(normalizeSale);
-          if (Array.isArray(data.adminPayables)) adminPayables = data.adminPayables.map(normalizePayable);
-          if (data.companySettings) companySettings = data.companySettings;
-          if (data.usersSettings) appUsers = data.usersSettings;
-          refreshAllData(); loadConfigInputs();
-          showToast('Backup restaurado com sucesso!', 'success');
-        } catch (err) { showToast('Arquivo de backup inválido!', 'danger'); }
-      };
-      reader.readAsText(file);
-    }
-
-    function promptResetSampleData() {
-      showConfirmModal('Restaurar Padrões', 'Tem certeza que deseja apagar todos os dados atuais e voltar ao estado de fábrica?', () => {
-        products = SAMPLE_PRODUCTS.map(normalizeProduct);
-        customers = SAMPLE_CUSTOMERS.map(normalizeCustomer);
-        sales = [];
-        adminPayables = [];
-        appUsers = { admin: { user: 'admin', pass: '123' }, vendedor: { user: 'vendedor', pass: '123' } };
-        localStorage.setItem('gp_users', JSON.stringify(appUsers));
-        refreshAllData(); loadConfigInputs();
-        showToast('Dados restaurados para o padrão!', 'success');
-      }, 'fa-rotate-right', true);
-    }
-
-    // Integração Supabase
-    async function syncToSupabase(table, data) {
-      if (!supabaseClient) return;
-      try {
-        let payload = Array.isArray(data) ? data.map(item => ({ ...item })) : { ...data };
-        let maxRetries = 5;
-
-        while (maxRetries > 0) {
-          const { error } = await supabaseClient.from(table).upsert(payload);
-          if (!error) break;
-
-          // Se a tabela remota não possui colunas novas (como exchangeQty ou exchangeValue),
-          // remove o campo ausente do payload e tenta novamente automaticamente.
-          if (error.code === 'PGRST204') {
-            const match = error.message?.match(/Could not find the '([^']+)' column/i);
-            if (match && match[1]) {
-              const missingCol = match[1];
-              console.warn(`Coluna '${missingCol}' ausente no Supabase ('${table}'). Removendo do payload e retentando...`);
-              if (Array.isArray(payload)) {
-                payload.forEach(item => delete item[missingCol]);
-              } else {
-                delete payload[missingCol];
-              }
-              maxRetries--;
-              continue;
-            }
-          }
-
-          console.error("Supabase Sync Err:", error);
-          break;
-        }
-      } catch (e) {
-        console.error("Supabase Exception:", e);
-      }
-    }
-
-    async function deleteFromSupabase(table, id) {
-      if (!supabaseClient) return;
-      try {
-        const { error } = await supabaseClient.from(table).delete().eq('id', id);
-        if (error) console.error("Supabase Del Err:", error);
-      } catch (e) {}
     }
 
     async function saveAndConnectSupabase(isAuto = false) {
@@ -3820,6 +3883,108 @@ ALTER TABLE settings DISABLE ROW LEVEL SECURITY;</pre>
       document.execCommand("copy");
       ta.remove();
       showToast('Script SQL copiado com sucesso!', 'success');
+    }
+
+    async function syncToSupabase(table, payload) {
+      if (!supabaseClient || !payload) return;
+      try {
+        const cleanPayload = JSON.parse(JSON.stringify(payload));
+        const stripExtraSaleCols = (obj) => {
+          if (table === 'sales' && obj && typeof obj === 'object') {
+            delete obj.sellerUsername;
+            delete obj.sellerRole;
+          }
+          return obj;
+        };
+        const dataToSend = Array.isArray(cleanPayload) ? cleanPayload.map(stripExtraSaleCols) : stripExtraSaleCols(cleanPayload);
+
+        let { error } = await supabaseClient.from(table).upsert(dataToSend);
+        if (error && error.code === 'PGRST204') {
+          const stripExchangeCols = (obj) => {
+            if (obj && typeof obj === 'object') {
+              delete obj.exchangeQty;
+              delete obj.exchangeValue;
+            }
+            return obj;
+          };
+          const fallbackData = Array.isArray(dataToSend) ? dataToSend.map(stripExchangeCols) : stripExchangeCols(dataToSend);
+          await supabaseClient.from(table).upsert(fallbackData);
+        }
+      } catch (e) {
+        console.warn('Falha ao sincronizar com Supabase:', e);
+      }
+    }
+
+    async function deleteFromSupabase(table, id) {
+      if (!supabaseClient || !id) return;
+      try {
+        await supabaseClient.from(table).delete().eq('id', String(id));
+      } catch (e) {
+        console.warn('Erro ao remover da nuvem:', e);
+      }
+    }
+
+    function exportSystemBackup() {
+      const backup = {
+        version: APP_VERSION,
+        timestamp: new Date().toISOString(),
+        products,
+        customers,
+        sales,
+        adminPayables,
+        companySettings,
+        appUsers
+      };
+      const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `backup_gestaopro_${getLocalDateStr()}.json`;
+      a.click();
+      showToast('Backup exportado com sucesso!', 'success');
+    }
+
+    function handleBackupFileSelect(e) {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        try {
+          const data = JSON.parse(ev.target.result);
+          if (Array.isArray(data.products)) products = data.products.map(normalizeProduct);
+          if (Array.isArray(data.customers)) customers = data.customers.map(normalizeCustomer);
+          if (Array.isArray(data.sales)) sales = data.sales.map(normalizeSale);
+          if (Array.isArray(data.adminPayables)) adminPayables = data.adminPayables.map(normalizePayable);
+          if (data.companySettings) companySettings = data.companySettings;
+          if (data.appUsers) {
+            appUsers = data.appUsers;
+            localStorage.setItem('gp_users', JSON.stringify(appUsers));
+          }
+          saveData();
+          refreshAllData();
+          loadConfigInputs();
+          showToast('Backup restaurado com sucesso!', 'success');
+        } catch (err) {
+          showToast('Arquivo de backup inválido!', 'danger');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function promptResetSampleData() {
+      showConfirmModal(
+        'Restaurar Padrões de Fábrica',
+        'Isto irá apagar as vendas, dívidas e restaurar os produtos/clientes de exemplo. Continuar?',
+        () => {
+          products = SAMPLE_PRODUCTS.map(normalizeProduct);
+          customers = SAMPLE_CUSTOMERS.map(normalizeCustomer);
+          sales = [];
+          adminPayables = [];
+          saveData();
+          refreshAllData();
+          showToast('Sistema restaurado para os padrões de fábrica!', 'info');
+        }
+      );
     }
   </script>
 </body>
